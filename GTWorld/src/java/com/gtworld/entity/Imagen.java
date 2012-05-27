@@ -41,13 +41,12 @@ public class Imagen implements Serializable {
     @Size(max = 100)
     @Column(name = "URL_IMAGEN")
     private String urlImagen;
-    
-    
-    /*
-     * Datos no relevantes para esta entidad
     @JoinColumn(name = "ID_POI", referencedColumnName = "ID_POI")
     @ManyToOne
     private Poi idPoi;
+    
+    /*
+     * Datos no relevantes para esta entidad
     @OneToMany(mappedBy = "correlativoImagen")
     private List<Usuario> usuarioList;
     */
@@ -91,7 +90,6 @@ public class Imagen implements Serializable {
         this.urlImagen = urlImagen;
     }
 
-    /*
     public Poi getIdPoi() {
         return idPoi;
     }
@@ -99,7 +97,8 @@ public class Imagen implements Serializable {
     public void setIdPoi(Poi idPoi) {
         this.idPoi = idPoi;
     }
-
+    
+    /*
     @XmlTransient
     public List<Usuario> getUsuarioList() {
         return usuarioList;

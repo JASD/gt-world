@@ -44,14 +44,10 @@ public class Notificacion implements Serializable {
     private Date horaNotificacion;
     @Column(name = "ESTADO_NOTIFICACION")
     private Boolean estadoNotificacion;
-    
-    /*
-     * Datos no relevantes para esta entidad
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario idUsuario;
-    * 
-    */
+  
     public Notificacion() {
     }
 
@@ -99,14 +95,13 @@ public class Notificacion implements Serializable {
         this.estadoNotificacion = estadoNotificacion;
     }
 
-    /*
     public Usuario getIdUsuario() {
         return idUsuario;
     }
 
     public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
-    }*/
+    }
 
     @Override
     public int hashCode() {
