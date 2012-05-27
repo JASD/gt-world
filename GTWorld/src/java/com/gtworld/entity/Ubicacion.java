@@ -5,11 +5,10 @@
 package com.gtworld.entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+//import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -39,10 +38,14 @@ public class Ubicacion implements Serializable {
     private Float longitudUbicacion;
     @Column(name = "ALTITUD_UBICACION")
     private Float altitudUbicacion;
+    
+    /*Datos no relevantes para esta entidad
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUbicacion")
     private List<Poi> poiList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ubicacion")
     private List<VisitaUbicacion> visitaUbicacionList;
+    * 
+    */
 
     public Ubicacion() {
     }
@@ -83,6 +86,7 @@ public class Ubicacion implements Serializable {
         this.altitudUbicacion = altitudUbicacion;
     }
 
+    /*
     @XmlTransient
     public List<Poi> getPoiList() {
         return poiList;
@@ -100,6 +104,8 @@ public class Ubicacion implements Serializable {
     public void setVisitaUbicacionList(List<VisitaUbicacion> visitaUbicacionList) {
         this.visitaUbicacionList = visitaUbicacionList;
     }
+    * 
+    */
 
     @Override
     public int hashCode() {

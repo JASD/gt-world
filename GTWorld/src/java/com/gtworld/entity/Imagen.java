@@ -5,12 +5,11 @@
 package com.gtworld.entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+//import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,12 +41,17 @@ public class Imagen implements Serializable {
     @Size(max = 100)
     @Column(name = "URL_IMAGEN")
     private String urlImagen;
+    
+    
+    /*
+     * Datos no relevantes para esta entidad
     @JoinColumn(name = "ID_POI", referencedColumnName = "ID_POI")
     @ManyToOne
     private Poi idPoi;
     @OneToMany(mappedBy = "correlativoImagen")
     private List<Usuario> usuarioList;
-
+    */
+    
     public Imagen() {
     }
 
@@ -87,6 +91,7 @@ public class Imagen implements Serializable {
         this.urlImagen = urlImagen;
     }
 
+    /*
     public Poi getIdPoi() {
         return idPoi;
     }
@@ -102,7 +107,7 @@ public class Imagen implements Serializable {
 
     public void setUsuarioList(List<Usuario> usuarioList) {
         this.usuarioList = usuarioList;
-    }
+    }*/
 
     @Override
     public int hashCode() {

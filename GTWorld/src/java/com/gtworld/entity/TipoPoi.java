@@ -5,12 +5,11 @@
 package com.gtworld.entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+//import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -38,8 +37,12 @@ public class TipoPoi implements Serializable {
     @Size(max = 100)
     @Column(name = "URL_ICONO_POI")
     private String urlIconoPoi;
+    
+    /* Datos no relevantes para esta entidad
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTipoPoi")
     private List<Poi> poiList;
+    * 
+    */
 
     public TipoPoi() {
     }
@@ -72,6 +75,7 @@ public class TipoPoi implements Serializable {
         this.urlIconoPoi = urlIconoPoi;
     }
 
+    /*
     @XmlTransient
     public List<Poi> getPoiList() {
         return poiList;
@@ -80,6 +84,8 @@ public class TipoPoi implements Serializable {
     public void setPoiList(List<Poi> poiList) {
         this.poiList = poiList;
     }
+    * 
+    */
 
     @Override
     public int hashCode() {

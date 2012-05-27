@@ -61,8 +61,12 @@ public class Poi implements Serializable {
     private Usuario idUsuario;
     @OneToMany(mappedBy = "idPoi")
     private List<Imagen> imagenList;
+    
+    /*Datos no relevantes para esta entidad
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "poi")
     private List<VisitaPoi> visitaPoiList;
+    * 
+    */
 
     public Poi() {
     }
@@ -152,6 +156,7 @@ public class Poi implements Serializable {
         this.imagenList = imagenList;
     }
 
+    /*
     @XmlTransient
     public List<VisitaPoi> getVisitaPoiList() {
         return visitaPoiList;
@@ -160,6 +165,8 @@ public class Poi implements Serializable {
     public void setVisitaPoiList(List<VisitaPoi> visitaPoiList) {
         this.visitaPoiList = visitaPoiList;
     }
+    * 
+    */
 
     @Override
     public int hashCode() {
