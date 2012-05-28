@@ -2,24 +2,50 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:pou="http://primefaces.org/ui">
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>GTWorld </title>
+        <title>GTWorld</title>
+        <h:outputStylesheet name="css/login.css"/>
     </h:head>
     <h:body>
-        <pou:button value="Hola" ></pou:button>
-        Hello from Chefa
-                   
-</h:body>
+        <pou:graphicImage value="resources/img/logo.png" 
+                          style="margin-left: 100px; margin-top: 20px"/>
+        <pou:ajaxStatus id="loading" style="display: inline; float: right;
+                        margin-right: 200px">
+            <f:facet name="start">
+                <h:graphicImage value="resources/img/loading_circle.gif" />  
+            </f:facet>
+        </pou:ajaxStatus>
+
+        <pou:separator style="margin-left: 100px; margin-right: 200px"/>
 
 
+        <h:form> 
+            <h:column>
+                <pou:graphicImage value="resources/img/login.jpg" 
+                                  style="margin-left: 100px; margin-top: 10px"/>
+            </h:column>
+            <h:column>
+                <pou:panel style="display: inline-block; position: absolute;
+                           margin-left: 100px; margin-top: 100px">
+                    <h:outputLabel value="Iniciar Sesión" 
+                                   style="font-weight: bolder"/>
+                    <br /><br />
+                    <pou:inputText id="name" label="Nombre de Usuario"/>
+                    <br /><br />
+                    <pou:inputText id="pass" label="Contraseña"/>
+                    <br /><br />
+                    <pou:commandButton value="Entrar"/>
+                    <pou:commandLink value="Crear Cuenta" style="margin-left: 30px;
+                                     color: darkblue; font-size: 12px" ajax="false"/>
+                    <br />
+                    <pou:messages showDetail="false"/>
+                </pou:panel>
+            </h:column>
+        </h:form>
 
-
-
-
-
-
-
+    </h:body>
 
 </html>
 
