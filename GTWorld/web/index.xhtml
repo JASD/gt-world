@@ -6,7 +6,6 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>GTWorld</title>
-        <h:outputStylesheet name="css/login.css"/>
     </h:head>
     <h:body>
         <pou:graphicImage value="resources/img/logo.png" 
@@ -55,6 +54,24 @@
 
         <pou:separator style="margin-left: 100px; margin-right: 200px"/>
 
+        <h:form>
+            <h:outputLabel value="GTWorld® All Rights Reserved 2012" 
+                           style="font-size: 10px; margin-left: 40%; font-family: verdana" />
+            <pou:commandLink ajax="false" title="Fan Page" target="blank"
+                             actionListener="#{sessionController.goFb}"
+                             style="margin-left: 100px">
+                <pou:graphicImage value="resources/img/facebook.png"/>
+            </pou:commandLink>
+            <pou:commandLink ajax="false" title="Follow Us" target="blank"
+                             actionListener="#{sessionController.goTwitter}">
+                <pou:graphicImage value="resources/img/twitter.png"/>
+            </pou:commandLink>
+            <pou:commandLink ajax="false" title="Ayuda" target="blank"
+                             actionListener="#{sessionController.goHelp}"
+                             style="margin-left: 25px">
+                <pou:graphicImage value="resources/img/help.png"/>
+            </pou:commandLink>
+        </h:form>
     </h:body>
 
 </html>

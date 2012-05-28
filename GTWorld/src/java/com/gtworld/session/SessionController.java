@@ -5,6 +5,8 @@ import com.gtworld.entity.Usuario;
 import com.gtworld.facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -14,8 +16,8 @@ import javax.faces.bean.SessionScoped;
 public class SessionController implements Serializable {
 
     private Usuario user;
-    private String idUser = "usuario";
-    private String passUser = "contraseña";
+    private String idUser;
+    private String passUser;
     @EJB
     private com.gtworld.facade.UsuarioFacade ejbFacade;
 
@@ -23,7 +25,7 @@ public class SessionController implements Serializable {
     }
 
     public void login() {
-        Object[] parameters = {"idUsuario", getIdUser(), "contrasenaUsuario", 
+        Object[] parameters = {"idUsuario", getIdUser(), "contrasenaUsuario",
             getPassUser()};
         try {
             setUser(getFacade().getSingleResult("Usuario.findByLogin", parameters));
@@ -59,6 +61,30 @@ public class SessionController implements Serializable {
             } catch (IOException ex) {
                 JsfUtil.addErrorMessage(ex, null);
             }
+        }
+    }
+
+    public void goFb() {
+        try {
+            JsfUtil.redirect("https://www.facebook.com/");
+        } catch (IOException ex) {
+            Logger.getLogger(SessionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void goTwitter() {
+        try {
+            JsfUtil.redirect("https://www.twitter.com/");
+        } catch (IOException ex) {
+            Logger.getLogger(SessionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void goHelp() {
+        try {
+            JsfUtil.redirect("");
+        } catch (IOException ex) {
+            Logger.getLogger(SessionController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
