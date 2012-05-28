@@ -1,5 +1,6 @@
 package com.gtworld.controller.util;
 
+import java.io.IOException;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -55,5 +56,16 @@ public class JsfUtil {
     public static Object getObjectFromRequestParameter(String requestParameterName, Converter converter, UIComponent component) {
         String theId = JsfUtil.getRequestParameter(requestParameterName);
         return converter.getAsObject(FacesContext.getCurrentInstance(), component, theId);
+    }
+
+    /**
+     * Método que redirige a una url
+     *
+     * @param url dirección destino
+     * @throws IOException
+     */
+    public static void redirect(String url) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().redirect(url);
     }
 }

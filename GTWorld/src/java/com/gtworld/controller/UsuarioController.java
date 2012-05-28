@@ -1,10 +1,9 @@
 package com.gtworld.controller;
 
-import com.gtworld.entity.Usuario;
 import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.controller.util.PaginationHelper;
+import com.gtworld.entity.Usuario;
 import com.gtworld.facade.UsuarioFacade;
-
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;

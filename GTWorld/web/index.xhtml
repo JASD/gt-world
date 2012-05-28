@@ -16,6 +16,9 @@
             <f:facet name="start">
                 <h:graphicImage value="resources/img/loading_circle.gif" />  
             </f:facet>
+            <f:facet name="complete">  
+                <h:outputText value="" />  
+            </f:facet>  
         </pou:ajaxStatus>
 
         <pou:separator style="margin-left: 100px; margin-right: 200px"/>
@@ -27,17 +30,22 @@
                                   style="margin-left: 100px; margin-top: 10px"/>
             </h:column>
             <h:column>
-                <pou:panel style="display: inline-block; position: absolute;
-                           margin-left: 100px; margin-top: 100px">
+                <pou:panel id="login" style="display: inline-block; 
+                           position: absolute; margin-left: 100px; margin-top: 100px">
                     <h:outputLabel value="Iniciar Sesión" 
                                    style="font-weight: bolder"/>
                     <br /><br />
-                    <pou:inputText id="name" label="Nombre de Usuario"/>
+                    <h:outputLabel value="Usuario:" />
+                    <pou:inputText id="name" style="margin-left: 30px"
+                                   value="#{sessionController.idUser}"/>
                     <br /><br />
-                    <pou:inputText id="pass" label="Contraseña"/>
+                    <h:outputLabel value="Contraseña:" />
+                    <pou:password id="pass" style="margin-left: 10px"
+                                  value="#{sessionController.passUser}"/>
                     <br /><br />
-                    <pou:commandButton value="Entrar"/>
-                    <pou:commandLink value="Crear Cuenta" style="margin-left: 30px;
+                    <pou:commandButton value="Entrar" update="login"
+                                       actionListener="#{sessionController.login}"/>
+                    <pou:commandLink value="Crear Cuenta" style="margin-left: 100px;
                                      color: darkblue; font-size: 12px" ajax="false"/>
                     <br />
                     <pou:messages showDetail="false"/>
@@ -45,7 +53,8 @@
             </h:column>
         </h:form>
 
+        <pou:separator style="margin-left: 100px; margin-right: 200px"/>
+
     </h:body>
 
 </html>
-

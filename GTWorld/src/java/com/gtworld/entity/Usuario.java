@@ -28,8 +28,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByEmailUsuario", query = "SELECT u FROM Usuario u WHERE u.emailUsuario = :emailUsuario"),
     @NamedQuery(name = "Usuario.findByTipoUsuario", query = "SELECT u FROM Usuario u WHERE u.tipoUsuario = :tipoUsuario"),
     @NamedQuery(name = "Usuario.findByContrasenaUsuario", query = "SELECT u FROM Usuario u WHERE u.contrasenaUsuario = :contrasenaUsuario"),
-    @NamedQuery(name = "Usuario.findByFechaIngresoUsuario", query = "SELECT u FROM Usuario u WHERE u.fechaIngresoUsuario = :fechaIngresoUsuario")})
+    @NamedQuery(name = "Usuario.findByFechaIngresoUsuario", query = "SELECT u FROM Usuario u WHERE u.fechaIngresoUsuario = :fechaIngresoUsuario"),
+    @NamedQuery(name = "Usuario.findByLogin", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario AND u.contrasenaUsuario = :contrasenaUsuario")})
 public class Usuario implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -219,5 +221,4 @@ public class Usuario implements Serializable {
     public String toString() {
         return "com.gtworld.entity.Usuario[ idUsuario=" + idUsuario + " ]";
     }
-    
 }

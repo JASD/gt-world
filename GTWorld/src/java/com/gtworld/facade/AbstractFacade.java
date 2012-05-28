@@ -6,12 +6,15 @@ package com.gtworld.facade;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 /**
  *
  * @author Antonio
  */
 public abstract class AbstractFacade<T> {
+
     private Class<T> entityClass;
 
     public AbstractFacade(Class<T> entityClass) {
@@ -58,5 +61,21 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
+    /**
+     * Método que devuelve un objeto de la Base de Datos
+     *
+     * @param namedQuery Nombre de la Consulta a Realizar
+     * @param parameters Párametros de la Consulta
+     * @return
+     * @throws NoResultException
+     */
+    public T getSingleResult(String namedQuery, Object[] parameters) 
+            throws NoResultException {
+        Query q = getEntityManager().createNamedQuery(namedQuery);
+        for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
+            q.setParameter((String) parameters[i], parameters[i + 1]);
+        }
+        return (T) q.getSingleResult();
+    }
 }
