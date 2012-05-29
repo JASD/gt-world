@@ -1,14 +1,107 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>GTWorld</title>
+    </h:head>
+    <h:body onload="#{sessionController.prepareCreate()}">
+        <pou:graphicImage value="resources/img/logo_gtworld.png" 
+                          style="margin-left: 100px; margin-top: 20px"/>
+        <pou:ajaxStatus id="loading" style="display: inline; float: right;
+                        margin-right: 200px">
+            <f:facet name="start">
+                <h:graphicImage value="resources/img/loading_circle.gif" />  
+            </f:facet>
+            <f:facet name="complete">  
+                <h:outputText value="" />  
+            </f:facet>  
+        </pou:ajaxStatus>
+
+        <pou:separator style="margin-left: 100px; margin-right: 200px"/>
+
+
+        <h:form> 
+            <h:column>
+                <pou:graphicImage value="resources/img/login.jpg" 
+                                  style="margin-left: 100px; margin-top: 10px"/>
+            </h:column>
+            <h:column>
+                <pou:panel id="login" style="display: inline-block; 
+                           position: absolute; margin-left: 100px; margin-top: 25px">
+                    <h:outputLabel value="Crear Cuenta" 
+                                   style="font-weight: bolder"/>
+                    <br /><br />
+                    <h:outputLabel value="Usuario:" />
+                    <pou:inputText id="name" style="margin-left: 30px"  
+                                   maxlength="10" required="true" label="Usuario"
+                                   value="#{sessionController.user.idUsuario}"/>
+                    <br /><br />
+                    <h:outputLabel value="Nombres:" />
+                    <pou:inputText id="names" style="margin-left: 20px" required="true"
+                                   maxlength="50" label="Nombres"
+                                   value="#{sessionController.user.nombreUsuario}"/>
+                    <br /><br />
+                    <h:outputLabel value="Apellidos:" />
+                    <pou:inputText id="last" style="margin-left: 20px" required="true"
+                                   maxlength="50" label="Apellidos"
+                                   value="#{sessionController.user.apellidoUsuario}"/>
+                    <br /><br />
+                    <h:outputLabel value="Correo: " />
+                    <pou:inputText id="mail" style="margin-left: 30px" required="true"
+                                   maxlength="50" label="Correo"
+                                   value="#{sessionController.user.emailUsuario}"/>
+                    <br /><br />
+                    <h:outputLabel value="Contraseña:" />
+                    <pou:password id="pass1" style="margin-left: 10px" match="pass2"
+                                  feedback="true" weakLabel="bajo" goodLabel="medio"
+                                  strongLabel="excelente" promptLabel="Ingrese Contraseña"
+                                  value="#{sessionController.user.contrasenaUsuario}"
+                                  required="true" maxlength="15" label="Contraseña 1"/>
+                    <br /><br />
+                    <h:outputLabel value="Confirmar:" />
+                    <pou:password id="pass2" style="margin-left: 17px" required="true"
+                                  maxlength="15" validatorMessage="Contraseñas no coinciden"
+                                  value="#{sessionController.user.contrasenaUsuario}"
+                                  label="Contraseña 2"/>
+                    <br /><br />
+
+                    <pou:commandButton value="Crear" update="login"
+                                       actionListener="#{sessionController.createUser}"/>
+                    <pou:growl id="messages"/>
+                    <br />
+                </pou:panel>
+            </h:column>
+        </h:form>
+        <h:form>
+            <pou:commandLink value="Iniciar Sesión" 
+                             actionListener="#{sessionController.goLogin}"
+                             style="margin-left: 100px; font-family: Verdana;
+                             color: darkblue; font-size: 12px; margin-left: 65%"
+                             ajax="false"/>
+        </h:form>
+        <pou:separator style="margin-left: 100px; margin-right: 200px"/>
+
+        <h:form>
+            <h:outputLabel value="GTWorld® All Rights Reserved 2012" 
+                           style="font-size: 10px; margin-left: 40%; font-family: verdana" />
+            <pou:commandLink ajax="false" title="Fan Page" target="blank"
+                             actionListener="#{sessionController.goFb}"
+                             style="margin-left: 100px">
+                <pou:graphicImage value="resources/img/facebook.png"/>
+            </pou:commandLink>
+            <pou:commandLink ajax="false" title="Follow Us" target="blank"
+                             actionListener="#{sessionController.goTwitter}">
+                <pou:graphicImage value="resources/img/twitter.png"/>
+            </pou:commandLink>
+            <pou:commandLink ajax="false" title="Ayuda" target="blank"
+                             actionListener="#{sessionController.goHelp}"
+                             style="margin-left: 25px">
+                <pou:graphicImage value="resources/img/help.png"/>
+            </pou:commandLink>
+        </h:form>
+    </h:body>
+
 </html>

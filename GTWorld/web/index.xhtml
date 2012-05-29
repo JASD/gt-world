@@ -8,7 +8,7 @@
         <title>GTWorld</title>
     </h:head>
     <h:body>
-        <pou:graphicImage value="resources/img/logo.png" 
+        <pou:graphicImage value="resources/img/logo_gtworld.png" 
                           style="margin-left: 100px; margin-top: 20px"/>
         <pou:ajaxStatus id="loading" style="display: inline; float: right;
                         margin-right: 200px">
@@ -44,12 +44,18 @@
                     <br /><br />
                     <pou:commandButton value="Entrar" update="login"
                                        actionListener="#{sessionController.login}"/>
-                    <pou:commandLink value="Crear Cuenta" style="margin-left: 100px;
-                                     color: darkblue; font-size: 12px" ajax="false"/>
+                   
                     <br />
                     <pou:messages showDetail="false"/>
                 </pou:panel>
             </h:column>
+        </h:form>
+        <h:form>
+            <pou:commandLink value="Crear Cuenta" 
+                             actionListener="#{sessionController.goRegister}"
+                             style="margin-left: 100px; font-family: Verdana;
+                             color: darkblue; font-size: 12px; margin-left: 65%"
+                             ajax="false"/>
         </h:form>
 
         <pou:separator style="margin-left: 100px; margin-right: 200px"/>

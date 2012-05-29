@@ -5,8 +5,13 @@ import com.gtworld.entity.Usuario;
 import com.gtworld.facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -86,6 +91,50 @@ public class SessionController implements Serializable {
         } catch (IOException ex) {
             Logger.getLogger(SessionController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void goRegister() {
+        try {
+            JsfUtil.redirect("faces/register.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(SessionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void goLogin() {
+
+        try {
+            JsfUtil.redirect("faces/index.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(SessionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void createUser() {
+
+        Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+        Matcher m = p.matcher(getUser().getEmailUsuario());
+        boolean matchFound = m.matches();
+        if (!matchFound) {
+            JsfUtil.addErrorMessage("Email Incorrecto");
+        } else {
+            Calendar calendar = java.util.Calendar.getInstance();
+            getUser().setFechaIngresoUsuario(calendar.getTime());
+            getUser().setTipoUsuario(false);
+            try {
+                getFacade().create(user);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioCreated"));
+            } catch (Exception e) {
+                JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+
+            }
+        }
+
+    }
+
+    public void prepareCreate() {
+        setUser(new Usuario());
     }
 
     private UsuarioFacade getFacade() {
