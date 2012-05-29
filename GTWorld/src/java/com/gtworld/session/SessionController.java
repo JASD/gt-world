@@ -6,7 +6,6 @@ import com.gtworld.facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
