@@ -7,7 +7,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>GTWorld</title>
-        <link href='resources/img/map_blue.png' rel='shortcut icon' 
+        <link href='resources/icon/map_blue.png' rel='shortcut icon' 
               type='image/png'/>
         <h:outputStylesheet name="css/menu.css"/>
     </h:head>
@@ -15,19 +15,10 @@
         <h:form>
             <pou:graphicImage value="resources/img/logo_gtworld.png" 
                               style="margin-left: 100px; margin-top: 20px"/>
-            <pou:ajaxStatus id="loading" style="display: inline; float: right;
-                            margin-right: 200px">
-                <f:facet name="start">
-                    <h:graphicImage value="resources/img/loading_circle.gif" />  
-                </f:facet>
-                <f:facet name="complete">  
-                    <h:outputText value="" />  
-                </f:facet>  
-            </pou:ajaxStatus>
 
             <pou:menubar style=" display: inline-table; 
                          float: right; margin-right: 50px; margin-top: 25px">
-                <pou:submenu label="Administración" icon="admin" 
+                <pou:submenu label="  Administración" icon="admin"
                              rendered="#{sessionController.user.tipoUsuario}">
                     <pou:menuitem value="Gestión de POIs">
 
@@ -43,7 +34,7 @@
                     </pou:menuitem>
 
                 </pou:submenu>
-                <pou:submenu label="POIs" icon="pois">
+                <pou:submenu label="  POIs" icon="pois">
                     <pou:menuitem value="Crear POI">
 
                     </pou:menuitem>
@@ -52,7 +43,7 @@
                     </pou:menuitem>
 
                 </pou:submenu>
-                <pou:submenu label="Mapas" icon="maps">
+                <pou:submenu label="  Mapas" icon="maps">
                     <pou:menuitem value="Mi Mapa">
 
                     </pou:menuitem>
@@ -61,7 +52,7 @@
                     </pou:menuitem>
 
                 </pou:submenu>
-                <pou:submenu label="Mi Red" icon="red">
+                <pou:submenu label="  Mi Red" icon="red">
                     <pou:menuitem value="Crear Red">
 
                     </pou:menuitem>
@@ -73,7 +64,7 @@
                     </pou:menuitem>
 
                 </pou:submenu>
-                <pou:submenu label="#{sessionController.user.nombreUsuario}"
+                <pou:submenu label="  #{sessionController.user.nombreUsuario}"
                              icon="user">
                     <pou:menuitem value="Mi Cuenta">
 
@@ -91,7 +82,7 @@
         <pou:separator style="margin-left: 50px; margin-right: 50px"/>
 
 
-        <h:form id="currentUI" style="height: 500px">
+        <h:form id="currentUI" style="height: 500px; margin-left: 50px; margin-right: 50px">
             <ui:include src="#{sessionController.currentUI}" />
             <pou:growl id="messages"/>
         </h:form>
