@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:pou="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>GTWorld</title>
         <link href='resources/icon/map_blue.png' rel='shortcut icon' 
@@ -19,11 +20,13 @@
                          float: right; margin-right: 50px; margin-top: 25px">
                 <pou:submenu label="  Administración" icon="admin"
                              rendered="#{sessionController.user.tipoUsuario}">
-                    <pou:menuitem value="Gestión de POIs">
-
+                    <pou:menuitem value="Gestión de POIs" update=":currentUI" 
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="admin/pois" />
                     </pou:menuitem>
-                    <pou:menuitem value="Gestión de Redes">
-
+                    <pou:menuitem value="Gestión de Redes" update=":currentUI" 
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="home/main" />
                     </pou:menuitem>
                     <pou:menuitem value="Gestión de Usuarios">
 

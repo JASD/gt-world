@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "sessionController")
 @SessionScoped
@@ -37,6 +38,7 @@ public class SessionController implements Serializable {
             getPassUser()};
         try {
             setUser(getFacade().getSingleResult("Usuario.findByLogin", parameters));
+            setCurrentUI("UI/home/main.xhtml");
             JsfUtil.redirect("faces/home.xhtml");
         } catch (Exception ex) {
             JsfUtil.addErrorMessage(ex, "Usuario No Válido");
@@ -161,6 +163,11 @@ public class SessionController implements Serializable {
             }
         }
 
+    }
+    
+    public void updateUI(ActionEvent event) {
+        String ui = (String) event.getComponent().getAttributes().get("uiName");
+        setCurrentUI("UI/" + ui + ".xhtml");
     }
 
     /**
