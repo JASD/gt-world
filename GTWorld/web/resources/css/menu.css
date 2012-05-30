@@ -1,0 +1,27 @@
+/* 
+    Document   : menu
+    Created on : 30-may-2012, 0:07:53
+    Author     : Antonio
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.admin{
+    background-image: url(../icon/key.png) !important
+}
+
+.pois{
+    background-image: url(../icon/map_red.png) !important
+}
+
+.maps{
+    background-image: url(../icon/globe.png) !important
+}
+
+.red{
+    background-image: url(../icon/users.png) !important
+}
+
+.user{
+    background-image: url(../icon/user.png) !important
+}
