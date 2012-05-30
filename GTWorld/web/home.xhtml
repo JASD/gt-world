@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:pou="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <title>GTWorld</title>
@@ -11,7 +10,7 @@
               type='image/png'/>
         <h:outputStylesheet name="css/menu.css"/>
     </h:head>
-    <h:body>
+    <h:body onload="#{sessionController.checkLogout()}">
         <h:form>
             <pou:graphicImage value="resources/img/logo_gtworld.png" 
                               style="margin-left: 100px; margin-top: 20px"/>

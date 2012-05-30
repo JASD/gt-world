@@ -8,7 +8,7 @@
         <title>GTWorld</title>
         <link href='resources/icon/map_blue.png' rel='shortcut icon' type='image/png'/>
     </h:head>
-    <h:body>
+    <h:body onload="#{sessionController.checkLogin()}">
         <pou:graphicImage value="resources/img/logo_gtworld.png" 
                           style="margin-left: 100px; margin-top: 20px"/>
         <pou:ajaxStatus id="loading" style="display: inline; float: right;

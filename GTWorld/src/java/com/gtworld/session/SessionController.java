@@ -29,6 +29,9 @@ public class SessionController implements Serializable {
     public SessionController() {
     }
 
+    /**
+     * Inicia Sesión de Usuario
+     */
     public void login() {
         Object[] parameters = {"idUsuario", getIdUser(), "contrasenaUsuario",
             getPassUser()};
@@ -40,6 +43,9 @@ public class SessionController implements Serializable {
         }
     }
 
+    /**
+     * Cierra Sesión de Usuario
+     */
     public void logout() {
         setUser(null);
         try {
@@ -49,6 +55,9 @@ public class SessionController implements Serializable {
         }
     }
 
+    /**
+     * Verifica si la Sesión se encuentra activa
+     */
     public void checkLogin() {
         if (getUser() != null) {
             try {
@@ -59,6 +68,9 @@ public class SessionController implements Serializable {
         }
     }
 
+    /**
+     * Verifica si la sesión ha expirado
+     */
     public void checkLogout() {
         if (getUser() == null) {
             try {
@@ -69,6 +81,9 @@ public class SessionController implements Serializable {
         }
     }
 
+    /**
+     * Redirecciona a la Fan Page de Facebook
+     */
     public void goFb() {
         try {
             JsfUtil.redirect("https://www.facebook.com/");
@@ -77,6 +92,9 @@ public class SessionController implements Serializable {
         }
     }
 
+    /**
+     * Redirecciona a la página de Twitter
+     */
     public void goTwitter() {
         try {
             JsfUtil.redirect("https://www.twitter.com/");
@@ -85,6 +103,9 @@ public class SessionController implements Serializable {
         }
     }
 
+    /**
+     * Redireccion a la Ayuda del Sistema
+     */
     public void goHelp() {
         try {
             JsfUtil.redirect("");
@@ -93,6 +114,9 @@ public class SessionController implements Serializable {
         }
     }
 
+    /**
+     * Redirecciona a la página de Registro
+     */
     public void goRegister() {
         try {
             JsfUtil.redirect("faces/register.xhtml");
@@ -101,6 +125,9 @@ public class SessionController implements Serializable {
         }
     }
 
+    /**
+     * Redirecciona a la página de inicio de sesión
+     */
     public void goLogin() {
 
         try {
@@ -111,6 +138,9 @@ public class SessionController implements Serializable {
 
     }
 
+    /**
+     * Crea un nuevo usuario
+     */
     public void createUser() {
 
         Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
@@ -133,6 +163,9 @@ public class SessionController implements Serializable {
 
     }
 
+    /**
+     * Prepara la creación de un nuevo usuario
+     */
     public void prepareCreate() {
         setUser(new Usuario());
     }

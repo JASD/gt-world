@@ -7,21 +7,26 @@
 */
 
 .admin{
-    background-image: url(../icon/key.png) !important
+    background-image: url(../icon/id_card.png) !important;
+    margin-right: 10px
 }
 
 .pois{
-    background-image: url(../icon/map_red.png) !important
+    background-image: url(../icon/map_blue.png) !important;
+    margin-right: 10px
 }
 
 .maps{
-    background-image: url(../icon/globe.png) !important
+    background-image: url(../icon/earth.png) !important;
+    margin-right: 10px
 }
 
 .red{
-    background-image: url(../icon/users.png) !important
+    background-image: url(../icon/users.png) !important;
+    margin-right: 10px
 }
 
 .user{
-    background-image: url(../icon/user.png) !important
+    background-image: url(../icon/user.png) !important;
+    margin-right: 10px
 }
