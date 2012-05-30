@@ -22,6 +22,7 @@ public class SessionController implements Serializable {
     private Usuario user;
     private String idUser;
     private String passUser;
+    private String currentUI;
     @EJB
     private com.gtworld.facade.UsuarioFacade ejbFacade;
 
@@ -134,6 +135,14 @@ public class SessionController implements Serializable {
 
     public void prepareCreate() {
         setUser(new Usuario());
+    }
+
+    public String getCurrentUI() {
+        return currentUI;
+    }
+
+    public void setCurrentUI(String currentUI) {
+        this.currentUI = currentUI;
     }
 
     private UsuarioFacade getFacade() {
