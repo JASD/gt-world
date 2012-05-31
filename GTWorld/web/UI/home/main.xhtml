@@ -5,18 +5,27 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html">
     <ui:component>
-        <pou:dataGrid id="notifaciones" var="noti" columns="1" rows="5"
-                      value="#{sessionController.user.notificacionList}">
-            <pou:column>
-                <pou:panel header="#{noti.tituloNotificacion}">
-                    <h:panelGrid columns="1">
-                        <h:outputText value="#{noti.fechaNotificacion}"/>
-                        <h:outputText value="#{noti.contenidoNotificacion}"/>
-                        <pou:commandLink value="Cerrar" update="notifaciones"/>
-                    </h:panelGrid>
-                </pou:panel>
-            </pou:column>
-            
-        </pou:dataGrid>
+
+        <pou:gmap center="36.890257,30.707417" zoom="13" type="HYBRID" model="#{sessionController.lastVisitPoi}" style="width:600px;height:400px">  
+
+            <pou:ajax event="overlaySelect" listener="#{sessionController.onMarkerSelect}" />  
+
+            <pou:gmapInfoWindow>  
+                <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+
+                    <pou:gmapInfoWindow>  
+                        <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+
+
+                            <h:outputText value="tsss" />  
+
+                        </pou:outputPanel>  
+
+                    </pou:gmapInfoWindow>  
+
+                </pou:outputPanel>  
+
+            </pou:gmapInfoWindow>  
+        </pou:gmap>  
     </ui:component>
 </html>

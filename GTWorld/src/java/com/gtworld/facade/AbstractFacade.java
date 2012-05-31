@@ -16,6 +16,7 @@ import javax.persistence.Query;
 public abstract class AbstractFacade<T> {
 
     private Class<T> entityClass;
+    private int cont;
 
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
@@ -70,12 +71,74 @@ public abstract class AbstractFacade<T> {
      * @return
      * @throws NoResultException
      */
-    public T getSingleResult(String namedQuery, Object[] parameters) 
+    public T getSingleResult(String namedQuery, Object[] parameters)
             throws NoResultException {
         Query q = getEntityManager().createNamedQuery(namedQuery);
         for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
             q.setParameter((String) parameters[i], parameters[i + 1]);
         }
         return (T) q.getSingleResult();
+    }
+
+    /**
+     * Método que devuelve una lista de objetos de la Base de Datos
+     *
+     * @param range rango de resultados
+     * @param namedQuery Nombre de la Consulta a Realizar
+     * @param parameters Párametros de la Consulta
+     * @return
+     */
+    public List<T> findRange(int[] range, String namedQuery, Object[] parameters) {
+        Query q = getEntityManager().createNamedQuery(namedQuery);
+        for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
+            q.setParameter((String) parameters[i], parameters[i + 1]);
+        }
+        cont = q.getResultList().size();
+        q.setMaxResults(range[1] - range[0]);
+        q.setFirstResult(range[0]);
+        return q.getResultList();
+    }
+
+    /**
+     * Método que devuelve una lista de objetos de la Base de Datos
+     *
+     * @param range rango de resultados
+     * @param namedQuery Nombre de la Consulta a Realizar
+     * @return
+     */
+    public List<T> findRange(int[] range, String namedQuery) {
+        Query q = getEntityManager().createNamedQuery(namedQuery);
+        cont = q.getResultList().size();
+        q.setMaxResults(range[1] - range[0]);
+        q.setFirstResult(range[0]);
+        return q.getResultList();
+    }
+
+    /**
+     * Método que devuelve una lista de objetos de la Base de Datos
+     *
+     * @param namedQuery Nombre de la Consulta a Realizar
+     * @param parameters Párametros de la Consulta
+     * @return
+     */
+    public List<T> find(String namedQuery, Object[] parameters) {
+        Query q = getEntityManager().createNamedQuery(namedQuery);
+        for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
+            q.setParameter((String) parameters[i], parameters[i + 1]);
+        }
+        cont = q.getResultList().size();
+        return q.getResultList();
+    }
+
+    /**
+     * Método que devuelve una lista de objetos de la Base de Datos
+     *
+     * @param namedQuery Nombre de la Consulta a Realizar
+     * @return
+     */
+    public List<T> find(String namedQuery) {
+        Query q = getEntityManager().createNamedQuery(namedQuery);
+        cont = q.getResultList().size();
+        return q.getResultList();
     }
 }
