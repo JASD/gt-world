@@ -1,11 +1,14 @@
 package com.gtworld.session;
 
 import com.gtworld.controller.util.JsfUtil;
+import com.gtworld.entity.Notificacion;
 import com.gtworld.entity.Usuario;
+import com.gtworld.facade.NotificacionFacade;
 import com.gtworld.facade.UsuarioFacade;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +28,9 @@ public class SessionController implements Serializable {
     private String passUser;
     private String currentUI;
     @EJB
-    private com.gtworld.facade.UsuarioFacade ejbFacade;
+    private com.gtworld.facade.UsuarioFacade usuarioFacade;
+    @EJB
+    private com.gtworld.facade.NotificacionFacade notificacionFacade;
 
     public SessionController() {
     }
@@ -37,7 +42,7 @@ public class SessionController implements Serializable {
         Object[] parameters = {"idUsuario", getIdUser(), "contrasenaUsuario",
             getPassUser()};
         try {
-            setUser(getFacade().getSingleResult("Usuario.findByLogin", parameters));
+            setUser(getUsuarioFacade().getSingleResult("Usuario.findByLogin", parameters));
             setCurrentUI("UI/home/main.xhtml");
             JsfUtil.redirect("faces/home.xhtml");
         } catch (Exception ex) {
@@ -151,12 +156,24 @@ public class SessionController implements Serializable {
         if (!matchFound) {
             JsfUtil.addErrorMessage("Email Incorrecto");
         } else {
-            Calendar calendar = java.util.Calendar.getInstance();
+            Calendar calendar = new GregorianCalendar();
             getUser().setFechaIngresoUsuario(calendar.getTime());
             getUser().setTipoUsuario(false);
+            Notificacion nueva = new Notificacion();
+            nueva.setEstadoNotificacion(true);
+            nueva.setIdUsuario(user);
+            nueva.setTituloNotificacion("Bienvenido a GTWorld!");
+            nueva.setFechaNotificacion(calendar.getTime());
+            nueva.setContenidoNotificacion("Tu cuenta de GTWorld ha sido creada"
+                    + " con éxito, empieza a descubrir y explorar tus Puntos"
+                    + " de Interés!");
             try {
-                getFacade().create(user);
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioCreated"));
+                getUsuarioFacade().create(user);
+                getNotificacionFacade().create(nueva);
+                getUser().getNotificacionList().add(nueva);
+                Thread.sleep(2000);
+                setCurrentUI("UI/home/main.xhtml");
+                JsfUtil.redirect("faces/home.xhtml");
             } catch (Exception e) {
                 JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
 
@@ -164,7 +181,7 @@ public class SessionController implements Serializable {
         }
 
     }
-    
+
     public void updateUI(ActionEvent event) {
         String ui = (String) event.getComponent().getAttributes().get("uiName");
         setCurrentUI("UI/" + ui + ".xhtml");
@@ -185,8 +202,12 @@ public class SessionController implements Serializable {
         this.currentUI = currentUI;
     }
 
-    private UsuarioFacade getFacade() {
-        return ejbFacade;
+    private UsuarioFacade getUsuarioFacade() {
+        return usuarioFacade;
+    }
+
+    public NotificacionFacade getNotificacionFacade() {
+        return notificacionFacade;
     }
 
     public Usuario getUser() {

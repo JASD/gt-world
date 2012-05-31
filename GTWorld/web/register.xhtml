@@ -14,7 +14,8 @@
         <pou:ajaxStatus id="loading" style="display: inline; float: right;
                         margin-right: 200px">
             <f:facet name="start">
-                <h:graphicImage value="resources/img/loading_circle.gif" />  
+                <h:outputText value="Creando Cuenta ..." style="font-family: verdana"/>
+                <h:graphicImage value="resources/img/loading_circle.gif" />
             </f:facet>
             <f:facet name="complete">  
                 <h:outputText value="" />  
@@ -71,7 +72,6 @@
 
                     <pou:commandButton value="Crear" update="login"
                                        actionListener="#{sessionController.createUser}"/>
-                    <pou:growl id="messages"/>
                     <br />
                 </pou:panel>
             </h:column>

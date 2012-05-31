@@ -26,13 +26,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Notificacion.findByHoraNotificacion", query = "SELECT n FROM Notificacion n WHERE n.horaNotificacion = :horaNotificacion"),
     @NamedQuery(name = "Notificacion.findByEstadoNotificacion", query = "SELECT n FROM Notificacion n WHERE n.estadoNotificacion = :estadoNotificacion")})
 public class Notificacion implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_NOTIFICACION")
+    @Column(name = "ID_NOTIFICACION", insertable=false, nullable=false, updatable=true)
     private Long idNotificacion;
+    @Size(max = 25)
+    @Column(name = "TITULO_NOTIFICACION")
+    private String tituloNotificacion;
     @Size(max = 250)
     @Column(name = "CONTENIDO_NOTIFICACION")
     private String contenidoNotificacion;
@@ -47,7 +49,7 @@ public class Notificacion implements Serializable {
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario idUsuario;
-  
+
     public Notificacion() {
     }
 
@@ -61,6 +63,14 @@ public class Notificacion implements Serializable {
 
     public void setIdNotificacion(Long idNotificacion) {
         this.idNotificacion = idNotificacion;
+    }
+
+    public String getTituloNotificacion() {
+        return tituloNotificacion;
+    }
+
+    public void setTituloNotificacion(String tituloNotificacion) {
+        this.tituloNotificacion = tituloNotificacion;
     }
 
     public String getContenidoNotificacion() {
@@ -127,5 +137,4 @@ public class Notificacion implements Serializable {
     public String toString() {
         return "com.gtworld.entity.Notificacion[ idNotificacion=" + idNotificacion + " ]";
     }
-    
 }
