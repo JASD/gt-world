@@ -3,27 +3,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:pou="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
 
         <pou:layout style="height: 500px">
 
             <pou:layoutUnit position="west" size="275" header="Notificaciones">
-                <pou:dataGrid id="notifaciones" var="noti" columns="1" rows="3"
-                              value="#{sessionController.unreadNotificaciones}" 
-                              paginator="true" paginatorPosition="bottom">
-                    <pou:column>
-                        <pou:panel header="#{noti.tituloNotificacion}">
-                            <h:panelGrid columns="1">
-                                <h:outputText value="#{noti.fechaNotificacion}"/>
-                                <h:outputText value="#{noti.contenidoNotificacion}"/>
-                                <pou:commandLink value="Cerrar" update="notifaciones"/>
-                            </h:panelGrid>
-                        </pou:panel>
-                    </pou:column>
-
-
-                </pou:dataGrid>
+              
+                    <pou:dataGrid  var="noti" columns="1"
+                                   emptyMessage="Sin notificaciones nuevas"
+                                   value="#{sessionController.unreadNotificaciones}">
+                        <pou:column>
+                            <pou:panel header="#{noti.tituloNotificacion}" closable="true">
+                                <pou:ajax event="close" listener="#{sessionController.closeNotification}"/> 
+                                <h:panelGrid columns="1">
+                                    <h:outputText value="#{noti.fechaNotificacion}"  style="font-size: 10px">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </h:outputText>
+                                    <h:outputText value="#{noti.contenidoNotificacion}"/>
+                                </h:panelGrid>
+                                <f:attribute name="noti" value="#{noti}" />
+                            </pou:panel>
+                        </pou:column>
+                    </pou:dataGrid>
+               
             </pou:layoutUnit>
             <pou:layoutUnit position="center" header="Últimas Visitas" style="min-width: 600px">
 

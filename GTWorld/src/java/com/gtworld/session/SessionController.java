@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
+import org.primefaces.event.CloseEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -34,8 +35,9 @@ public class SessionController implements Serializable {
     private String passUser;
     private String currentUI;
     private MapModel lastVisitPoi;
-    private Marker selected;
+    private Marker selectedMarker;
     private List<Notificacion> unreadNotificaciones;
+    private Notificacion selectedNotificacion;
     @EJB
     private com.gtworld.facade.UsuarioFacade usuarioFacade;
     @EJB
@@ -235,8 +237,22 @@ public class SessionController implements Serializable {
         }
     }
 
+    /**
+     * Cierra una notificación
+     */
+    public void closeNotification(CloseEvent event) {
+        try {
+            Notificacion close = (Notificacion) event.getComponent().getAttributes().get("noti");
+            close.setEstadoNotificacion(false);
+            getNotificacionFacade().edit(close);
+            getUnreadNotificaciones().remove(close);
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("NotificationsError"));
+        }
+    }
+
     public void onMarkerSelect(OverlaySelectEvent event) {
-        selected = (Marker) event.getOverlay();
+        selectedMarker = (Marker) event.getOverlay();
     }
 
     public String getCurrentUI() {
@@ -287,12 +303,20 @@ public class SessionController implements Serializable {
         this.lastVisitPoi = lastVisitPoi;
     }
 
-    public Marker getSelected() {
-        return selected;
+    public Marker getSelectedMarker() {
+        return selectedMarker;
     }
 
-    public void setSelected(Marker selected) {
-        this.selected = selected;
+    public void setSelectedMarker(Marker selectedMarker) {
+        this.selectedMarker = selectedMarker;
+    }
+
+    public Notificacion getSelectedNotificacion() {
+        return selectedNotificacion;
+    }
+
+    public void setSelectedNotificacion(Notificacion selectedNotificacion) {
+        this.selectedNotificacion = selectedNotificacion;
     }
 
     public List<Notificacion> getUnreadNotificaciones() {
