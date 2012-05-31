@@ -7,7 +7,6 @@ package com.gtworld.entity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -24,13 +23,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Notificacion.findByContenidoNotificacion", query = "SELECT n FROM Notificacion n WHERE n.contenidoNotificacion = :contenidoNotificacion"),
     @NamedQuery(name = "Notificacion.findByFechaNotificacion", query = "SELECT n FROM Notificacion n WHERE n.fechaNotificacion = :fechaNotificacion"),
     @NamedQuery(name = "Notificacion.findByHoraNotificacion", query = "SELECT n FROM Notificacion n WHERE n.horaNotificacion = :horaNotificacion"),
-    @NamedQuery(name = "Notificacion.findByEstadoNotificacion", query = "SELECT n FROM Notificacion n WHERE n.estadoNotificacion = :estadoNotificacion")})
+    @NamedQuery(name = "Notificacion.findByEstadoNotificacion", query = "SELECT n FROM Notificacion n WHERE n.estadoNotificacion = :estadoNotificacion"),
+    @NamedQuery(name = "Notificacion.findByUsuarioEstadoNotificacion", query = "SELECT n FROM Notificacion n WHERE (n.estadoNotificacion = true) AND (n.idUsuario.idUsuario =:idUsuario)")})
 public class Notificacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_NOTIFICACION", insertable=false, nullable=false, updatable=true)
+    @Column(name = "ID_NOTIFICACION", insertable = false, nullable = false, updatable = true)
     private Long idNotificacion;
     @Size(max = 25)
     @Column(name = "TITULO_NOTIFICACION")

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +35,7 @@ public class SessionController implements Serializable {
     private String currentUI;
     private MapModel lastVisitPoi;
     private Marker selected;
+    private List<Notificacion> unreadNotificaciones;
     @EJB
     private com.gtworld.facade.UsuarioFacade usuarioFacade;
     @EJB
@@ -202,6 +204,9 @@ public class SessionController implements Serializable {
         setUser(new Usuario());
     }
 
+    /**
+     * Carga las últimas 5 visitas a un POI del usuario
+     */
     public void loadVisits() {
         setLastVisitPoi(new DefaultMapModel());
         LatLng coord1 = new LatLng(36.879466, 30.667648);
@@ -215,6 +220,19 @@ public class SessionController implements Serializable {
         lastVisitPoi.addOverlay(new Marker(coord4, "Kaleici", "kaleici.png", "http://maps.google.com/mapfiles/ms/micons/pink-dot.png"));
         lastVisitPoi.addOverlay(new Marker(coord3, "Karaalioglu Parki", "karaalioglu.png", "http://maps.google.com/mapfiles/ms/micons/yellow-dot.png"));
 
+    }
+
+    /**
+     * Carga las notificaciones no leidas por el Usuario
+     */
+    public void loadNotificactions() {
+        Object[] parameters = {"idUsuario", getUser().getIdUsuario()};
+        try {
+            setUnreadNotificaciones(getNotificacionFacade().find(
+                    "Notificacion.findByUsuarioEstadoNotificacion", parameters));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("NotificationsError"));
+        }
     }
 
     public void onMarkerSelect(OverlaySelectEvent event) {
@@ -275,5 +293,13 @@ public class SessionController implements Serializable {
 
     public void setSelected(Marker selected) {
         this.selected = selected;
+    }
+
+    public List<Notificacion> getUnreadNotificaciones() {
+        return unreadNotificaciones;
+    }
+
+    public void setUnreadNotificaciones(List<Notificacion> unreadNotificaciones) {
+        this.unreadNotificaciones = unreadNotificaciones;
     }
 }

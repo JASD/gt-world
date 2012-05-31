@@ -10,7 +10,7 @@
 
             <pou:layoutUnit position="west" size="275" header="Notificaciones">
                 <pou:dataGrid id="notifaciones" var="noti" columns="1" rows="3"
-                              value="#{sessionController.user.notificacionList}" 
+                              value="#{sessionController.unreadNotificaciones}" 
                               paginator="true" paginatorPosition="bottom">
                     <pou:column>
                         <pou:panel header="#{noti.tituloNotificacion}">
