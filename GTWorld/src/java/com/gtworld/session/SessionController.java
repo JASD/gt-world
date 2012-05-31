@@ -18,6 +18,11 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
+import org.primefaces.event.map.OverlaySelectEvent;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 
 @ManagedBean(name = "sessionController")
 @SessionScoped
@@ -27,6 +32,8 @@ public class SessionController implements Serializable {
     private String idUser;
     private String passUser;
     private String currentUI;
+    private MapModel lastVisitPoi;
+    private Marker selected;
     @EJB
     private com.gtworld.facade.UsuarioFacade usuarioFacade;
     @EJB
@@ -44,6 +51,7 @@ public class SessionController implements Serializable {
         try {
             setUser(getUsuarioFacade().getSingleResult("Usuario.findByLogin", parameters));
             setCurrentUI("UI/home/main.xhtml");
+            //loadVisits();
             JsfUtil.redirect("faces/home.xhtml");
         } catch (Exception ex) {
             JsfUtil.addErrorMessage(ex, "Usuario No Válido");
@@ -194,6 +202,25 @@ public class SessionController implements Serializable {
         setUser(new Usuario());
     }
 
+    public void loadVisits() {
+        setLastVisitPoi(new DefaultMapModel());
+        LatLng coord1 = new LatLng(36.879466, 30.667648);
+        LatLng coord2 = new LatLng(36.883707, 30.689216);
+        LatLng coord3 = new LatLng(36.879703, 30.706707);
+        LatLng coord4 = new LatLng(36.885233, 30.702323);
+
+        //Icons and Data  
+        lastVisitPoi.addOverlay(new Marker(coord1, "Konyaalti", "konyaalti.png", "http://maps.google.com/mapfiles/ms/micons/blue-dot.png"));
+        lastVisitPoi.addOverlay(new Marker(coord2, "Ataturk Parki", "ataturkparki.png"));
+        lastVisitPoi.addOverlay(new Marker(coord4, "Kaleici", "kaleici.png", "http://maps.google.com/mapfiles/ms/micons/pink-dot.png"));
+        lastVisitPoi.addOverlay(new Marker(coord3, "Karaalioglu Parki", "karaalioglu.png", "http://maps.google.com/mapfiles/ms/micons/yellow-dot.png"));
+
+    }
+
+    public void onMarkerSelect(OverlaySelectEvent event) {
+        selected = (Marker) event.getOverlay();
+    }
+
     public String getCurrentUI() {
         return currentUI;
     }
@@ -232,5 +259,21 @@ public class SessionController implements Serializable {
 
     public void setPassUser(String passUser) {
         this.passUser = passUser;
+    }
+
+    public MapModel getLastVisitPoi() {
+        return lastVisitPoi;
+    }
+
+    public void setLastVisitPoi(MapModel lastVisitPoi) {
+        this.lastVisitPoi = lastVisitPoi;
+    }
+
+    public Marker getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Marker selected) {
+        this.selected = selected;
     }
 }
