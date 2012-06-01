@@ -19,7 +19,7 @@
                               style="margin-left: 100px; margin-top: 20px"/>
 
             <pou:menubar style=" display: inline-table; 
-                         float: right; margin-right: 50px; margin-top: 25px">
+                         float: right; margin-right: 50px; margin-top: 20px">
                 <pou:submenu label="  Administración" icon="admin"
                              rendered="#{sessionController.user.tipoUsuario}">
                     <pou:menuitem value="Gestión de POIs" update=":currentUI" 
@@ -86,7 +86,7 @@
         <pou:separator style="margin-left: 50px; margin-right: 50px"/>
 
 
-        <h:form id="currentUI" style="min-height: 500px; margin-left: 50px; margin-right: 50px">
+        <h:form id="currentUI" style="min-height: 500px; margin-left: 50px; margin-right: 50px; margin-top: 10px">
             <ui:include src="#{sessionController.currentUI}" />
             <pou:growl id="messages"/>
         </h:form>
@@ -102,7 +102,8 @@
                 <pou:graphicImage value="resources/img/facebook.png"/>
             </pou:commandLink>
             <pou:commandLink ajax="false" title="Follow Us" target="blank"
-                             actionListener="#{sessionController.goTwitter}">
+                             actionListener="#{sessionController.goTwitter}"
+                             style="margin-left: 10px">
                 <pou:graphicImage value="resources/img/twitter.png"/>
             </pou:commandLink>
             <pou:commandLink ajax="false" title="Ayuda" target="blank"
