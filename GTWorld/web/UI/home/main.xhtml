@@ -20,7 +20,7 @@
                             <pou:ajax event="close" listener="#{sessionController.closeNotification}"/> 
                             <h:panelGrid columns="1">
                                 <h:outputText value="#{noti.fechaNotificacion}"  style="font-size: 10px">
-                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="CST" />
                                 </h:outputText>
                                 <h:outputText value="#{noti.contenidoNotificacion}"/>
                             </h:panelGrid>
@@ -50,7 +50,7 @@
                                     <br />
                                     <h:outputText value="Fecha visita: "/>
                                     <h:outputText value="#{sessionController.selectedMarker.data.visitaPoiPK.fechaVisitaPoi}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy" type="date"/>
+                                        <f:convertDateTime pattern="dd/MM/yyyy" type="date" timeZone="CST"/>
                                     </h:outputText>
                                     <br />
                                     <h:outputText value="#{sessionController.selectedMarker.data.comentarioVisitaPoi}"/>
