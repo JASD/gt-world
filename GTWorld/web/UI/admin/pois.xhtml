@@ -19,8 +19,7 @@
 
                 <pou:fieldset id="edit">
 
-                    <h:outputText value="Nombre " style="margin-right: 18px; vertical-align: top"/>
-                   
+                    <h:outputText value="Nombre " style="margin-right: 15px"/>
                         <pou:inputText value="#{poiController.selected.nombrePoi}">
                             <f:validateLength maximum="100"/>
                         </pou:inputText>
@@ -90,7 +89,7 @@
                                 </pou:commandLink>
                             </pou:panel>  
 
-                            <pou:draggable for="pnl" revert="true" disabled="#{poiController.editing}" 
+                            <pou:draggable for="pnl" revert="true" 
                                            handle=".ui-panel-titlebar" stack=".ui-panel"/>  
 
                         </pou:column>  
