@@ -15,8 +15,12 @@
     </h:head>
     <h:body onload="#{sessionController.checkLogout()}; #{sessionController.loadVisits()}; #{sessionController.loadNotificactions()}">
         <h:form>
-            <pou:graphicImage value="resources/img/logo_gtworld.png" 
-                              style="margin-left: 100px; margin-top: 20px"/>
+            <pou:commandLink ajax="false" title="Home" update=":currentUI"
+                             actionListener="#{sessionController.updateUI}">
+                <pou:graphicImage value="resources/img/logo_gtworld.png" 
+                                  style="margin-left: 100px; margin-top: 20px"/>
+                 <f:attribute name="uiName" value="home/main" />
+            </pou:commandLink>
 
             <pou:menubar style=" display: inline-table; 
                          float: right; margin-right: 50px; margin-top: 20px">
@@ -86,7 +90,8 @@
         <pou:separator style="margin-left: 50px; margin-right: 50px"/>
 
 
-        <h:form id="currentUI" style="min-height: 500px; margin-left: 50px; margin-right: 50px; margin-top: 10px">
+        <h:form id="currentUI" style="min-height: 500px; margin-left: 50px; 
+                margin-right: 50px; margin-top: 10px">
             <ui:include src="#{sessionController.currentUI}" />
             <pou:growl id="messages"/>
         </h:form>

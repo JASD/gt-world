@@ -9,30 +9,33 @@
 
         <pou:layout style="height: 500px">
 
-            <pou:layoutUnit position="west" size="275" header="Notificaciones">
-              
-                    <pou:dataGrid  var="noti" columns="1"
-                                   emptyMessage="Sin notificaciones nuevas"
-                                   value="#{sessionController.unreadNotificaciones}">
-                        <pou:column>
-                            <pou:panel header="#{noti.tituloNotificacion}" closable="true">
-                                <pou:ajax event="close" listener="#{sessionController.closeNotification}"/> 
-                                <h:panelGrid columns="1">
-                                    <h:outputText value="#{noti.fechaNotificacion}"  style="font-size: 10px">
-                                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                                    </h:outputText>
-                                    <h:outputText value="#{noti.contenidoNotificacion}"/>
-                                </h:panelGrid>
-                                <f:attribute name="noti" value="#{noti}" />
-                            </pou:panel>
-                        </pou:column>
-                    </pou:dataGrid>
-               
+            <pou:layoutUnit position="west" size="275" header="Notificaciones" 
+                            collapsible="true">
+
+                <pou:dataGrid  var="noti" columns="1"
+                               emptyMessage="Sin notificaciones nuevas"
+                               value="#{sessionController.unreadNotificaciones}">
+                    <pou:column>
+                        <pou:panel header="#{noti.tituloNotificacion}" closable="true">
+                            <pou:ajax event="close" listener="#{sessionController.closeNotification}"/> 
+                            <h:panelGrid columns="1">
+                                <h:outputText value="#{noti.fechaNotificacion}"  style="font-size: 10px">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                                <h:outputText value="#{noti.contenidoNotificacion}"/>
+                            </h:panelGrid>
+                            <f:attribute name="noti" value="#{noti}" />
+                        </pou:panel>
+                    </pou:column>
+                </pou:dataGrid>
+
             </pou:layoutUnit>
-            <pou:layoutUnit position="center" header="Últimas Visitas" style="min-width: 600px">
+            <pou:layoutUnit position="center" header="Últimas Visitas" style="min-width: 600px" >
 
 
-                <pou:gmap center="#{sessionController.centerMap}" zoom="18" type="ROADMAP" model="#{sessionController.lastVisitPoi}" style="min-width:600px;min-height:450px">  
+                <pou:gmap center="#{sessionController.centerMap}" zoom="15" 
+                          type="ROADMAP" model="#{sessionController.lastVisitPoi}"
+                          style="min-width:600px;min-height:450px">  
 
                     <pou:ajax event="overlaySelect" listener="#{sessionController.onMarkerSelect}" />  
 
@@ -42,8 +45,16 @@
                             <pou:gmapInfoWindow>  
                                 <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
 
+                                    <h:outputText value="#{sessionController.selectedMarker.title}"
+                                                  style="font-weight: bold"/>
+                                    <br />
+                                    <h:outputText value="Fecha visita: "/>
+                                    <h:outputText value="#{sessionController.selectedMarker.data.visitaPoiPK.fechaVisitaPoi}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" type="date"/>
+                                    </h:outputText>
+                                    <br />
+                                    <h:outputText value="#{sessionController.selectedMarker.data.comentarioVisitaPoi}"/>
 
-                                    <h:outputText value="tsss" />  
 
                                 </pou:outputPanel>  
 
