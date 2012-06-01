@@ -1,0 +1,26 @@
+/* 
+    Document   : icon
+    Created on : 01-jun-2012, 7:06:12
+    Author     : Antonio
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.next{
+    background-image: url(../icon/next.png) !important;
+}
+
+.back{
+    background-image: url(../icon/back.png) !important;
+}
+
+.edit{
+    background-image: url(../icon/pencil.png) !important;
+}
+.save{
+    background-image: url(../icon/save.png) !important;
+}
+
+.cancel{
+    background-image: url(../icon/cancel.png) !important;
+}

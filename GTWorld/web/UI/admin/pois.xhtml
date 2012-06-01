@@ -2,19 +2,102 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:pou="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
 
-        <pou:layout style="height: 500px">
-
-            <pou:layoutUnit position="west" size="300" header="Editar" >
 
 
+        <pou:layout style="height: 500px" widgetVar="lay" collapseTitle="cerrar"
+                    expandTitle="abrir">
 
+            <pou:ajax event="toggle" listener="#{poiController.closeEdit}" update="messages, pois, edit" />
+            <pou:layoutUnit position="west" header="Editar POI" size="300" collapsible="true" 
+                            collapsed="true">
+
+
+                <pou:fieldset id="edit">
+
+                    <h:outputText value="Nombre " style="margin-right: 18px; vertical-align: top"/>
+                   
+                        <pou:inputText value="#{poiController.selected.nombrePoi}">
+                            <f:validateLength maximum="100"/>
+                        </pou:inputText>
+                   
+                    <br />
+                    <br />
+                    <h:outputText value="Tipo " style="margin-right: 42px; vertical-align: top"/>
+                   
+                        <pou:selectOneMenu value="#{poiController.selected.idTipoPoi}" 
+                                           effect="fade" style="width: 150px">
+                            <f:selectItems value="#{tipoPoiController.itemsAvailableSelectOne}"/>
+                        </pou:selectOneMenu>
+                   
+                    <br />
+                    <br />
+                    <h:outputText value="Descripción " style="vertical-align: top"/>
+                   <pou:inputTextarea value="#{poiController.selected.descripcionPoi}">
+                            <f:validateLength maximum="500" />
+                        </pou:inputTextarea>
+                </pou:fieldset>
             </pou:layoutUnit>
-            <pou:layoutUnit position="center" header="Gestión de POIs" >
 
+            <pou:layoutUnit position="center">
 
+                <pou:fieldset legend="POIs" id="pois" >
+                    <h:outputText value="Registros #{poiController.pagination.pageFirstItem + 1} - #{poiController.pagination.pageLastItem + 1} de #{poiController.pagination.itemsCount}"
+                                  style="font-size: 10px; padding-left: 25px; padding-right: 5px" rendered="#{poiController.items.rowCount > 0}"/>
+                    <br />
+                    <br />
+                    <pou:commandButton action="#{poiController.previous}" icon="back" 
+                                       rendered="#{poiController.pagination.hasPreviousPage}"
+                                       disabled="#{poiController.editing}"
+                                       update="pois" title="Anterior"/>
+                    <pou:commandButton action="#{poiController.next}" icon="next"
+                                       disabled="#{poiController.editing}"
+                                       rendered="#{poiController.pagination.hasNextPage}"
+                                       update="pois" title="Siguiente"/>
+                    <br />
+                    <br />
+                    <pou:dataGrid id="poisSelect" var="poi"  
+                                  value="#{poiController.items}" columns="3">  
+
+                        <pou:column>  
+
+                            <pou:panel id="pnl" header="#{poi.nombrePoi}" 
+                                       style="text-align:center">
+
+                                <pou:commandLink title="ver fotos"
+                                                 action="#{poiController.prepareView}"
+                                                 rendered="#{poi.imagenList.size() > 1}"
+                                                 disabled="#{poiController.editing}"
+                                                 update=":gallery" oncomplete="galleryPoi.show();">
+                                    <pou:graphicImage value="resources/img/picture.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="ver en mapa" style="margin-left: 5px"
+                                                 disabled="#{poiController.editing}"
+                                                 action="#{poiController.prepareViewOnMap}"
+                                                 update=":poi_map" oncomplete="poiMap.show();">
+                                    <pou:graphicImage value="resources/img/globe.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="editar" style="margin-left: 5px"
+                                                 disabled="#{poiController.editing}"
+                                                 action="#{poiController.prepareEdit}"
+                                                 update=":currentUI:edit, :currentUI:pois"
+                                                 oncomplete="lay.toggle('west');" >
+                                    <pou:graphicImage value="resources/img/pencil.png" />
+                                </pou:commandLink>
+                            </pou:panel>  
+
+                            <pou:draggable for="pnl" revert="true" disabled="#{poiController.editing}" 
+                                           handle=".ui-panel-titlebar" stack=".ui-panel"/>  
+
+                        </pou:column>  
+
+                    </pou:dataGrid>  
+
+                </pou:fieldset>  
 
             </pou:layoutUnit>
         </pou:layout>

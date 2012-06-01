@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:component>
+        <h:form id="poi_map">
+            <pou:dialog widgetVar="poiMap" 
+                        header="Coordenadas: #{poiController.selected.idUbicacion.latitudUbicacion},
+ #{poiController.selected.idUbicacion.longitudUbicacion}" showEffect="fade"
+                        hideEffect="fade" modal="true" resizable="false">
+                <pou:gmap center="#{poiController.selected.idUbicacion.latitudUbicacion},#{poiController.selected.idUbicacion.longitudUbicacion}"
+                          zoom="20" type="ROADMAP" model="#{poiController.poiModel}"
+                          style="width:600px;height:400px" widgetVar="mymap"/>  
+
+            </pou:dialog>
+        </h:form>
+    </ui:component>
+</html>

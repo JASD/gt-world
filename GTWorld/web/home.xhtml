@@ -10,6 +10,7 @@
         <link href='resources/icon/map_blue.png' rel='shortcut icon' 
               type='image/png'/>
         <h:outputStylesheet name="css/menu.css"/>
+        <h:outputStylesheet name="css/icon.css"/>
         <script src="http://maps.google.com/maps/api/js?sensor=true "   	
         type="text/javascript"></script> 
     </h:head>
@@ -117,6 +118,9 @@
                 <pou:graphicImage value="resources/img/help.png"/>
             </pou:commandLink>
         </h:form>
+        
+         <ui:include src="UI/dialog/gallery.xhtml" />
+         <ui:include src="UI/dialog/poi_map.xhtml" />
     </h:body>
 
 </html>

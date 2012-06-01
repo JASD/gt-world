@@ -17,6 +17,12 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.primefaces.event.CloseEvent;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 
 @ManagedBean(name = "poiController")
 @SessionScoped
@@ -28,6 +34,8 @@ public class PoiController implements Serializable {
     private com.gtworld.facade.PoiFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private MapModel poiModel;
+    private boolean isEditing;
 
     public PoiController() {
     }
@@ -46,7 +54,7 @@ public class PoiController implements Serializable {
 
     public PaginationHelper getPagination() {
         if (pagination == null) {
-            pagination = new PaginationHelper(10) {
+            pagination = new PaginationHelper(6) {
 
                 @Override
                 public int getItemsCount() {
@@ -67,10 +75,20 @@ public class PoiController implements Serializable {
         return "List";
     }
 
-    public String prepareView() {
+    public void prepareView() {
         current = (Poi) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
+    }
+
+    public void prepareViewOnMap() {
+        current = (Poi) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        setPoiModel(new DefaultMapModel());
+        LatLng coord = new LatLng(current.getIdUbicacion().getLatitudUbicacion(),
+                current.getIdUbicacion().getLongitudUbicacion());
+        poiModel.addOverlay(new Marker(coord,
+                current.getNombrePoi(), current,
+                current.getIdTipoPoi().getUrlIconoPoi()));
     }
 
     public String prepareCreate() {
@@ -90,10 +108,23 @@ public class PoiController implements Serializable {
         }
     }
 
-    public String prepareEdit() {
+    public void prepareEdit() {
         current = (Poi) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
+        setIsEditing(true);
+    }
+
+    public void closeEdit(ToggleEvent event) {
+        String status = event.getVisibility().name();
+        if (status.equals("VISIBLE") && !isEditing) {
+            setIsEditing(true); //bloquea y obliga a cierre
+            JsfUtil.addWarningMessage("POI no Seleccionado");
+        }
+
+        if (status.equals("HIDDEN") && isEditing) {
+            setIsEditing(false);
+            current = null;
+        }
     }
 
     public String update() {
@@ -186,6 +217,22 @@ public class PoiController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    }
+
+    public boolean isEditing() {
+        return isEditing;
+    }
+
+    public void setIsEditing(boolean isEditing) {
+        this.isEditing = isEditing;
+    }
+
+    public MapModel getPoiModel() {
+        return poiModel;
+    }
+
+    public void setPoiModel(MapModel poiModel) {
+        this.poiModel = poiModel;
     }
 
     @FacesConverter(forClass = Poi.class)

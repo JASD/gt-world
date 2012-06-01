@@ -109,7 +109,7 @@ public class TipoPoi implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gtworld.entity.TipoPoi[ idTipoPoi=" + idTipoPoi + " ]";
+        return nombreTipoPoi;
     }
     
 }

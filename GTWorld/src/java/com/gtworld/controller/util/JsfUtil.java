@@ -23,6 +23,22 @@ public class JsfUtil {
         }
         return items;
     }
+    
+     public static SelectItem[] getSelectItems(List<?> entities) {
+        int size = entities.size();
+        SelectItem[] items;
+        int i = 0;
+        if (size == 0) {
+            items = new SelectItem[size + 1];
+            items[0] = new SelectItem("", "---");
+        } else {
+            items = new SelectItem[size];
+        }
+        for (Object x : entities) {
+            items[i++] = new SelectItem(x, x.toString());
+        }
+        return items;
+    }
 
     public static void addErrorMessage(Exception ex, String defaultMsg) {
         String msg = ex.getLocalizedMessage();
@@ -41,12 +57,17 @@ public class JsfUtil {
 
     public static void addErrorMessage(String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg);
-        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+        FacesContext.getCurrentInstance().addMessage("ERROR", facesMsg);
     }
 
     public static void addSuccessMessage(String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
-        FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);
+        FacesContext.getCurrentInstance().addMessage("Información", facesMsg);
+    }
+    
+    public static void addWarningMessage(String msg) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, msg, msg);
+        FacesContext.getCurrentInstance().addMessage("Advertencia", facesMsg);
     }
 
     public static String getRequestParameter(String key) {
