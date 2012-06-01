@@ -20,25 +20,25 @@
                 <pou:fieldset id="edit">
 
                     <h:outputText value="Nombre " style="margin-right: 15px"/>
-                        <pou:inputText value="#{poiController.selected.nombrePoi}">
-                            <f:validateLength maximum="100"/>
-                        </pou:inputText>
-                   
+                    <pou:inputText value="#{poiController.selected.nombrePoi}">
+                        <f:validateLength maximum="100"/>
+                    </pou:inputText>
+
                     <br />
                     <br />
                     <h:outputText value="Tipo " style="margin-right: 42px; vertical-align: top"/>
-                   
-                        <pou:selectOneMenu value="#{poiController.selected.idTipoPoi}" 
-                                           effect="fade" style="width: 150px">
-                            <f:selectItems value="#{tipoPoiController.itemsAvailableSelectOne}"/>
-                        </pou:selectOneMenu>
-                   
+
+                    <pou:selectOneMenu value="#{poiController.selected.idTipoPoi}" 
+                                       effect="fade" style="width: 150px">
+                        <f:selectItems value="#{tipoPoiController.itemsAvailableSelectOne}"/>
+                    </pou:selectOneMenu>
+
                     <br />
                     <br />
                     <h:outputText value="Descripción " style="vertical-align: top"/>
-                   <pou:inputTextarea value="#{poiController.selected.descripcionPoi}">
-                            <f:validateLength maximum="500" />
-                        </pou:inputTextarea>
+                    <pou:inputTextarea value="#{poiController.selected.descripcionPoi}">
+                        <f:validateLength maximum="500" />
+                    </pou:inputTextarea>
                 </pou:fieldset>
             </pou:layoutUnit>
 
@@ -96,7 +96,12 @@
 
                     </pou:dataGrid>  
 
-                </pou:fieldset>  
+                </pou:fieldset>
+                <pou:fieldset id="delete" style="margin-top:10px; width: 64px;">  
+
+                    <pou:graphicImage value="resources/img/trash.png" />
+                </pou:fieldset>
+              
 
             </pou:layoutUnit>
         </pou:layout>
