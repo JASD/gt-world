@@ -23,8 +23,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "VisitaPoi.findByIdPoi", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.idPoi = :idPoi"),
     @NamedQuery(name = "VisitaPoi.findByFechaVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.fechaVisitaPoi = :fechaVisitaPoi"),
     @NamedQuery(name = "VisitaPoi.findByHoraVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.horaVisitaPoi = :horaVisitaPoi"),
-    @NamedQuery(name = "VisitaPoi.findByComentarioVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.comentarioVisitaPoi = :comentarioVisitaPoi")})
+    @NamedQuery(name = "VisitaPoi.findByComentarioVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.comentarioVisitaPoi = :comentarioVisitaPoi"),
+    @NamedQuery(name = "VisitaPoi.findByLastFechaVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.idUsuario = :idUsuario ORDER BY v.visitaPoiPK.fechaVisitaPoi DESC, v.visitaPoiPK.horaVisitaPoi DESC"),})
 public class VisitaPoi implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected VisitaPoiPK visitaPoiPK;
@@ -105,5 +107,4 @@ public class VisitaPoi implements Serializable {
     public String toString() {
         return "com.gtworld.entity.VisitaPoi[ visitaPoiPK=" + visitaPoiPK + " ]";
     }
-    
 }

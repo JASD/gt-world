@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Notificacion.findByFechaNotificacion", query = "SELECT n FROM Notificacion n WHERE n.fechaNotificacion = :fechaNotificacion"),
     @NamedQuery(name = "Notificacion.findByHoraNotificacion", query = "SELECT n FROM Notificacion n WHERE n.horaNotificacion = :horaNotificacion"),
     @NamedQuery(name = "Notificacion.findByEstadoNotificacion", query = "SELECT n FROM Notificacion n WHERE n.estadoNotificacion = :estadoNotificacion"),
-    @NamedQuery(name = "Notificacion.findByUsuarioEstadoNotificacion", query = "SELECT n FROM Notificacion n WHERE (n.estadoNotificacion = true) AND (n.idUsuario.idUsuario =:idUsuario)")})
+    @NamedQuery(name = "Notificacion.findByUsuarioEstadoNotificacion", query = "SELECT n FROM Notificacion n WHERE (n.estadoNotificacion = true) AND (n.idUsuario = :idUsuario) ORDER BY n.fechaNotificacion DESC")})
 public class Notificacion implements Serializable {
 
     private static final long serialVersionUID = 1L;

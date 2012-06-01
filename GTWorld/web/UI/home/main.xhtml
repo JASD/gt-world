@@ -32,7 +32,7 @@
             <pou:layoutUnit position="center" header="Últimas Visitas" style="min-width: 600px">
 
 
-                <pou:gmap center="36.890257,30.707417" zoom="13" type="HYBRID" model="#{sessionController.lastVisitPoi}" style="min-width:600px;min-height:450px">  
+                <pou:gmap center="#{sessionController.centerMap}" zoom="18" type="ROADMAP" model="#{sessionController.lastVisitPoi}" style="min-width:600px;min-height:450px">  
 
                     <pou:ajax event="overlaySelect" listener="#{sessionController.onMarkerSelect}" />  
 

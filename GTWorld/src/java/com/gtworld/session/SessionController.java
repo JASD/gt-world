@@ -3,8 +3,10 @@ package com.gtworld.session;
 import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.entity.Notificacion;
 import com.gtworld.entity.Usuario;
+import com.gtworld.entity.VisitaPoi;
 import com.gtworld.facade.NotificacionFacade;
 import com.gtworld.facade.UsuarioFacade;
+import com.gtworld.facade.VisitaPoiFacade;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -18,7 +20,9 @@ import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.ServletContext;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
@@ -38,10 +42,13 @@ public class SessionController implements Serializable {
     private Marker selectedMarker;
     private List<Notificacion> unreadNotificaciones;
     private Notificacion selectedNotificacion;
+    private String centerMap;
     @EJB
     private com.gtworld.facade.UsuarioFacade usuarioFacade;
     @EJB
     private com.gtworld.facade.NotificacionFacade notificacionFacade;
+    @EJB
+    private com.gtworld.facade.VisitaPoiFacade visitaFacade;
 
     public SessionController() {
     }
@@ -211,16 +218,34 @@ public class SessionController implements Serializable {
      */
     public void loadVisits() {
         setLastVisitPoi(new DefaultMapModel());
-        LatLng coord1 = new LatLng(36.879466, 30.667648);
-        LatLng coord2 = new LatLng(36.883707, 30.689216);
-        LatLng coord3 = new LatLng(36.879703, 30.706707);
-        LatLng coord4 = new LatLng(36.885233, 30.702323);
+        Object[] parameters = {"idUsuario", getUser().getIdUsuario()};
 
-        //Icons and Data  
-        lastVisitPoi.addOverlay(new Marker(coord1, "Konyaalti", "konyaalti.png", "http://maps.google.com/mapfiles/ms/micons/blue-dot.png"));
-        lastVisitPoi.addOverlay(new Marker(coord2, "Ataturk Parki", "ataturkparki.png"));
-        lastVisitPoi.addOverlay(new Marker(coord4, "Kaleici", "kaleici.png", "http://maps.google.com/mapfiles/ms/micons/pink-dot.png"));
-        lastVisitPoi.addOverlay(new Marker(coord3, "Karaalioglu Parki", "karaalioglu.png", "http://maps.google.com/mapfiles/ms/micons/yellow-dot.png"));
+        try {
+
+            List<VisitaPoi> visits = getVisitaFacade().findRange(new int[]{0, 5},
+                    "VisitaPoi.findByLastFechaVisitaPoi", parameters);
+            if (!visits.isEmpty()) {
+                boolean isFirst = true;
+
+                for (VisitaPoi visita : visits) {
+                    Float lat = visita.getPoi().getIdUbicacion().getLatitudUbicacion();
+                    Float lon = visita.getPoi().getIdUbicacion().getLongitudUbicacion();
+                    LatLng coord = new LatLng(lat, lon);
+                    lastVisitPoi.addOverlay(new Marker(coord,
+                            visita.getPoi().getNombrePoi(), visita,
+                            visita.getPoi().getIdTipoPoi().getUrlIconoPoi()));
+                    if (isFirst) {
+                        isFirst = false;
+                        centerMap = lat.toString() + "," + lon.toString();
+                    }
+
+                }
+            } else {
+                centerMap = "13.734,-89.29389";
+            }
+
+        } catch (Exception e) {
+        }
 
     }
 
@@ -228,7 +253,7 @@ public class SessionController implements Serializable {
      * Carga las notificaciones no leidas por el Usuario
      */
     public void loadNotificactions() {
-        Object[] parameters = {"idUsuario", getUser().getIdUsuario()};
+        Object[] parameters = {"idUsuario", getUser()};
         try {
             setUnreadNotificaciones(getNotificacionFacade().find(
                     "Notificacion.findByUsuarioEstadoNotificacion", parameters));
@@ -269,6 +294,14 @@ public class SessionController implements Serializable {
 
     public NotificacionFacade getNotificacionFacade() {
         return notificacionFacade;
+    }
+
+    public VisitaPoiFacade getVisitaFacade() {
+        return visitaFacade;
+    }
+
+    public void setVisitaFacade(VisitaPoiFacade visitaFacade) {
+        this.visitaFacade = visitaFacade;
     }
 
     public Usuario getUser() {
@@ -325,5 +358,13 @@ public class SessionController implements Serializable {
 
     public void setUnreadNotificaciones(List<Notificacion> unreadNotificaciones) {
         this.unreadNotificaciones = unreadNotificaciones;
+    }
+
+    public String getCenterMap() {
+        return centerMap;
+    }
+
+    public void setCenterMap(String centerMap) {
+        this.centerMap = centerMap;
     }
 }
