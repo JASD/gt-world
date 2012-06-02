@@ -14,11 +14,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import org.primefaces.event.CloseEvent;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
@@ -96,6 +95,10 @@ public class PoiController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
+    
+    public void imageUpload(FileUploadEvent event) {  
+        
+    }  
 
     public String create() {
         try {

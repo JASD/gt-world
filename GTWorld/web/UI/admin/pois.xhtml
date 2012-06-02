@@ -13,20 +13,20 @@
                     expandTitle="abrir">
 
             <pou:ajax event="toggle" listener="#{poiController.closeEdit}" update="messages, pois, edit" />
-            <pou:layoutUnit position="west" header="Editar POI" size="300" collapsible="true" 
+            <pou:layoutUnit position="west" header="Editar POI" size="700" collapsible="true" 
                             collapsed="true">
 
 
                 <pou:fieldset id="edit">
 
-                    <h:outputText value="Nombre " style="margin-right: 15px"/>
+                    <h:outputText value="Nombre " style="margin-right: 19px"/>
                     <pou:inputText value="#{poiController.selected.nombrePoi}">
                         <f:validateLength maximum="100"/>
                     </pou:inputText>
 
                     <br />
                     <br />
-                    <h:outputText value="Tipo " style="margin-right: 42px; vertical-align: top"/>
+                    <h:outputText value="Tipo " style="margin-right: 43px; vertical-align: top"/>
 
                     <pou:selectOneMenu value="#{poiController.selected.idTipoPoi}" 
                                        effect="fade" style="width: 150px">
@@ -42,7 +42,17 @@
                     <br />
                     <br />
                     <h:outputText value="Fotos " style="vertical-align: top"/>
-
+                    <pou:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"  
+                                    mode="advanced"  
+                                    update="messages"   
+                                    multiple="true"  
+                                    sizeLimit="100000"   
+                                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                    label="Examinar"
+                                    uploadLabel="Subir"
+                                    cancelLabel="Cancelar"
+                                    invalidFileMessage="Extensión de Archivo Incorrecta"
+                                    invalidSizeMessage="La imagen excede el máximo tamaño soportado"/>  
                 </pou:fieldset>
             </pou:layoutUnit>
 
@@ -65,9 +75,7 @@
                     <br />
                     <pou:dataGrid id="poisSelect" var="poi"  
                                   value="#{poiController.items}" columns="3">  
-
                         <pou:column>  
-
                             <pou:panel id="pnl" header="#{poi.nombrePoi}" 
                                        style="text-align:center">
                                 <pou:commandLink title="ver en mapa" style="margin-left: 5px"
@@ -92,8 +100,7 @@
                                 </pou:commandLink>
                                 <pou:commandLink title="borrar" style="margin-left: 5px"
                                                  disabled="#{poiController.editing}"
-                                                 action="#{poiController.destroy}"
-                                                 >
+                                                 action="#{poiController.destroy}">
                                     <pou:graphicImage value="resources/img/trash.png" />
                                 </pou:commandLink>
                             </pou:panel>  
