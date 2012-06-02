@@ -6,21 +6,16 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
-
-
-
         <pou:layout style="height: 500px" widgetVar="lay" collapseTitle="cerrar"
                     expandTitle="abrir">
-
             <pou:ajax event="toggle" listener="#{poiController.closeEdit}" update="messages, pois, edit" />
-            <pou:layoutUnit position="west" header="Editar POI" size="700" collapsible="true" 
+            <pou:layoutUnit position="west" header="Editar POI" size="500" collapsible="true" 
                             collapsed="true">
                 <pou:fieldset id="edit">
                     <h:outputText value="Nombre " style="margin-right: 19px"/>
                     <pou:inputText value="#{poiController.selected.nombrePoi}">
                         <f:validateLength maximum="100"/>
                     </pou:inputText>
-
                     <br />
                     <br />
                     <h:outputText value="Tipo " style="margin-right: 43px; vertical-align: top"/>
@@ -29,7 +24,6 @@
                                        effect="fade" style="width: 150px">
                         <f:selectItems value="#{tipoPoiController.itemsAvailableSelectOne}"/>
                     </pou:selectOneMenu>
-
                     <br />
                     <br />
                     <h:outputText value="Descripción " style="vertical-align: top"/>
@@ -38,8 +32,7 @@
                     </pou:inputTextarea>
                     <br />
                     <br />
-                    <h:outputText value="Fotos " style="vertical-align: top"/>
-
+                    <h:outputText value="Agregar Fotos" style="vertical-align: top"/>
                     <pou:fileUpload fileUploadListener="#{poiController.poiImageUpload}"  
                                     mode="advanced"  
                                     update="messages"   
@@ -51,12 +44,20 @@
                                     cancelLabel="Cancelar"
                                     invalidFileMessage="Extensión de Archivo Incorrecta"
                                     invalidSizeMessage="La imagen excede el máximo tamaño soportado" />
+                    <br />
+                    <br />
+                    <h:outputText value="Descripción Fotos " style="vertical-align: top"/>
+                    <pou:inputTextarea value="#{poiController.descripcionFotos}">
+                        <f:validateLength maximum="500" />
+                    </pou:inputTextarea>
+                    <br />
+                    <br />
+                    <pou:commandButton icon="save" title="Guardar" value="Guardar"
+                                       actionListener="#{poiController.update}"
+                                       update=":currentUI:pois, messages"/>
                 </pou:fieldset>
-
             </pou:layoutUnit>
-
             <pou:layoutUnit position="center">
-
                 <pou:fieldset legend="POIs" id="pois" >
                     <h:outputText value="Registros #{poiController.pagination.pageFirstItem + 1} - #{poiController.pagination.pageLastItem + 1} de #{poiController.pagination.itemsCount}"
                                   style="font-size: 10px; padding-left: 25px; padding-right: 5px" rendered="#{poiController.items.rowCount > 0}"/>
@@ -84,7 +85,7 @@
                                     <pou:graphicImage value="resources/img/globe.png" />
                                 </pou:commandLink>
                                 <pou:commandLink title="ver fotos" style="margin-left: 5px"
-                                                 rendered="#{poi.imagenList.size() > 1}"
+                                                 rendered="#{poi.imagenList.size() != 0}"
                                                  disabled="#{poiController.editing}"
                                                  action="#{poiController.prepareView}"
                                                  update=":gallery" oncomplete="galleryPoi.show();">

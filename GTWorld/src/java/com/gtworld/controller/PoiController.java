@@ -44,6 +44,7 @@ public class PoiController implements Serializable {
     private int selectedItemIndex;
     private MapModel poiModel;
     private boolean isEditing;
+    private String descripcionFotos;
 
     public PoiController() {
     }
@@ -125,12 +126,10 @@ public class PoiController implements Serializable {
         String status = event.getVisibility().name();
         if (status.equals("VISIBLE") && !isEditing) {
             setIsEditing(true); //forzar cierre de panel
-            JsfUtil.addWarningMessage("POI no Seleccionado");
         }
 
         if (status.equals("HIDDEN") && isEditing) {
             setIsEditing(false);
-            JsfUtil.addWarningMessage("No se Realizaron Cambios");
             current = null;
         }
     }
@@ -139,8 +138,7 @@ public class PoiController implements Serializable {
 
         UploadedFile imageUpload = event.getFile();
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        String path = servletContext.getRealPath("/Images/POIs/");
-        path = path.concat("\\");
+        String path = servletContext.getRealPath("/Images/POIs/").concat("\\");
         setUploaded(new ArrayList<Imagen>());
         if (JsfUtil.saveImage(imageUpload.getContents(),
                 path + imageUpload.getFileName())) {
@@ -161,14 +159,17 @@ public class PoiController implements Serializable {
         }
     }
 
-    public String update() {
+    public void update() {
         try {
             getFacade().edit(current);
+            for (Imagen img : uploaded) {
+                img.setDescripcionImagen(descripcionFotos);
+                getImagenFacade().edit(img);
+                current.getImagenList().add(img);
+            }
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PoiUpdated"));
-            return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
         }
     }
 
@@ -283,6 +284,14 @@ public class PoiController implements Serializable {
 
     public void setUploaded(List<Imagen> uploaded) {
         this.uploaded = uploaded;
+    }
+
+    public String getDescripcionFotos() {
+        return descripcionFotos;
+    }
+
+    public void setDescripcionFotos(String descripcionFotos) {
+        this.descripcionFotos = descripcionFotos;
     }
 
     @FacesConverter(forClass = Poi.class)
