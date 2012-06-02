@@ -15,10 +15,7 @@
             <pou:ajax event="toggle" listener="#{poiController.closeEdit}" update="messages, pois, edit" />
             <pou:layoutUnit position="west" header="Editar POI" size="700" collapsible="true" 
                             collapsed="true">
-
-
                 <pou:fieldset id="edit">
-
                     <h:outputText value="Nombre " style="margin-right: 19px"/>
                     <pou:inputText value="#{poiController.selected.nombrePoi}">
                         <f:validateLength maximum="100"/>
@@ -42,7 +39,8 @@
                     <br />
                     <br />
                     <h:outputText value="Fotos " style="vertical-align: top"/>
-                    <pou:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"  
+
+                    <pou:fileUpload fileUploadListener="#{poiController.poiImageUpload}"  
                                     mode="advanced"  
                                     update="messages"   
                                     multiple="true"  
@@ -52,8 +50,9 @@
                                     uploadLabel="Subir"
                                     cancelLabel="Cancelar"
                                     invalidFileMessage="Extensión de Archivo Incorrecta"
-                                    invalidSizeMessage="La imagen excede el máximo tamaño soportado"/>  
+                                    invalidSizeMessage="La imagen excede el máximo tamaño soportado" />
                 </pou:fieldset>
+
             </pou:layoutUnit>
 
             <pou:layoutUnit position="center">

@@ -28,9 +28,7 @@ public class Imagen implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "CORRELATIVO_IMAGEN")
+    @Column(name = "CORRELATIVO_IMAGEN", insertable = false, nullable = false, updatable = true)
     private Long correlativoImagen;
     @Size(max = 50)
     @Column(name = "TITULO_IMAGEN")

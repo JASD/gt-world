@@ -1,11 +1,14 @@
 package com.gtworld.controller;
 
-import com.gtworld.entity.Poi;
 import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.controller.util.PaginationHelper;
+import com.gtworld.entity.Imagen;
+import com.gtworld.entity.Poi;
+import com.gtworld.facade.ImagenFacade;
 import com.gtworld.facade.PoiFacade;
-
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -17,8 +20,10 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -32,6 +37,9 @@ public class PoiController implements Serializable {
     private DataModel items = null;
     @EJB
     private com.gtworld.facade.PoiFacade ejbFacade;
+    @EJB
+    private com.gtworld.facade.ImagenFacade imagenFacade;
+    private List<Imagen> uploaded;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private MapModel poiModel;
@@ -95,10 +103,6 @@ public class PoiController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
-    
-    public void imageUpload(FileUploadEvent event) {  
-        
-    }  
 
     public String create() {
         try {
@@ -128,6 +132,32 @@ public class PoiController implements Serializable {
             setIsEditing(false);
             JsfUtil.addWarningMessage("No se Realizaron Cambios");
             current = null;
+        }
+    }
+
+    public void poiImageUpload(FileUploadEvent event) {
+
+        UploadedFile imageUpload = event.getFile();
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String path = servletContext.getRealPath("/Images/POIs/");
+        path = path.concat("\\");
+        setUploaded(new ArrayList<Imagen>());
+        if (JsfUtil.saveImage(imageUpload.getContents(),
+                path + imageUpload.getFileName())) {
+            Imagen imagen = new Imagen();
+            imagen.setIdPoi(current);
+            imagen.setTituloImagen(current.getNombrePoi());
+            imagen.setDescripcionImagen("");
+            imagen.setUrlImagen("Images/POIs/" + imageUpload.getFileName());
+            try {
+                getImagenFacade().create(imagen);
+                getUploaded().add(imagen);
+                JsfUtil.addSuccessMessage(imageUpload.getFileName() + " Guardado");
+            } catch (Exception e) {
+                JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            }
+        } else {
+            JsfUtil.addErrorMessage(imageUpload.getFileName() + " no guardado");
         }
     }
 
@@ -237,6 +267,22 @@ public class PoiController implements Serializable {
 
     public void setPoiModel(MapModel poiModel) {
         this.poiModel = poiModel;
+    }
+
+    public ImagenFacade getImagenFacade() {
+        return imagenFacade;
+    }
+
+    public void setImagenFacade(ImagenFacade imagenFacade) {
+        this.imagenFacade = imagenFacade;
+    }
+
+    public List<Imagen> getUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(List<Imagen> uploaded) {
+        this.uploaded = uploaded;
     }
 
     @FacesConverter(forClass = Poi.class)

@@ -1,7 +1,10 @@
 package com.gtworld.controller.util;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -23,8 +26,8 @@ public class JsfUtil {
         }
         return items;
     }
-    
-     public static SelectItem[] getSelectItems(List<?> entities) {
+
+    public static SelectItem[] getSelectItems(List<?> entities) {
         int size = entities.size();
         SelectItem[] items;
         int i = 0;
@@ -64,7 +67,7 @@ public class JsfUtil {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
         FacesContext.getCurrentInstance().addMessage("Información", facesMsg);
     }
-    
+
     public static void addWarningMessage(String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_WARN, msg, msg);
         FacesContext.getCurrentInstance().addMessage("Advertencia", facesMsg);
@@ -88,5 +91,21 @@ public class JsfUtil {
     public static void redirect(String url) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().redirect(url);
+    }
+
+    public static boolean saveImage(byte[] image, String path) {
+        File file = new File(path);
+        try {
+            if (file.createNewFile()) {
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(image);
+                fos.close();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IOException e) {
+            return false;
+        }
     }
 }
