@@ -39,7 +39,7 @@ public class PoiController implements Serializable {
     private com.gtworld.facade.PoiFacade ejbFacade;
     @EJB
     private com.gtworld.facade.ImagenFacade imagenFacade;
-    private List<Imagen> uploaded;
+    private List<Imagen> uploaded = new ArrayList<Imagen>();
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private MapModel poiModel;
@@ -139,7 +139,6 @@ public class PoiController implements Serializable {
         UploadedFile imageUpload = event.getFile();
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String path = servletContext.getRealPath("/Images/POIs/").concat("\\");
-        setUploaded(new ArrayList<Imagen>());
         if (JsfUtil.saveImage(imageUpload.getContents(),
                 path + imageUpload.getFileName())) {
             Imagen imagen = new Imagen();
@@ -165,21 +164,21 @@ public class PoiController implements Serializable {
             for (Imagen img : uploaded) {
                 img.setDescripcionImagen(descripcionFotos);
                 getImagenFacade().edit(img);
-                current.getImagenList().add(img);
             }
+            current.setImagenList(uploaded);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PoiUpdated"));
+            
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
     }
 
-    public String destroy() {
+    public void destroy() {
         current = (Poi) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "List";
     }
 
     public String destroyAndView() {

@@ -226,8 +226,8 @@ public class SessionController implements Serializable {
                 boolean isFirst = true;
 
                 for (VisitaPoi visita : visits) {
-                    Float lat = visita.getPoi().getIdUbicacion().getLatitudUbicacion();
-                    Float lon = visita.getPoi().getIdUbicacion().getLongitudUbicacion();
+                    Double lat = visita.getPoi().getIdUbicacion().getLatitudUbicacion();
+                    Double lon = visita.getPoi().getIdUbicacion().getLongitudUbicacion();
                     LatLng coord = new LatLng(lat, lon);
                     lastVisitPoi.addOverlay(new Marker(coord,
                             visita.getPoi().getNombrePoi(), visita,

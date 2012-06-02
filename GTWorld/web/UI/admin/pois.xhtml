@@ -54,6 +54,7 @@
                     <br />
                     <pou:commandButton icon="save" title="Guardar" value="Guardar"
                                        actionListener="#{poiController.update}"
+                                       oncomplete="#{poiController.prepareList()}"
                                        update=":currentUI:pois, messages"/>
                 </pou:fieldset>
             </pou:layoutUnit>
@@ -100,7 +101,8 @@
                                 </pou:commandLink>
                                 <pou:commandLink title="borrar" style="margin-left: 5px"
                                                  disabled="#{poiController.editing}"
-                                                 action="#{poiController.destroy}">
+                                                 action="#{poiController.destroy}"
+                                                 update=":currentUI:pois">
                                     <pou:graphicImage value="resources/img/trash.png" />
                                 </pou:commandLink>
                             </pou:panel>  

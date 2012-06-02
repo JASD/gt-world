@@ -33,11 +33,11 @@ public class Ubicacion implements Serializable {
     private Long idUbicacion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "LATITUD_UBICACION")
-    private Float latitudUbicacion;
+    private Double latitudUbicacion;
     @Column(name = "LONGITUD_UBICACION")
-    private Float longitudUbicacion;
+    private Double longitudUbicacion;
     @Column(name = "ALTITUD_UBICACION")
-    private Float altitudUbicacion;
+    private Double altitudUbicacion;
     
     /*Datos no relevantes para esta entidad
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUbicacion")
@@ -62,27 +62,27 @@ public class Ubicacion implements Serializable {
         this.idUbicacion = idUbicacion;
     }
 
-    public Float getLatitudUbicacion() {
+    public Double getLatitudUbicacion() {
         return latitudUbicacion;
     }
 
-    public void setLatitudUbicacion(Float latitudUbicacion) {
+    public void setLatitudUbicacion(Double latitudUbicacion) {
         this.latitudUbicacion = latitudUbicacion;
     }
 
-    public Float getLongitudUbicacion() {
+    public Double getLongitudUbicacion() {
         return longitudUbicacion;
     }
 
-    public void setLongitudUbicacion(Float longitudUbicacion) {
+    public void setLongitudUbicacion(Double longitudUbicacion) {
         this.longitudUbicacion = longitudUbicacion;
     }
 
-    public Float getAltitudUbicacion() {
+    public Double getAltitudUbicacion() {
         return altitudUbicacion;
     }
 
-    public void setAltitudUbicacion(Float altitudUbicacion) {
+    public void setAltitudUbicacion(Double altitudUbicacion) {
         this.altitudUbicacion = altitudUbicacion;
     }
 
