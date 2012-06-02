@@ -8,7 +8,8 @@
         <h:form id="poi_map">
             <pou:dialog widgetVar="poiMap" 
                         header="Coordenadas: #{poiController.selected.idUbicacion.latitudUbicacion},
- #{poiController.selected.idUbicacion.longitudUbicacion}" showEffect="fade"
+                        #{poiController.selected.idUbicacion.longitudUbicacion}" showEffect="fade" 
+                        onHide="#{poiController.prepareList()}"
                         hideEffect="fade" modal="true" resizable="false">
                 <pou:gmap center="#{poiController.selected.idUbicacion.latitudUbicacion},#{poiController.selected.idUbicacion.longitudUbicacion}"
                           zoom="20" type="ROADMAP" model="#{poiController.poiModel}"

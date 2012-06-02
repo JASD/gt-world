@@ -14,6 +14,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -54,7 +55,7 @@ public class PoiController implements Serializable {
 
     public PaginationHelper getPagination() {
         if (pagination == null) {
-            pagination = new PaginationHelper(6) {
+            pagination = new PaginationHelper(9) {
 
                 @Override
                 public int getItemsCount() {
@@ -63,16 +64,15 @@ public class PoiController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, "Poi.findAll"));
                 }
             };
         }
         return pagination;
     }
 
-    public String prepareList() {
+    public void prepareList() {
         recreateModel();
-        return "List";
     }
 
     public void prepareView() {
@@ -117,12 +117,13 @@ public class PoiController implements Serializable {
     public void closeEdit(ToggleEvent event) {
         String status = event.getVisibility().name();
         if (status.equals("VISIBLE") && !isEditing) {
-            setIsEditing(true); //bloquea y obliga a cierre
+            setIsEditing(true); //forzar cierre de panel
             JsfUtil.addWarningMessage("POI no Seleccionado");
         }
 
         if (status.equals("HIDDEN") && isEditing) {
             setIsEditing(false);
+            JsfUtil.addWarningMessage("No se Realizaron Cambios");
             current = null;
         }
     }

@@ -39,6 +39,10 @@
                     <pou:inputTextarea value="#{poiController.selected.descripcionPoi}">
                         <f:validateLength maximum="500" />
                     </pou:inputTextarea>
+                    <br />
+                    <br />
+                    <h:outputText value="Fotos " style="vertical-align: top"/>
+
                 </pou:fieldset>
             </pou:layoutUnit>
 
@@ -66,19 +70,18 @@
 
                             <pou:panel id="pnl" header="#{poi.nombrePoi}" 
                                        style="text-align:center">
-
-                                <pou:commandLink title="ver fotos"
-                                                 action="#{poiController.prepareView}"
-                                                 rendered="#{poi.imagenList.size() > 1}"
-                                                 disabled="#{poiController.editing}"
-                                                 update=":gallery" oncomplete="galleryPoi.show();">
-                                    <pou:graphicImage value="resources/img/picture.png" />
-                                </pou:commandLink>
                                 <pou:commandLink title="ver en mapa" style="margin-left: 5px"
                                                  disabled="#{poiController.editing}"
                                                  action="#{poiController.prepareViewOnMap}"
                                                  update=":poi_map" oncomplete="poiMap.show();">
                                     <pou:graphicImage value="resources/img/globe.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="ver fotos" style="margin-left: 5px"
+                                                 rendered="#{poi.imagenList.size() > 1}"
+                                                 disabled="#{poiController.editing}"
+                                                 action="#{poiController.prepareView}"
+                                                 update=":gallery" oncomplete="galleryPoi.show();">
+                                    <pou:graphicImage value="resources/img/picture.png" />
                                 </pou:commandLink>
                                 <pou:commandLink title="editar" style="margin-left: 5px"
                                                  disabled="#{poiController.editing}"
@@ -87,22 +90,16 @@
                                                  oncomplete="lay.toggle('west');" >
                                     <pou:graphicImage value="resources/img/pencil.png" />
                                 </pou:commandLink>
+                                <pou:commandLink title="borrar" style="margin-left: 5px"
+                                                 disabled="#{poiController.editing}"
+                                                 action="#{poiController.destroy}"
+                                                 >
+                                    <pou:graphicImage value="resources/img/trash.png" />
+                                </pou:commandLink>
                             </pou:panel>  
-
-                            <pou:draggable for="pnl" revert="true" 
-                                           handle=".ui-panel-titlebar" stack=".ui-panel"/>  
-
                         </pou:column>  
-
                     </pou:dataGrid>  
-
                 </pou:fieldset>
-                <pou:fieldset id="delete" style="margin-top:10px; width: 64px;">  
-
-                    <pou:graphicImage value="resources/img/trash.png" />
-                </pou:fieldset>
-              
-
             </pou:layoutUnit>
         </pou:layout>
     </ui:component>
