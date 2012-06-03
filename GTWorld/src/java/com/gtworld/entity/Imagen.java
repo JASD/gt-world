@@ -23,7 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Imagen.findByCorrelativoImagen", query = "SELECT i FROM Imagen i WHERE i.correlativoImagen = :correlativoImagen"),
     @NamedQuery(name = "Imagen.findByTituloImagen", query = "SELECT i FROM Imagen i WHERE i.tituloImagen = :tituloImagen"),
     @NamedQuery(name = "Imagen.findByDescripcionImagen", query = "SELECT i FROM Imagen i WHERE i.descripcionImagen = :descripcionImagen"),
-    @NamedQuery(name = "Imagen.findByUrlImagen", query = "SELECT i FROM Imagen i WHERE i.urlImagen = :urlImagen")})
+    @NamedQuery(name = "Imagen.findByUrlImagen", query = "SELECT i FROM Imagen i WHERE i.urlImagen = :urlImagen"),
+    @NamedQuery(name = "Imagen.findByIdPoi", query = "SELECT i FROM Imagen i WHERE i.idPoi = :idPoi")})
 public class Imagen implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

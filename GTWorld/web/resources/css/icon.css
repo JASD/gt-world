@@ -20,3 +20,11 @@
 .save{
     background-image: url(../icon/save.png) !important;
 }
+
+.cancelar{
+    background-image: url(../icon/cancel.png) !important;
+}
+
+.borrar{
+    background-image: url(../icon/trash.png) !important;
+}

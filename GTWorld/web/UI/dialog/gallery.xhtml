@@ -9,7 +9,7 @@
             <pou:dialog widgetVar="galleryPoi" header="Galería" showEffect="fade"
                         hideEffect="fade" modal="true" resizable="false" 
                         onHide="#{poiController.prepareList()}">
-                <pou:galleria value="#{poiController.selected.imagenList}"  
+                <pou:galleria value="#{poiController.viewSelected}"  
                               var="image" effect="slide" effectSpeed="1000"  
                               panelWidth="500" panelHeight="250" frameWidth="160" frameHeight="70"  
                               filmstripPosition="top" showCaptions="true" showOverlays="true">  

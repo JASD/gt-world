@@ -4,8 +4,10 @@ import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.controller.util.PaginationHelper;
 import com.gtworld.entity.Imagen;
 import com.gtworld.entity.Poi;
+import com.gtworld.entity.VisitaPoi;
 import com.gtworld.facade.ImagenFacade;
 import com.gtworld.facade.PoiFacade;
+import com.gtworld.facade.VisitaPoiFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,10 @@ public class PoiController implements Serializable {
     private com.gtworld.facade.PoiFacade ejbFacade;
     @EJB
     private com.gtworld.facade.ImagenFacade imagenFacade;
+    @EJB
+    private com.gtworld.facade.VisitaPoiFacade visitaFacade;
     private List<Imagen> uploaded = new ArrayList<Imagen>();
+    private List<Imagen> viewSelected;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private MapModel poiModel;
@@ -97,6 +102,25 @@ public class PoiController implements Serializable {
         poiModel.addOverlay(new Marker(coord,
                 current.getNombrePoi(), current,
                 current.getIdTipoPoi().getUrlIconoPoi()));
+    }
+
+    public void prepareViewImages() {
+        current = (Poi) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        Object[] parameters = {"idPoi", current};
+        try {
+            viewSelected = getImagenFacade().find("Imagen.findByIdPoi", parameters);
+            if (viewSelected.isEmpty()) {
+                Imagen img = new Imagen();
+                img.setTituloImagen("Imagen no Encontrada");
+                img.setDescripcionImagen("Imagen no Encontrada");
+                img.setUrlImagen("Images/POIs/image_not_found.jpg");
+                viewSelected.add(img);
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+
     }
 
     public String prepareCreate() {
@@ -164,10 +188,10 @@ public class PoiController implements Serializable {
             for (Imagen img : uploaded) {
                 img.setDescripcionImagen(descripcionFotos);
                 getImagenFacade().edit(img);
+                current.getImagenList().add(img);
             }
-            current.setImagenList(uploaded);
+            descripcionFotos = "";
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PoiUpdated"));
-            
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -176,21 +200,34 @@ public class PoiController implements Serializable {
     public void destroy() {
         current = (Poi) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
+        try {
+            for (Imagen img : current.getImagenList()) {
+                getImagenFacade().remove(img);
+            }
+            for (VisitaPoi vp : current.getVisitaPoiList()) {
+                getVisitaFacade().remove(vp);
+            }
+            performDestroy();
+            recreatePagination();
+            recreateModel();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
     }
 
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "View";
-        } else {
-            // all items were removed - go back to list
+    public void destroyAndView() {
+        try {
+            for (Imagen img : current.getImagenList()) {
+                getImagenFacade().remove(img);
+            }
+            for (VisitaPoi vp : current.getVisitaPoiList()) {
+                getVisitaFacade().remove(vp);
+            }
+            performDestroy();
+            recreatePagination();
             recreateModel();
-            return "List";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
     }
 
@@ -291,6 +328,22 @@ public class PoiController implements Serializable {
 
     public void setDescripcionFotos(String descripcionFotos) {
         this.descripcionFotos = descripcionFotos;
+    }
+
+    public VisitaPoiFacade getVisitaFacade() {
+        return visitaFacade;
+    }
+
+    public void setVisitaFacade(VisitaPoiFacade visitaFacade) {
+        this.visitaFacade = visitaFacade;
+    }
+
+    public List<Imagen> getViewSelected() {
+        return viewSelected;
+    }
+
+    public void setViewSelected(List<Imagen> viewSelected) {
+        this.viewSelected = viewSelected;
     }
 
     @FacesConverter(forClass = Poi.class)
