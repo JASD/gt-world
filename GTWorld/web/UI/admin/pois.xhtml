@@ -101,6 +101,7 @@
                                 <pou:commandLink title="borrar" style="margin-left: 5px"
                                                  disabled="#{poiController.editing}"
                                                  action="#{poiController.prepareView}"
+                                                 update=":confirm_delete_poi"
                                                  oncomplete="confirmDeletePoi.show()">
                                     <pou:graphicImage value="resources/img/trash.png" />
                                 </pou:commandLink>

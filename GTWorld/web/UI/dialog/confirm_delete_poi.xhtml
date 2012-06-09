@@ -6,8 +6,10 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:component>
         <h:form id="confirm_delete_poi">
-            <pou:confirmDialog widgetVar="confirmDeletePoi" message="Confirmar Eliminado"
+            <pou:confirmDialog widgetVar="confirmDeletePoi" message="Confirmar Eliminado: 
+                               #{poiController.selected.nombrePoi} "
                                header="¿Desea Eliminar?" severity="alert">
+               
                  <pou:commandButton value="Aceptar"  oncomplete="confirmDeletePoi.hide()"  
                                     actionListener="#{poiController.destroyAndView}" 
                                  icon="borrar" update=":currentUI"/>  
