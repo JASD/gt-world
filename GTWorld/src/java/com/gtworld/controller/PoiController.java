@@ -191,6 +191,7 @@ public class PoiController implements Serializable {
                 current.getImagenList().add(img);
             }
             descripcionFotos = "";
+            setUploaded(new ArrayList<Imagen>());
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PoiUpdated"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
