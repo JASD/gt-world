@@ -1,14 +1,69 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:component>
+        <pou:layout style="height: 500px" widgetVar="lay" collapseTitle="cerrar"
+                    expandTitle="abrir">
+            <pou:ajax event="toggle" listener="#{tipoPoiController.closeEdit}" update="messages, tipos, edit" />
+            <pou:layoutUnit position="west" header="Editar Tipo" size="400" collapsible="true" 
+                            collapsed="true">
+                <pou:fieldset id="edit">
+                    <h:outputText value="Nombre " style="margin-right: 19px"/>
+                    <pou:inputText value="#{tipoPoiController.selected.nombreTipoPoi}">
+                        <f:validateLength maximum="100"/>
+                    </pou:inputText>
+                    <br />
+                    <br />
+                    <h:outputText value="Icono  " style="vertical-align: top; 
+                                  margin-right: 35px"/>
+                    <pou:fileUpload value="#{tipoPoiController.icono}"
+                                    mode="simple"/> 
+                    <br />
+                    <br />
+                    <pou:commandButton icon="save" title="Guardar" value="Guardar"
+                                       actionListener="#{tipoPoiController.update}"
+                                       ajax="false"/>
+                </pou:fieldset>
+            </pou:layoutUnit>
+            <pou:layoutUnit position="center">
+                <pou:fieldset legend="Tipos de POI" id="tipos" >
+                    <h:outputText value="Registros #{tipoPoiController.pagination.pageFirstItem + 1} - #{tipoPoiController.pagination.pageLastItem + 1} de #{tipoPoiController.pagination.itemsCount}"
+                                  style="font-size: 10px; padding-left: 25px; padding-right: 5px" rendered="#{tipoPoiController.items.rowCount > 0}"/>
+                    <br />
+                    <br />
+                    <pou:commandButton action="#{tipoPoiController.previous}" icon="back" 
+                                       rendered="#{tipoPoiController.pagination.hasPreviousPage}"
+                                       disabled="#{tipoPoiController.isEditing}"
+                                       update="tipos" title="Anterior"/>
+                    <pou:commandButton action="#{tipoPoiController.next}" icon="next"
+                                       disabled="#{tipoPoiController.isEditing}"
+                                       rendered="#{tipoPoiController.pagination.hasNextPage}"
+                                       update="tipos" title="Siguiente"/>
+                    <br />
+                    <br />
+                    <pou:dataGrid id="tipoSelect" var="tipo"  
+                                  value="#{tipoPoiController.items}" columns="4">  
+                        <pou:column>  
+                            <pou:panel id="pnl" header="#{tipo.nombreTipoPoi}" 
+                                       style="text-align:center" >
+
+                                <pou:graphicImage value="#{tipo.urlIconoPoi}" title="Icono"/>
+                                <pou:commandLink title="editar" style="margin-left: 25px"
+                                                 disabled="#{tipoPoiController.isEditing}"
+                                                 action="#{tipoPoiController.prepareEdit}"
+                                                 update=":currentUI:edit, :currentUI:tipos"
+                                                 oncomplete="lay.toggle('west');" >
+                                    <pou:graphicImage value="resources/img/pencil.png" />
+                                </pou:commandLink>
+                            </pou:panel>  
+                        </pou:column>  
+                    </pou:dataGrid>  
+                </pou:fieldset>
+            </pou:layoutUnit>
+        </pou:layout>
+    </ui:component>
 </html>

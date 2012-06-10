@@ -93,6 +93,13 @@ public class JsfUtil {
         context.getExternalContext().redirect(url);
     }
 
+    /**
+     * Método que guarda una imagen
+     *
+     * @param image
+     * @param path
+     * @return
+     */
     public static boolean saveImage(byte[] image, String path) {
         File file = new File(path);
         try {
@@ -107,5 +114,19 @@ public class JsfUtil {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public static boolean deleteImage(String path) {
+        File file = new File(path);
+        try {
+            if (file.delete()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 }

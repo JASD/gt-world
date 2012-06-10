@@ -38,8 +38,9 @@
                     <pou:menuitem value="Gestión de Usuarios">
 
                     </pou:menuitem>
-                    <pou:menuitem value="Gestión Tipos de POIs">
-
+                    <pou:menuitem value="Gestión Tipos de POIs" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="admin/tipos_pois" />
                     </pou:menuitem>
 
                 </pou:submenu>
@@ -92,7 +93,7 @@
 
 
         <h:form id="currentUI" style="min-height: 500px; margin-left: 50px; 
-                margin-right: 50px; margin-top: 10px">
+                margin-right: 50px; margin-top: 10px" enctype="multipart/form-data">
             <ui:include src="#{sessionController.currentUI}" />
             <pou:growl id="messages"/>
         </h:form>

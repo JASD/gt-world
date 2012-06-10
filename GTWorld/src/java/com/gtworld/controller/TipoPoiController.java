@@ -1,10 +1,10 @@
 package com.gtworld.controller;
 
-import com.gtworld.entity.TipoPoi;
 import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.controller.util.PaginationHelper;
+import com.gtworld.entity.Imagen;
+import com.gtworld.entity.TipoPoi;
 import com.gtworld.facade.TipoPoiFacade;
-
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -17,6 +17,10 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.servlet.ServletContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.ToggleEvent;
+import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "tipoPoiController")
 @SessionScoped
@@ -28,6 +32,8 @@ public class TipoPoiController implements Serializable {
     private com.gtworld.facade.TipoPoiFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private boolean isEditing;
+    private UploadedFile icono;
 
     public TipoPoiController() {
     }
@@ -62,9 +68,8 @@ public class TipoPoiController implements Serializable {
         return pagination;
     }
 
-    public String prepareList() {
+    public void prepareList() {
         recreateModel();
-        return "List";
     }
 
     public String prepareView() {
@@ -90,20 +95,46 @@ public class TipoPoiController implements Serializable {
         }
     }
 
+    public void closeEdit(ToggleEvent event) {
+        String status = event.getVisibility().name();
+        if (status.equals("VISIBLE") && !isEditing) {
+            setIsEditing(true); //forzar cierre de panel
+        }
+
+        if (status.equals("HIDDEN") && isEditing) {
+            setIsEditing(false);
+            current = null;
+        }
+    }
+
     public String prepareEdit() {
         current = (TipoPoi) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
-    public String update() {
+    public void update() {
+
+        if (icono != null && icono.getContentType().equals("image/png")) {
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String path = servletContext.getRealPath("/resources/poi_icon/").concat("\\");
+            if (JsfUtil.saveImage(icono.getContents(),
+                    path + icono.getFileName())) {
+                boolean borra = JsfUtil.deleteImage(path + 
+                        current.getUrlIconoPoi().substring(19));
+                if(!borra){
+                    //Logger :no se pudo borrar icono anterior
+                }    
+                current.setUrlIconoPoi("resources/poi_icon/" + icono.getFileName());
+            } else {
+                JsfUtil.addErrorMessage("Icono no válido");
+            }
+        }
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TipoPoiUpdated"));
-            return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
         }
     }
 
@@ -186,6 +217,22 @@ public class TipoPoiController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    }
+
+    public boolean isIsEditing() {
+        return isEditing;
+    }
+
+    public void setIsEditing(boolean isEditing) {
+        this.isEditing = isEditing;
+    }
+
+    public UploadedFile getIcono() {
+        return icono;
+    }
+
+    public void setIcono(UploadedFile icono) {
+        this.icono = icono;
     }
 
     @FacesConverter(forClass = TipoPoi.class)
