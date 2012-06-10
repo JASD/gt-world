@@ -20,8 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "VisitaUbicacion.findAll", query = "SELECT v FROM VisitaUbicacion v"),
     @NamedQuery(name = "VisitaUbicacion.findByIdUbicacion", query = "SELECT v FROM VisitaUbicacion v WHERE v.visitaUbicacionPK.idUbicacion = :idUbicacion"),
     @NamedQuery(name = "VisitaUbicacion.findByIdUsuario", query = "SELECT v FROM VisitaUbicacion v WHERE v.visitaUbicacionPK.idUsuario = :idUsuario"),
-    @NamedQuery(name = "VisitaUbicacion.findByFechaVisitaUbicacion", query = "SELECT v FROM VisitaUbicacion v WHERE v.visitaUbicacionPK.fechaVisitaUbicacion = :fechaVisitaUbicacion"),
-    @NamedQuery(name = "VisitaUbicacion.findByHoraVisitaUbicacion", query = "SELECT v FROM VisitaUbicacion v WHERE v.visitaUbicacionPK.horaVisitaUbicacion = :horaVisitaUbicacion")})
+    @NamedQuery(name = "VisitaUbicacion.findByFechaVisitaUbicacion", query = "SELECT v FROM VisitaUbicacion v WHERE v.visitaUbicacionPK.fechaVisitaUbicacion = :fechaVisitaUbicacion")})
 public class VisitaUbicacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -40,8 +39,8 @@ public class VisitaUbicacion implements Serializable {
         this.visitaUbicacionPK = visitaUbicacionPK;
     }
 
-    public VisitaUbicacion(long idUbicacion, String idUsuario, Date fechaVisitaUbicacion, Date horaVisitaUbicacion) {
-        this.visitaUbicacionPK = new VisitaUbicacionPK(idUbicacion, idUsuario, fechaVisitaUbicacion, horaVisitaUbicacion);
+    public VisitaUbicacion(long idUbicacion, String idUsuario, Date fechaVisitaUbicacion) {
+        this.visitaUbicacionPK = new VisitaUbicacionPK(idUbicacion, idUsuario, fechaVisitaUbicacion);
     }
 
     public VisitaUbicacionPK getVisitaUbicacionPK() {

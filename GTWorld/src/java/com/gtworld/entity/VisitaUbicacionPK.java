@@ -28,22 +28,16 @@ public class VisitaUbicacionPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_VISITA_UBICACION")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaVisitaUbicacion;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "HORA_VISITA_UBICACION")
-    @Temporal(TemporalType.TIME)
-    private Date horaVisitaUbicacion;
 
     public VisitaUbicacionPK() {
     }
 
-    public VisitaUbicacionPK(long idUbicacion, String idUsuario, Date fechaVisitaUbicacion, Date horaVisitaUbicacion) {
+    public VisitaUbicacionPK(long idUbicacion, String idUsuario, Date fechaVisitaUbicacion) {
         this.idUbicacion = idUbicacion;
         this.idUsuario = idUsuario;
         this.fechaVisitaUbicacion = fechaVisitaUbicacion;
-        this.horaVisitaUbicacion = horaVisitaUbicacion;
     }
 
     public long getIdUbicacion() {
@@ -70,21 +64,12 @@ public class VisitaUbicacionPK implements Serializable {
         this.fechaVisitaUbicacion = fechaVisitaUbicacion;
     }
 
-    public Date getHoraVisitaUbicacion() {
-        return horaVisitaUbicacion;
-    }
-
-    public void setHoraVisitaUbicacion(Date horaVisitaUbicacion) {
-        this.horaVisitaUbicacion = horaVisitaUbicacion;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) idUbicacion;
         hash += (idUsuario != null ? idUsuario.hashCode() : 0);
         hash += (fechaVisitaUbicacion != null ? fechaVisitaUbicacion.hashCode() : 0);
-        hash += (horaVisitaUbicacion != null ? horaVisitaUbicacion.hashCode() : 0);
         return hash;
     }
 
@@ -104,15 +89,12 @@ public class VisitaUbicacionPK implements Serializable {
         if ((this.fechaVisitaUbicacion == null && other.fechaVisitaUbicacion != null) || (this.fechaVisitaUbicacion != null && !this.fechaVisitaUbicacion.equals(other.fechaVisitaUbicacion))) {
             return false;
         }
-        if ((this.horaVisitaUbicacion == null && other.horaVisitaUbicacion != null) || (this.horaVisitaUbicacion != null && !this.horaVisitaUbicacion.equals(other.horaVisitaUbicacion))) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "com.gtworld.entity.VisitaUbicacionPK[ idUbicacion=" + idUbicacion + ", idUsuario=" + idUsuario + ", fechaVisitaUbicacion=" + fechaVisitaUbicacion + ", horaVisitaUbicacion=" + horaVisitaUbicacion + " ]";
+        return "com.gtworld.entity.VisitaUbicacionPK[ idUbicacion=" + idUbicacion + ", idUsuario=" + idUsuario + ", fechaVisitaUbicacion=" + fechaVisitaUbicacion + " ]";
     }
     
 }

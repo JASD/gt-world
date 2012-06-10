@@ -212,7 +212,6 @@ public class VisitaPoiController implements Serializable {
             key.setIdUsuario(values[0]);
             key.setIdPoi(Long.parseLong(values[1]));
             key.setFechaVisitaPoi(java.sql.Date.valueOf(values[2]));
-            key.setHoraVisitaPoi(java.sql.Date.valueOf(values[3]));
             return key;
         }
 
@@ -223,8 +222,6 @@ public class VisitaPoiController implements Serializable {
             sb.append(value.getIdPoi());
             sb.append(SEPARATOR);
             sb.append(value.getFechaVisitaPoi());
-            sb.append(SEPARATOR);
-            sb.append(value.getHoraVisitaPoi());
             return sb.toString();
         }
 

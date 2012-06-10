@@ -212,7 +212,6 @@ public class VisitaUbicacionController implements Serializable {
             key.setIdUbicacion(Long.parseLong(values[0]));
             key.setIdUsuario(values[1]);
             key.setFechaVisitaUbicacion(java.sql.Date.valueOf(values[2]));
-            key.setHoraVisitaUbicacion(java.sql.Date.valueOf(values[3]));
             return key;
         }
 
@@ -223,8 +222,6 @@ public class VisitaUbicacionController implements Serializable {
             sb.append(value.getIdUsuario());
             sb.append(SEPARATOR);
             sb.append(value.getFechaVisitaUbicacion());
-            sb.append(SEPARATOR);
-            sb.append(value.getHoraVisitaUbicacion());
             return sb.toString();
         }
 

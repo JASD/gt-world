@@ -41,7 +41,7 @@ public class Red implements Serializable {
     @Column(name = "DESCRIPCION_RED")
     private String descripcionRed;
     @Column(name = "FECHA_CREACION_RED")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacionRed;
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)

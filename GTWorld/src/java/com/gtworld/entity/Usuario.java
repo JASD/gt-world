@@ -54,7 +54,7 @@ public class Usuario implements Serializable {
     @Column(name = "CONTRASENA_USUARIO")
     private String contrasenaUsuario;
     @Column(name = "FECHA_INGRESO_USUARIO")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaIngresoUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private List<Poi> poiList;

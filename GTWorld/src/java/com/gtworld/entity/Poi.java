@@ -46,7 +46,7 @@ public class Poi implements Serializable {
     @Column(name = "URL_WEB_POI")
     private String urlWebPoi;
     @Column(name = "FECHA_CREACION_POI")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacionPoi;
     @Column(name = "PRIVACIDAD_POI")
     private Boolean privacidadPoi;

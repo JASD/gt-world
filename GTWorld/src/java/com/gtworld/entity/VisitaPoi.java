@@ -22,9 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "VisitaPoi.findByIdUsuario", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.idUsuario = :idUsuario"),
     @NamedQuery(name = "VisitaPoi.findByIdPoi", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.idPoi = :idPoi"),
     @NamedQuery(name = "VisitaPoi.findByFechaVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.fechaVisitaPoi = :fechaVisitaPoi"),
-    @NamedQuery(name = "VisitaPoi.findByHoraVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.horaVisitaPoi = :horaVisitaPoi"),
     @NamedQuery(name = "VisitaPoi.findByComentarioVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.comentarioVisitaPoi = :comentarioVisitaPoi"),
-    @NamedQuery(name = "VisitaPoi.findByLastFechaVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.idUsuario = :idUsuario ORDER BY v.visitaPoiPK.fechaVisitaPoi DESC, v.visitaPoiPK.horaVisitaPoi DESC"),})
+    @NamedQuery(name = "VisitaPoi.findByLastFechaVisitaPoi", query = "SELECT v FROM VisitaPoi v WHERE v.visitaPoiPK.idUsuario = :idUsuario ORDER BY v.visitaPoiPK.fechaVisitaPoi DESC"),})
 public class VisitaPoi implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,8 +46,8 @@ public class VisitaPoi implements Serializable {
         this.visitaPoiPK = visitaPoiPK;
     }
 
-    public VisitaPoi(String idUsuario, long idPoi, Date fechaVisitaPoi, Date horaVisitaPoi) {
-        this.visitaPoiPK = new VisitaPoiPK(idUsuario, idPoi, fechaVisitaPoi, horaVisitaPoi);
+    public VisitaPoi(String idUsuario, long idPoi, Date fechaVisitaPoi) {
+        this.visitaPoiPK = new VisitaPoiPK(idUsuario, idPoi, fechaVisitaPoi);
     }
 
     public VisitaPoiPK getVisitaPoiPK() {

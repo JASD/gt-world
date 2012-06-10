@@ -28,22 +28,16 @@ public class VisitaPoiPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHA_VISITA_POI")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaVisitaPoi;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "HORA_VISITA_POI")
-    @Temporal(TemporalType.TIME)
-    private Date horaVisitaPoi;
 
     public VisitaPoiPK() {
     }
 
-    public VisitaPoiPK(String idUsuario, long idPoi, Date fechaVisitaPoi, Date horaVisitaPoi) {
+    public VisitaPoiPK(String idUsuario, long idPoi, Date fechaVisitaPoi) {
         this.idUsuario = idUsuario;
         this.idPoi = idPoi;
         this.fechaVisitaPoi = fechaVisitaPoi;
-        this.horaVisitaPoi = horaVisitaPoi;
     }
 
     public String getIdUsuario() {
@@ -70,21 +64,12 @@ public class VisitaPoiPK implements Serializable {
         this.fechaVisitaPoi = fechaVisitaPoi;
     }
 
-    public Date getHoraVisitaPoi() {
-        return horaVisitaPoi;
-    }
-
-    public void setHoraVisitaPoi(Date horaVisitaPoi) {
-        this.horaVisitaPoi = horaVisitaPoi;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idUsuario != null ? idUsuario.hashCode() : 0);
         hash += (int) idPoi;
         hash += (fechaVisitaPoi != null ? fechaVisitaPoi.hashCode() : 0);
-        hash += (horaVisitaPoi != null ? horaVisitaPoi.hashCode() : 0);
         return hash;
     }
 
@@ -104,15 +89,13 @@ public class VisitaPoiPK implements Serializable {
         if ((this.fechaVisitaPoi == null && other.fechaVisitaPoi != null) || (this.fechaVisitaPoi != null && !this.fechaVisitaPoi.equals(other.fechaVisitaPoi))) {
             return false;
         }
-        if ((this.horaVisitaPoi == null && other.horaVisitaPoi != null) || (this.horaVisitaPoi != null && !this.horaVisitaPoi.equals(other.horaVisitaPoi))) {
-            return false;
-        }
+        
         return true;
     }
 
     @Override
     public String toString() {
-        return "com.gtworld.entity.VisitaPoiPK[ idUsuario=" + idUsuario + ", idPoi=" + idPoi + ", fechaVisitaPoi=" + fechaVisitaPoi + ", horaVisitaPoi=" + horaVisitaPoi + " ]";
+        return "com.gtworld.entity.VisitaPoiPK[ idUsuario=" + idUsuario + ", idPoi=" + idPoi + ", fechaVisitaPoi=" + fechaVisitaPoi + " ]";
     }
     
 }

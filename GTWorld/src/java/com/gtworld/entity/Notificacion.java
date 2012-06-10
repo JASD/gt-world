@@ -22,7 +22,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Notificacion.findByIdNotificacion", query = "SELECT n FROM Notificacion n WHERE n.idNotificacion = :idNotificacion"),
     @NamedQuery(name = "Notificacion.findByContenidoNotificacion", query = "SELECT n FROM Notificacion n WHERE n.contenidoNotificacion = :contenidoNotificacion"),
     @NamedQuery(name = "Notificacion.findByFechaNotificacion", query = "SELECT n FROM Notificacion n WHERE n.fechaNotificacion = :fechaNotificacion"),
-    @NamedQuery(name = "Notificacion.findByHoraNotificacion", query = "SELECT n FROM Notificacion n WHERE n.horaNotificacion = :horaNotificacion"),
     @NamedQuery(name = "Notificacion.findByEstadoNotificacion", query = "SELECT n FROM Notificacion n WHERE n.estadoNotificacion = :estadoNotificacion"),
     @NamedQuery(name = "Notificacion.findByUsuarioEstadoNotificacion", query = "SELECT n FROM Notificacion n WHERE (n.estadoNotificacion = true) AND (n.idUsuario = :idUsuario) ORDER BY n.fechaNotificacion DESC")})
 public class Notificacion implements Serializable {
@@ -39,11 +38,8 @@ public class Notificacion implements Serializable {
     @Column(name = "CONTENIDO_NOTIFICACION")
     private String contenidoNotificacion;
     @Column(name = "FECHA_NOTIFICACION")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNotificacion;
-    @Column(name = "HORA_NOTIFICACION")
-    @Temporal(TemporalType.TIME)
-    private Date horaNotificacion;
     @Column(name = "ESTADO_NOTIFICACION")
     private Boolean estadoNotificacion;
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
@@ -87,14 +83,6 @@ public class Notificacion implements Serializable {
 
     public void setFechaNotificacion(Date fechaNotificacion) {
         this.fechaNotificacion = fechaNotificacion;
-    }
-
-    public Date getHoraNotificacion() {
-        return horaNotificacion;
-    }
-
-    public void setHoraNotificacion(Date horaNotificacion) {
-        this.horaNotificacion = horaNotificacion;
     }
 
     public Boolean getEstadoNotificacion() {

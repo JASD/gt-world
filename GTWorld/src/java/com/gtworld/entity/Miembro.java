@@ -26,7 +26,7 @@ public class Miembro implements Serializable {
     @EmbeddedId
     protected MiembroPK miembroPK;
     @Column(name = "FECHA_MIEMBRO")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaMiembro;
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", insertable = false, updatable = false)
     @ManyToOne(optional = false)
