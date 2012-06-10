@@ -52,7 +52,7 @@ public class TipoPoiController implements Serializable {
 
     public PaginationHelper getPagination() {
         if (pagination == null) {
-            pagination = new PaginationHelper(10) {
+            pagination = new PaginationHelper(12) {
 
                 @Override
                 public int getItemsCount() {
@@ -78,21 +78,34 @@ public class TipoPoiController implements Serializable {
         return "View";
     }
 
-    public String prepareCreate() {
+    public void prepareCreate() {
         current = new TipoPoi();
         selectedItemIndex = -1;
-        return "Create";
     }
 
-    public String create() {
-        try {
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TipoPoiCreated"));
-            return prepareCreate();
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+    public void create() {
+
+        if (icono != null
+                && icono.getContentType().equals("image/png")) {
+
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String path = servletContext.getRealPath("/resources/poi_icon/").concat("\\");
+            if (JsfUtil.saveImage(icono.getContents(),
+                    path + icono.getFileName())) {
+                current.setUrlIconoPoi("resources/poi_icon/" + icono.getFileName());
+                try {
+                    getFacade().create(current);
+                    JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TipoPoiCreated"));
+                } catch (Exception e) {
+                    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+                }
+            } else {
+                JsfUtil.addErrorMessage("Ocurrio un Error al Guardar Icono");
+            }
+        }else{
+            JsfUtil.addErrorMessage("Icono no válido");
         }
+
     }
 
     public void closeEdit(ToggleEvent event) {
@@ -120,11 +133,11 @@ public class TipoPoiController implements Serializable {
             String path = servletContext.getRealPath("/resources/poi_icon/").concat("\\");
             if (JsfUtil.saveImage(icono.getContents(),
                     path + icono.getFileName())) {
-                boolean borra = JsfUtil.deleteImage(path + 
-                        current.getUrlIconoPoi().substring(19));
-                if(!borra){
+                boolean borra = JsfUtil.deleteImage(path
+                        + current.getUrlIconoPoi().substring(19));
+                if (!borra) {
                     //Logger :no se pudo borrar icono anterior
-                }    
+                }
                 current.setUrlIconoPoi("resources/poi_icon/" + icono.getFileName());
             } else {
                 JsfUtil.addErrorMessage("Icono no válido");

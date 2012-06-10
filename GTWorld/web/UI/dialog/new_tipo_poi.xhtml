@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:component>
+        <h:form id="new_tipo_poi" enctype="multipart/form-data">
+            <pou:dialog widgetVar="newType" 
+                        header="Nuevo Tipo" showEffect="fade" 
+                        onHide="#{tipoPoiController.prepareList()}"
+                        hideEffect="fade" modal="true" resizable="false">
+
+                <pou:ajax event="close" update=":currentUI"/>  
+
+                <h:outputText value="Nombre " style="margin-right: 19px"/>
+                <pou:inputText required="true" 
+                               value="#{tipoPoiController.selected.nombreTipoPoi}">
+                    <f:validateLength maximum="100"/>
+                </pou:inputText>
+                <br />
+                <br />
+                <h:outputText value="Icono  " style="vertical-align: top; 
+                              margin-right: 35px"/>
+                <pou:fileUpload value="#{tipoPoiController.icono}"
+                                mode="simple"
+                                required="true"/> 
+                <br />
+                <br />
+                <pou:commandButton icon="save" title="Guardar" value="Guardar"
+                                   actionListener="#{tipoPoiController.create}"
+                                   oncomplete="newType.hide();" 
+                                   ajax="false"/>
+
+            </pou:dialog>
+        </h:form>
+    </ui:component>
+</html>

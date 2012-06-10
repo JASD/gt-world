@@ -33,6 +33,10 @@
                 <pou:fieldset legend="Tipos de POI" id="tipos" >
                     <h:outputText value="Registros #{tipoPoiController.pagination.pageFirstItem + 1} - #{tipoPoiController.pagination.pageLastItem + 1} de #{tipoPoiController.pagination.itemsCount}"
                                   style="font-size: 10px; padding-left: 25px; padding-right: 5px" rendered="#{tipoPoiController.items.rowCount > 0}"/>
+                    <pou:commandButton value="Nuevo" style="margin-left: 25px" 
+                                       icon="add" update=":new_tipo_poi" 
+                                       action="#{tipoPoiController.prepareCreate}"
+                                       oncomplete="newType.show();"/>
                     <br />
                     <br />
                     <pou:commandButton action="#{tipoPoiController.previous}" icon="back" 

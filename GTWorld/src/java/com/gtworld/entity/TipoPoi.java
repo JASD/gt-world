@@ -27,9 +27,7 @@ public class TipoPoi implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_TIPO_POI")
+    @Column(name = "ID_TIPO_POI", insertable = false, nullable = false, updatable = true)
     private Long idTipoPoi;
     @Size(max = 50)
     @Column(name = "NOMBRE_TIPO_POI")

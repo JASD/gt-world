@@ -28,3 +28,7 @@
 .borrar{
     background-image: url(../icon/trash.png) !important;
 }
+
+.add{
+    background-image: url(../icon/add.png) !important;
+}
