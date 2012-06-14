@@ -20,7 +20,7 @@
                              actionListener="#{sessionController.updateUI}">
                 <pou:graphicImage value="resources/img/logo_gtworld.png" 
                                   style="margin-left: 100px; margin-top: 20px"/>
-                 <f:attribute name="uiName" value="home/main" />
+                <f:attribute name="uiName" value="home/main" />
             </pou:commandLink>
 
             <pou:menubar style=" display: inline-table; 
@@ -33,10 +33,11 @@
                     </pou:menuitem>
                     <pou:menuitem value="Gestión de Redes" update=":currentUI" 
                                   actionListener="#{sessionController.updateUI}">
-                        <f:attribute name="uiName" value="home/main" />
+                        <f:attribute name="uiName" value="admin/redes" />
                     </pou:menuitem>
-                    <pou:menuitem value="Gestión de Usuarios">
-
+                    <pou:menuitem value="Gestión de Usuarios" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="admin/usuarios" />
                     </pou:menuitem>
                     <pou:menuitem value="Gestión Tipos de POIs" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
@@ -45,42 +46,51 @@
 
                 </pou:submenu>
                 <pou:submenu label="  POIs" icon="pois">
-                    <pou:menuitem value="Crear POI">
-
+                    <pou:menuitem value="Crear POI" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="poi/crear_poi" />
                     </pou:menuitem>
-                    <pou:menuitem value="Gestionar POIs">
-
+                    <pou:menuitem value="Gestionar POIs" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="poi/gestionar_poi" />
                     </pou:menuitem>
 
                 </pou:submenu>
                 <pou:submenu label="  Mapas" icon="maps">
-                    <pou:menuitem value="Mi Mapa">
-
+                    <pou:menuitem value="Mi Mapa" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="maps/mi_mapa" />
                     </pou:menuitem>
-                    <pou:menuitem value="Mi Red">
-
+                    <pou:menuitem value="Mi Red" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="maps/mi_red" />
                     </pou:menuitem>
 
                 </pou:submenu>
                 <pou:submenu label="  Mi Red" icon="red">
-                    <pou:menuitem value="Crear Red">
-
+                    <pou:menuitem value="Crear Red" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="red/crear_red" />
                     </pou:menuitem>
-                    <pou:menuitem value="Gestionar Redes">
-
+                    <pou:menuitem value="Gestionar Redes" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="red/gestionar_redes" />
                     </pou:menuitem>
-                    <pou:menuitem value="Gestionar Miembros">
-
+                    <pou:menuitem value="Gestionar Miembros" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="red/gestionar_miembros" />
                     </pou:menuitem>
 
                 </pou:submenu>
                 <pou:submenu label="  #{sessionController.user.nombreUsuario}"
                              icon="user">
-                    <pou:menuitem value="Mi Cuenta">
-
+                    <pou:menuitem value="Mi Cuenta" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="user/cuenta" />
                     </pou:menuitem>
-                    <pou:menuitem value="Notificaciones">
-
+                    <pou:menuitem value="Notificaciones" update=":currentUI"
+                                  actionListener="#{sessionController.updateUI}">
+                        <f:attribute name="uiName" value="user/notificaciones" />
                     </pou:menuitem>
                     <pou:menuitem value="Salir" 
                                   actionListener="#{sessionController.logout}">
@@ -119,11 +129,11 @@
                 <pou:graphicImage value="resources/img/help.png"/>
             </pou:commandLink>
         </h:form>
-        
-         <ui:include src="UI/dialog/gallery.xhtml" />
-         <ui:include src="UI/dialog/poi_map.xhtml" />
-         <ui:include src="UI/dialog/confirm_delete_poi.xhtml" />
-         <ui:include src="UI/dialog/new_tipo_poi.xhtml" />
+
+        <ui:include src="UI/dialog/gallery.xhtml" />
+        <ui:include src="UI/dialog/poi_map.xhtml" />
+        <ui:include src="UI/dialog/confirm_delete_poi.xhtml" />
+        <ui:include src="UI/dialog/new_tipo_poi.xhtml" />
     </h:body>
 
 </html>
