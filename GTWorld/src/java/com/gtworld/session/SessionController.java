@@ -33,6 +33,7 @@ import org.primefaces.model.map.Marker;
 public class SessionController implements Serializable {
 
     private Usuario user;
+    private Usuario newUser;
     private String idUser;
     private String passUser;
     private String currentUI;
@@ -83,7 +84,7 @@ public class SessionController implements Serializable {
      * Verifica si la Sesión se encuentra activa
      */
     public void checkLogin() {
-        if (getUser() != null) {
+        if (user != null) {
             try {
                 JsfUtil.redirect("faces/home.xhtml");
             } catch (IOException ex) {
@@ -96,7 +97,7 @@ public class SessionController implements Serializable {
      * Verifica si la sesión ha expirado
      */
     public void checkLogout() {
-        if (getUser() == null) {
+        if (user == null) {
             try {
                 JsfUtil.redirect("faces/index.xhtml");
             } catch (IOException ex) {
@@ -168,14 +169,14 @@ public class SessionController implements Serializable {
     public void createUser() {
 
         Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-        Matcher m = p.matcher(getUser().getEmailUsuario());
+        Matcher m = p.matcher(getNewUser().getEmailUsuario());
         boolean matchFound = m.matches();
         if (!matchFound) {
             JsfUtil.addErrorMessage("Email Incorrecto");
         } else {
             Calendar calendar = new GregorianCalendar();
-            getUser().setFechaIngresoUsuario(calendar.getTime());
-            getUser().setTipoUsuario(false);
+            getNewUser().setFechaIngresoUsuario(calendar.getTime());
+            getNewUser().setTipoUsuario(false);
             Notificacion nueva = new Notificacion();
             nueva.setEstadoNotificacion(true);
             nueva.setIdUsuario(user);
@@ -185,9 +186,10 @@ public class SessionController implements Serializable {
                     + " con éxito, empieza a descubrir y explorar tus Puntos"
                     + " de Interés!");
             try {
-                getUsuarioFacade().create(user);
+                getUsuarioFacade().create(newUser);
                 getNotificacionFacade().create(nueva);
-                getUser().getNotificacionList().add(nueva);
+                getNewUser().getNotificacionList().add(nueva);
+                setUser(newUser);
                 Thread.sleep(2000);
                 setCurrentUI("UI/home/main.xhtml");
                 JsfUtil.redirect("faces/home.xhtml");
@@ -208,7 +210,7 @@ public class SessionController implements Serializable {
      * Prepara la creación de un nuevo usuario
      */
     public void prepareCreate() {
-        setUser(new Usuario());
+        setNewUser(new Usuario());
     }
 
     /**
@@ -364,5 +366,13 @@ public class SessionController implements Serializable {
 
     public void setCenterMap(String centerMap) {
         this.centerMap = centerMap;
+    }
+
+    public Usuario getNewUser() {
+        return newUser;
+    }
+
+    public void setNewUser(Usuario newUser) {
+        this.newUser = newUser;
     }
 }
