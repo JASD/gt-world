@@ -14,7 +14,6 @@
         <pou:ajaxStatus id="loading" style="display: inline; float: right;
                         margin-right: 200px">
             <f:facet name="start">
-                <h:outputText value="Creando Cuenta ..." style="font-family: verdana"/>
                 <h:graphicImage value="resources/img/loading_circle.gif" />
             </f:facet>
             <f:facet name="complete">  
@@ -31,7 +30,7 @@
                                   style="margin-left: 100px; margin-top: 10px"/>
             </h:column>
             <h:column>
-                <pou:panel id="login" style="display: inline-block; 
+                <pou:panel id="register" style="display: inline-block; 
                            position: absolute; margin-left: 100px; margin-top: 10px">
                     <h:outputLabel value="Crear Cuenta" 
                                    style="font-weight: bolder"/>
@@ -39,39 +38,40 @@
                     <h:outputLabel value="Usuario:" />
                     <pou:inputText id="name" style="margin-left: 30px"  
                                    maxlength="10" required="true" label="Usuario"
-                                   value="#{sessionController.user.idUsuario}"/>
+                                   value="#{sessionController.newUser.idUsuario}"/>
                     <br /><br />
                     <h:outputLabel value="Nombres:" />
                     <pou:inputText id="names" style="margin-left: 20px" required="true"
                                    maxlength="50" label="Nombres"
-                                   value="#{sessionController.user.nombreUsuario}"/>
+                                   value="#{sessionController.newUser.nombreUsuario}"/>
                     <br /><br />
                     <h:outputLabel value="Apellidos:" />
                     <pou:inputText id="last" style="margin-left: 20px" required="true"
                                    maxlength="50" label="Apellidos"
-                                   value="#{sessionController.user.apellidoUsuario}"/>
+                                   value="#{sessionController.newUser.apellidoUsuario}"/>
                     <br /><br />
                     <h:outputLabel value="Correo: " />
                     <pou:inputText id="mail" style="margin-left: 30px" required="true"
                                    maxlength="50" label="Correo"
-                                   value="#{sessionController.user.emailUsuario}"/>
+                                   value="#{sessionController.newUser.emailUsuario}"/>
                     <br /><br />
                     <h:outputLabel value="Contraseña:" />
                     <pou:password id="pass1" style="margin-left: 10px" match="pass2"
                                   feedback="true" weakLabel="bajo" goodLabel="medio"
                                   strongLabel="excelente" promptLabel="Ingrese Contraseña"
-                                  value="#{sessionController.user.contrasenaUsuario}"
+                                  value="#{sessionController.newUser.contrasenaUsuario}"
                                   required="true" maxlength="15" label="Contraseña"/>
                     <br /><br />
                     <h:outputLabel value="Confirmar:" />
                     <pou:password id="pass2" style="margin-left: 17px" required="true"
                                   maxlength="15" validatorMessage="Contraseñas no coinciden"
-                                  value="#{sessionController.user.contrasenaUsuario}"
+                                  value="#{sessionController.newUser.contrasenaUsuario}"
                                   label="Confirmar"/>
                     <br /><br />
-
-                    <pou:commandButton value="Crear" update="login"
+                    
+                    <pou:commandButton value="Crear" update="register"
                                        actionListener="#{sessionController.createUser}"/>
+                    <pou:growl showDetail="false"/>
                     <br />
                 </pou:panel>
             </h:column>
