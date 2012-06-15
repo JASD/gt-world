@@ -46,16 +46,15 @@
                         <f:validateLength maximum="500" />
                     </pou:inputTextarea>
 
+                    <pou:commandButton icon="save" title="Guardar" value="Guardar"
+                                       actionListener="#{createPOIController.savePoi}"
+                                       update=":currentUI, new_poi" 
+                                       oncomplete="markerAddComplete();">
+                        <f:attribute name="user" value="#{sessionController.user}" />
+                    </pou:commandButton>
+                    <pou:commandButton icon="cancelar" title="Cancelar" value="Cancelar"
+                                       onclick="return cancel()" />
                 </pou:panelGrid>
-                <br />
-                <pou:commandButton icon="save" title="Guardar" value="Guardar"
-                                   actionListener="#{createPOIController.savePoi}"
-                                   update=":currentUI, new_poi" oncomplete="markerAddComplete();">
-                    <f:attribute name="user" value="#{sessionController.user}" />
-                </pou:commandButton>
-                <pou:commandButton icon="cancelar" title="Cancelar" value="Cancelar"
-                                   onclick="return cancel()" />
-
                 <h:inputHidden id="lat" value="#{createPOIController.lat}" />  
                 <h:inputHidden id="lng" value="#{createPOIController.lng}" />
             </pou:dialog>

@@ -115,6 +115,13 @@
                                                  oncomplete="lay.toggle('west');" >
                                     <pou:graphicImage value="resources/img/pencil.png" />
                                 </pou:commandLink>
+                                <pou:commandLink title="Información" style="margin-left: 5px"
+                                                 disabled="#{poiController.editing}"
+                                                 action="#{poiController.prepareView}"
+                                                 update=":poi_info"
+                                                 oncomplete="poiInfo.show()" >
+                                    <pou:graphicImage value="resources/img/info.png" />
+                                </pou:commandLink>
                                 <pou:commandLink title="borrar" style="margin-left: 5px"
                                                  disabled="#{poiController.editing}"
                                                  action="#{poiController.prepareView}"

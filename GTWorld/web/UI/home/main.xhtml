@@ -50,7 +50,7 @@
                                     <br />
                                     <h:outputText value="Fecha visita: "/>
                                     <h:outputText value="#{sessionController.selectedMarker.data.visitaPoiPK.fechaVisitaPoi}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="CST"/>
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-06:00"/>
                                     </h:outputText>
                                     <br />
                                     <h:outputText value="#{sessionController.selectedMarker.data.comentarioVisitaPoi}"/>
