@@ -141,4 +141,8 @@ public abstract class AbstractFacade<T> {
         cont = q.getResultList().size();
         return q.getResultList();
     }
+
+    public int getCont() {
+        return cont;
+    }
 }

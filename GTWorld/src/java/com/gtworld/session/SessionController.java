@@ -87,6 +87,8 @@ public class SessionController implements Serializable {
      */
     public void logout() {
         setUser(null);
+        setPagination(null);
+        items = null;
         try {
             JsfUtil.redirect("index.xhtml");
         } catch (IOException ex) {
@@ -193,7 +195,6 @@ public class SessionController implements Serializable {
             getNewUser().setTipoUsuario(false);
             Notificacion nueva = new Notificacion();
             nueva.setEstadoNotificacion(true);
-            nueva.setIdUsuario(user);
             nueva.setTituloNotificacion("Bienvenido a GTWorld!");
             nueva.setFechaNotificacion(calendar.getTime());
             nueva.setContenidoNotificacion("Tu cuenta de GTWorld ha sido creada"
@@ -201,6 +202,7 @@ public class SessionController implements Serializable {
                     + " de Interés!");
             try {
                 getUsuarioFacade().create(newUser);
+                nueva.setIdUsuario(newUser);
                 getNotificacionFacade().create(nueva);
                 getNewUser().getNotificacionList().add(nueva);
                 setUser(newUser);
@@ -409,7 +411,7 @@ public class SessionController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getPoiFacade().count();
+                    return getPoiFacade().getCont();
                 }
 
                 @Override
