@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:component>
+        <h:form prependId="false" id="new_poi">
+            <pou:dialog widgetVar="newPoi" 
+                        header="Nuevo POI" showEffect="fade" 
+                        hideEffect="fade" resizable="false">
+
+                <pou:panelGrid columns="4">
+                    <h:outputText value="Nombre" />
+                    <pou:inputText value="#{createPOIController.nuevo.nombrePoi}">
+                        <f:validateLength maximum="100"/>
+                    </pou:inputText>
+
+                    <h:outputText value="Público" />
+                    <pou:selectBooleanCheckbox value="#{createPOIController.nuevo.privacidadPoi}" /> 
+
+                    <h:outputText value="Tipo"/>
+                    <pou:autoComplete forceSelection="true"
+                                      value="#{createPOIController.nuevo.idTipoPoi}" 
+                                      maxResults="5"
+                                      completeMethod="#{tipoPoiController.autocomplete}" 
+                                      scrollHeight="200" 
+                                      var ="t" itemLabel="#{t}" itemValue="#{t}"
+                                      converter="#{tipoPoiControllerConverter}" >
+                        <pou:column>  
+                            <pou:graphicImage value="#{t.urlIconoPoi}" width="20" height="20"/>  
+                        </pou:column>  
+                        <pou:column> 
+                            #{t.nombreTipoPoi}  
+                        </pou:column>  
+                    </pou:autoComplete>
+
+                    <h:outputText value="URL"/>
+                    <pou:inputText value="#{createPOIController.nuevo.urlWebPoi}">
+                        <f:validateLength maximum="100"/>
+                    </pou:inputText>
+
+                    <h:outputText value="Descripción" />
+                    <pou:inputTextarea value="#{createPOIController.nuevo.descripcionPoi}">
+                        <f:validateLength maximum="500" />
+                    </pou:inputTextarea>
+
+                    <h:outputText value="Descripción Fotos"/>
+                    <pou:inputTextarea value="#{createPOIController.descripcionFotos}">
+                        <f:validateLength maximum="500" />
+                    </pou:inputTextarea>
+                </pou:panelGrid>
+
+                <br />
+                <h:outputText value="Agregar Fotos" style="vertical-align: top"/>
+                <pou:fileUpload fileUploadListener="#{createPOIController.poiImageUpload}"  
+                                mode="advanced"  
+                                update=":currentUI:messages"   
+                                multiple="true"  
+                                sizeLimit="1048576"   
+                                allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                label="Examinar"
+                                uploadLabel="Subir"
+                                cancelLabel="Cancelar"
+                                invalidFileMessage="Extensión de Archivo Incorrecta"
+                                invalidSizeMessage="La imagen excede el máximo tamaño soportado" />
+
+                <br />
+                <pou:commandButton icon="save" title="Guardar" value="Guardar"
+                                   actionListener="#{createPOIController.savePoi}"
+                                   update=":currentUI"/>
+
+                <h:inputHidden id="lat" value="#{createPOIController.lat}" />  
+                <h:inputHidden id="lng" value="#{createPOIController.lng}" />
+            </pou:dialog>
+        </h:form>
+    </ui:component>
+</html>

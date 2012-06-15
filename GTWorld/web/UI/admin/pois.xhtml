@@ -16,20 +16,38 @@
                     <pou:inputText value="#{poiController.selected.nombrePoi}">
                         <f:validateLength maximum="100"/>
                     </pou:inputText>
+                    <h:outputText value="Público " style="margin-right: 5px; margin-left: 20px; 
+                                  vertical-align: top"/>
+                    <pou:selectBooleanCheckbox value="#{poiController.selected.privacidadPoi}" />
                     <br />
                     <br />
                     <h:outputText value="Tipo " style="margin-right: 43px; vertical-align: top"/>
-
-                    <pou:selectOneMenu value="#{poiController.selected.idTipoPoi}" 
-                                       effect="fade" style="width: 150px">
-                        <f:selectItems value="#{tipoPoiController.itemsAvailableSelectOne}"/>
-                    </pou:selectOneMenu>
+                    <pou:autoComplete forceSelection="true"
+                                      value="#{poiController.selected.idTipoPoi}" 
+                                      maxResults="5"
+                                      completeMethod="#{tipoPoiController.autocomplete}" 
+                                      scrollHeight="200" 
+                                      var ="t" itemLabel="#{t}" itemValue="#{t}"
+                                      converter="#{tipoPoiControllerConverter}" >
+                        <pou:column>  
+                            <pou:graphicImage value="#{t.urlIconoPoi}" width="20" height="20"/>  
+                        </pou:column>  
+                        <pou:column> 
+                            #{t.nombreTipoPoi}  
+                        </pou:column>  
+                    </pou:autoComplete>
                     <br />
                     <br />
                     <h:outputText value="Descripción " style="vertical-align: top"/>
                     <pou:inputTextarea value="#{poiController.selected.descripcionPoi}">
                         <f:validateLength maximum="500" />
                     </pou:inputTextarea>
+                    <br />
+                    <br />
+                    <h:outputText value="URL " style="margin-right: 45px"/>
+                    <pou:inputText value="#{poiController.selected.urlWebPoi}">
+                        <f:validateLength maximum="100"/>
+                    </pou:inputText>
                     <br />
                     <br />
                     <h:outputText value="Agregar Fotos" style="vertical-align: top"/>
@@ -45,12 +63,11 @@
                                     invalidFileMessage="Extensión de Archivo Incorrecta"
                                     invalidSizeMessage="La imagen excede el máximo tamaño soportado" />
                     <br />
-                    <br />
+
                     <h:outputText value="Descripción Fotos " style="vertical-align: top"/>
                     <pou:inputTextarea value="#{poiController.descripcionFotos}">
                         <f:validateLength maximum="500" />
                     </pou:inputTextarea>
-                    <br />
                     <br />
                     <pou:commandButton icon="save" title="Guardar" value="Guardar"
                                        actionListener="#{poiController.update}"

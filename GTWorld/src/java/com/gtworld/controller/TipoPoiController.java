@@ -6,6 +6,8 @@ import com.gtworld.entity.Imagen;
 import com.gtworld.entity.TipoPoi;
 import com.gtworld.facade.TipoPoiFacade;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -231,7 +233,20 @@ public class TipoPoiController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-
+    
+    public SelectItem[] getItemsSelect() {
+        return JsfUtil.getSelectItems(ejbFacade.findAll());
+    }
+    
+    public List<TipoPoi> autocomplete(String query) {
+        List<TipoPoi> sugerencias = new ArrayList<TipoPoi>();
+        for (TipoPoi x : ejbFacade.findAll()) {
+            if (x.getNombreTipoPoi().toLowerCase().startsWith(query)) {
+                sugerencias.add(x);
+            }
+        }
+        return sugerencias;
+    }
     public boolean isIsEditing() {
         return isEditing;
     }
