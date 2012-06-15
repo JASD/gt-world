@@ -32,9 +32,7 @@ public class Poi implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_POI")
+    @Column(name = "ID_POI", insertable = false, nullable = false, updatable = true)
     private Long idPoi;
     @Size(max = 100)
     @Column(name = "NOMBRE_POI")

@@ -6,9 +6,15 @@ package com.gtworld.maps;
 
 import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.entity.Poi;
+import com.gtworld.entity.Ubicacion;
+import com.gtworld.entity.Usuario;
 import com.gtworld.facade.ImagenFacade;
 import com.gtworld.facade.PoiFacade;
+import com.gtworld.facade.UbicacionFacade;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,6 +36,8 @@ public class CreatePOI implements Serializable {
     private com.gtworld.facade.PoiFacade ejbFacade;
     @EJB
     private com.gtworld.facade.ImagenFacade imagenFacade;
+     @EJB
+    private com.gtworld.facade.UbicacionFacade ubicaFacade;
     private MapModel pois;
     private Marker selectedMarker;
     private Poi nuevo;
@@ -41,24 +49,30 @@ public class CreatePOI implements Serializable {
         pois = new DefaultMapModel();
         nuevo = new Poi();
     }
+   
     
-     public void addMarker(ActionEvent actionEvent) {  
-        Marker marker = new Marker(new LatLng(lat, lng), "es de ver");  
-        pois.addOverlay(marker);  
-          
-        JsfUtil.addSuccessMessage("God");  
-    }
-     
-    public void close(){
+    public void savePoi(ActionEvent event){
         
-    }
-
-    public void poiImageUpload(){
-    
-    }
-    
-    public void savePoi(){
-    
+        Usuario user = (Usuario) event.getComponent().getAttributes().get("user");
+        //Para futuras versiones se debe comprobar si ya existe ubicación
+        Ubicacion ubc = new Ubicacion();
+        ubc.setLatitudUbicacion(lat);
+        ubc.setLongitudUbicacion(lng);
+        Calendar calendar = new GregorianCalendar();
+        try {
+            getUbicaFacade().create(ubc);
+            nuevo.setFechaCreacionPoi(calendar.getTime());
+            nuevo.setIdUbicacion(ubc);
+            nuevo.setIdUsuario(user);
+            getEjbFacade().create(nuevo);
+            Marker marker = new Marker(new LatLng(lat, lng), nuevo.getNombrePoi(), nuevo,
+                            nuevo.getIdTipoPoi().getUrlIconoPoi());  
+            pois.addOverlay(marker);  
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PoiCreated"));
+            nuevo = new Poi();
+        } catch (Exception e){
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
     }
     public PoiFacade getEjbFacade() {
         return ejbFacade;
@@ -66,6 +80,10 @@ public class CreatePOI implements Serializable {
 
     public ImagenFacade getImagenFacade() {
         return imagenFacade;
+    }
+
+    public UbicacionFacade getUbicaFacade() {
+        return ubicaFacade;
     }
 
     public MapModel getPois() {

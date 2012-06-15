@@ -29,23 +29,21 @@
                     newPoi.show();
                 }     
             }  
-  
+            
             function markerAddComplete() {  
-                var title = document.getElementById('title');  
-                currentMarker.setTitle(title.value);  
-                title.value = "";  
   
                 currentMarker = null;  
-                dlg.hide();  
-            }  
-  
+                newPoi.hide();  
+            }
+            
             function cancel() {  
-                dlg.hide();  
+                newPoi.hide();  
                 currentMarker.setMap(null);  
                 currentMarker = null;  
   
                 return false;  
             }  
+            
             function findMe() {
                 navigator.geolocation.getCurrentPosition(
                 function(position) {

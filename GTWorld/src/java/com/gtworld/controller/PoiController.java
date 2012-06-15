@@ -129,14 +129,12 @@ public class PoiController implements Serializable {
         return "Create";
     }
 
-    public String create() {
+    public void create() {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PoiCreated"));
-            return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
         }
     }
 

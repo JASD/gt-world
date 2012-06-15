@@ -27,9 +27,7 @@ public class Ubicacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_UBICACION")
+    @Column(name = "ID_UBICACION", insertable = false, nullable = false, updatable = true)
     private Long idUbicacion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "LATITUD_UBICACION")

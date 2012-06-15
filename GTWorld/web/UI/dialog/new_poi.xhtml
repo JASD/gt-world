@@ -9,7 +9,7 @@
         <h:form prependId="false" id="new_poi">
             <pou:dialog widgetVar="newPoi" 
                         header="Nuevo POI" showEffect="fade" 
-                        hideEffect="fade" resizable="false">
+                        hideEffect="fade" resizable="false" closable="false">
 
                 <pou:panelGrid columns="4">
                     <h:outputText value="Nombre" />
@@ -46,30 +46,15 @@
                         <f:validateLength maximum="500" />
                     </pou:inputTextarea>
 
-                    <h:outputText value="Descripción Fotos"/>
-                    <pou:inputTextarea value="#{createPOIController.descripcionFotos}">
-                        <f:validateLength maximum="500" />
-                    </pou:inputTextarea>
                 </pou:panelGrid>
-
-                <br />
-                <h:outputText value="Agregar Fotos" style="vertical-align: top"/>
-                <pou:fileUpload fileUploadListener="#{createPOIController.poiImageUpload}"  
-                                mode="advanced"  
-                                update=":currentUI:messages"   
-                                multiple="true"  
-                                sizeLimit="1048576"   
-                                allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                                label="Examinar"
-                                uploadLabel="Subir"
-                                cancelLabel="Cancelar"
-                                invalidFileMessage="Extensión de Archivo Incorrecta"
-                                invalidSizeMessage="La imagen excede el máximo tamaño soportado" />
-
                 <br />
                 <pou:commandButton icon="save" title="Guardar" value="Guardar"
                                    actionListener="#{createPOIController.savePoi}"
-                                   update=":currentUI"/>
+                                   update=":currentUI, new_poi" oncomplete="markerAddComplete();">
+                    <f:attribute name="user" value="#{sessionController.user}" />
+                </pou:commandButton>
+                <pou:commandButton icon="cancelar" title="Cancelar" value="Cancelar"
+                                   onclick="return cancel()" />
 
                 <h:inputHidden id="lat" value="#{createPOIController.lat}" />  
                 <h:inputHidden id="lng" value="#{createPOIController.lng}" />
