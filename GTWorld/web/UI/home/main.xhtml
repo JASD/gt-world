@@ -20,7 +20,7 @@
                             <pou:ajax event="close" listener="#{sessionController.closeNotification}"/> 
                             <h:panelGrid columns="1">
                                 <h:outputText value="#{noti.fechaNotificacion}"  style="font-size: 10px">
-                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="CST" />
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-06:00" />
                                 </h:outputText>
                                 <h:outputText value="#{noti.contenidoNotificacion}"/>
                             </h:panelGrid>

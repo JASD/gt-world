@@ -2,8 +2,71 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
-            <h:outputText value="En Desarrollo" style="margin-left: 19px"/>
+        <pou:tabView effect="fade" dynamic="true" style="min-height: 500px">
+
+            <pou:tab title="Información de Cuenta">
+
+                <h:panelGrid columns="2" style="height: 400px">
+
+                    <pou:graphicImage value="#{sessionController.picture}" 
+                                      width="350" height="450" style="margin-top: 10px"/>
+                    <pou:panelGrid columns="2" style="margin-left: 100px">
+                        <h:outputText value="Usuario:" style="font-weight: bold"/>
+                        <h:outputText value="#{sessionController.user.idUsuario}"/>
+                        <h:outputText value="Nombre:" style="font-weight: bold"/>
+                        <h:outputText value="#{sessionController.user.nombreUsuario} #{sessionController.user.apellidoUsuario}"/>
+                        <h:outputText value="Email:" style="font-weight: bold"/>
+                        <h:outputText value="#{sessionController.user.emailUsuario}"/>
+                        <h:outputText value="Fecha de Ingreso:" style="font-weight: bold" />
+                        <h:outputText value="#{sessionController.user.fechaIngresoUsuario}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-06:00" />
+                        </h:outputText>
+                    </pou:panelGrid>
+                </h:panelGrid>
+
+            </pou:tab>
+
+            <pou:tab title="Configuración de Cuenta" >
+
+                <br />
+
+                <h:outputLabel value="Nombres:" />
+                <pou:inputText id="names" style="margin-left: 20px" required="true"
+                               maxlength="50" label="Nombres"
+                               value="#{sessionController.user.nombreUsuario}"/>
+                <br /><br />
+                <h:outputLabel value="Apellidos:" />
+                <pou:inputText id="last" style="margin-left: 20px" required="true"
+                               maxlength="50" label="Apellidos"
+                               value="#{sessionController.user.apellidoUsuario}"/>
+                <br /><br />
+                <h:outputLabel value="Correo: " />
+                <pou:inputText id="mail" style="margin-left: 30px" required="true"
+                               maxlength="50" label="Correo"
+                               value="#{sessionController.user.emailUsuario}"/>
+                <br /><br />
+                <h:outputLabel value="Contraseña:" />
+                <pou:password style="margin-left: 10px" 
+                              feedback="true" weakLabel="bajo" goodLabel="medio"
+                              strongLabel="excelente" promptLabel="Ingrese Contraseña"
+                              value="#{sessionController.user.contrasenaUsuario}"
+                              required="true" maxlength="15" label="Contraseña"/>
+                <br /><br />
+                <h:outputLabel value="Foto:" />
+                <pou:fileUpload value="#{sessionController.foto}" 
+                                style="margin-left: 50px"
+                                mode="simple"/>
+                <br /><br />
+                <pou:commandButton icon="save" title="Guardar" value="Guardar"
+                                   actionListener="#{sessionController.updateProfile}"
+                                   update=":currentUI" />
+            </pou:tab>
+
+        </pou:tabView>
+
     </ui:component>
 </html>

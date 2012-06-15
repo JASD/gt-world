@@ -62,6 +62,8 @@ public class SessionController implements Serializable {
     private MapModel poiModel;
     private boolean isEditing;
     private String descripcionFotos;
+    private String picture;
+    private UploadedFile foto;
 
     public SessionController() {
     }
@@ -76,6 +78,7 @@ public class SessionController implements Serializable {
             setUser(getUsuarioFacade().getSingleResult("Usuario.findByLogin", parameters));
             setCurrentUI("UI/home/main.xhtml");
             //loadVisits();
+            loadProfilePicture();
             JsfUtil.redirect("faces/home.xhtml");
         } catch (Exception ex) {
             JsfUtil.addErrorMessage(ex, "Usuario No Válido");
@@ -207,6 +210,7 @@ public class SessionController implements Serializable {
                 getNewUser().getNotificacionList().add(nueva);
                 setUser(newUser);
                 Thread.sleep(2000);
+                loadProfilePicture();
                 setCurrentUI("UI/home/main.xhtml");
                 JsfUtil.redirect("faces/home.xhtml");
             } catch (Exception e) {
@@ -664,4 +668,38 @@ public class SessionController implements Serializable {
     public void setViewSelected(List<Imagen> viewSelected) {
         this.viewSelected = viewSelected;
     }
+    
+     /**
+     * Todo lo relacionado con la Configuración de cuenta del usuario
+     */
+    
+    public void loadProfilePicture(){
+        
+        if(getUser().getCorrelativoImagen() != null){
+            setPicture(getUser().getCorrelativoImagen().getUrlImagen());
+        }else{
+            setPicture("Images/Users/user.png");
+        }
+    }
+    
+    public void updateProfile(){
+        
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public UploadedFile getFoto() {
+        return foto;
+    }
+
+    public void setFoto(UploadedFile foto) {
+        this.foto = foto;
+    }
+    
 }
