@@ -44,12 +44,12 @@ public class CreatePOI implements Serializable {
     private double lat;
     private double lng;
     private String descripcionFotos;
+    private String centerMap = "13.734,-89.29389";
 
     public CreatePOI() {
         pois = new DefaultMapModel();
         nuevo = new Poi();
     }
-   
     
     public void savePoi(ActionEvent event){
         
@@ -67,7 +67,8 @@ public class CreatePOI implements Serializable {
             getEjbFacade().create(nuevo);
             Marker marker = new Marker(new LatLng(lat, lng), nuevo.getNombrePoi(), nuevo,
                             nuevo.getIdTipoPoi().getUrlIconoPoi());  
-            pois.addOverlay(marker);  
+            pois.addOverlay(marker);
+            centerMap = lat + "," + lng;
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PoiCreated"));
             nuevo = new Poi();
         } catch (Exception e){
@@ -132,5 +133,13 @@ public class CreatePOI implements Serializable {
 
     public void setDescripcionFotos(String descripcionFotos) {
         this.descripcionFotos = descripcionFotos;
+    }
+
+    public String getCenterMap() {
+        return centerMap;
+    }
+
+    public void setCenterMap(String centerMap) {
+        this.centerMap = centerMap;
     }
 }

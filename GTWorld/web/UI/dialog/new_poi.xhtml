@@ -11,7 +11,7 @@
                         header="Nuevo POI" showEffect="fade" 
                         hideEffect="fade" resizable="false" closable="false">
 
-                <pou:panelGrid columns="4">
+                <h:panelGrid columns="4">
                     <h:outputText value="Nombre" />
                     <pou:inputText value="#{createPOIController.nuevo.nombrePoi}">
                         <f:validateLength maximum="100"/>
@@ -54,7 +54,7 @@
                     </pou:commandButton>
                     <pou:commandButton icon="cancelar" title="Cancelar" value="Cancelar"
                                        onclick="return cancel()" />
-                </pou:panelGrid>
+                </h:panelGrid>
                 <h:inputHidden id="lat" value="#{createPOIController.lat}" />  
                 <h:inputHidden id="lng" value="#{createPOIController.lng}" />
             </pou:dialog>

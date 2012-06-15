@@ -8,7 +8,7 @@
             <pou:layoutUnit position="center" header="Crear POI">
                 <pou:commandButton style="float: right" type="button" icon="findme" 
                                    title="Mi Ubicación" onclick="findMe()"/>
-                <pou:gmap id="mapPoi" center="13.734,-89.29389" zoom="15" type="ROADMAP"   
+                <pou:gmap id="mapPoi" center="#{createPOIController.centerMap}" zoom="15" type="ROADMAP"   
                           style="min-width:600px;min-height:450px"  
                           model="#{createPOIController.pois}"   
                           onPointClick="handlePointClick(event);"   
