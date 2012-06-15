@@ -1,9 +1,139 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:pou="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
-            <h:outputText value="En Desarrollo" style="margin-left: 19px"/>
+        <pou:layout style="height: 500px" widgetVar="lay" collapseTitle="cerrar"
+                    expandTitle="abrir">
+            <pou:ajax event="toggle" listener="#{sessionController.closeEdit}" update="messages, pois, edit" />
+            <pou:layoutUnit position="west" header="Editar POI" size="500" collapsible="true" 
+                            collapsed="true">
+                <pou:fieldset id="edit">
+                    <h:outputText value="Nombre " style="margin-right: 19px"/>
+                    <pou:inputText value="#{sessionController.selected.nombrePoi}">
+                        <f:validateLength maximum="100"/>
+                    </pou:inputText>
+                    <h:outputText value="Público " style="margin-right: 5px; margin-left: 20px; 
+                                  vertical-align: top"/>
+                    <pou:selectBooleanCheckbox value="#{sessionController.selected.privacidadPoi}" />
+                    <br />
+                    <br />
+                    <h:outputText value="Tipo " style="margin-right: 43px; vertical-align: top"/>
+                    <pou:autoComplete forceSelection="true"
+                                      value="#{sessionController.selected.idTipoPoi}" 
+                                      maxResults="5"
+                                      completeMethod="#{tipoPoiController.autocomplete}" 
+                                      scrollHeight="200" 
+                                      var ="t" itemLabel="#{t}" itemValue="#{t}"
+                                      converter="#{tipoPoiControllerConverter}" >
+                        <pou:column>  
+                            <pou:graphicImage value="#{t.urlIconoPoi}" width="20" height="20"/>  
+                        </pou:column>  
+                        <pou:column> 
+                            #{t.nombreTipoPoi}  
+                        </pou:column>  
+                    </pou:autoComplete>
+                    <br />
+                    <br />
+                    <h:outputText value="Descripción " style="vertical-align: top"/>
+                    <pou:inputTextarea value="#{sessionController.selected.descripcionPoi}">
+                        <f:validateLength maximum="500" />
+                    </pou:inputTextarea>
+                    <br />
+                    <br />
+                    <h:outputText value="URL " style="margin-right: 45px"/>
+                    <pou:inputText value="#{sessionController.selected.urlWebPoi}">
+                        <f:validateLength maximum="100"/>
+                    </pou:inputText>
+                    <br />
+                    <br />
+                    <h:outputText value="Agregar Fotos" style="vertical-align: top"/>
+                    <pou:fileUpload fileUploadListener="#{sessionController.poiImageUpload}"  
+                                    mode="advanced"  
+                                    update="messages"   
+                                    multiple="true"  
+                                    sizeLimit="1048576"   
+                                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                    label="Examinar"
+                                    uploadLabel="Subir"
+                                    cancelLabel="Cancelar"
+                                    invalidFileMessage="Extensión de Archivo Incorrecta"
+                                    invalidSizeMessage="La imagen excede el máximo tamaño soportado" />
+                    <br />
+
+                    <h:outputText value="Descripción Fotos " style="vertical-align: top"/>
+                    <pou:inputTextarea value="#{sessionController.descripcionFotos}">
+                        <f:validateLength maximum="500" />
+                    </pou:inputTextarea>
+                    <br />
+                    <pou:commandButton icon="save" title="Guardar" value="Guardar"
+                                       actionListener="#{sessionController.update}"
+                                       oncomplete="#{sessionController.prepareList()}"
+                                       update=":currentUI:pois, messages"/>
+                </pou:fieldset>
+            </pou:layoutUnit>
+            <pou:layoutUnit position="center">
+                <pou:fieldset legend="POIs" id="pois" >
+                    <h:outputText value="Registros #{sessionController.pagination.pageFirstItem + 1} - #{sessionController.pagination.pageLastItem + 1} de #{sessionController.pagination.itemsCount}"
+                                  style="font-size: 10px; padding-left: 25px; padding-right: 5px" rendered="#{sessionController.items.rowCount > 0}"/>
+                    <br />
+                    <br />
+                    <pou:commandButton action="#{sessionController.previous}" icon="back" 
+                                       rendered="#{sessionController.pagination.hasPreviousPage}"
+                                       disabled="#{sessionController.isEditing}"
+                                       update="pois" title="Anterior"/>
+                    <pou:commandButton action="#{sessionController.next}" icon="next"
+                                       disabled="#{sessionController.isEditing}"
+                                       rendered="#{sessionController.pagination.hasNextPage}"
+                                       update="pois" title="Siguiente"/>
+                    <br />
+                    <br />
+                    <pou:dataGrid id="poisSelect" var="poi"  
+                                  value="#{sessionController.items}" columns="3">  
+                        <pou:column>  
+                            <pou:panel id="pnl" header="#{poi.nombrePoi}" 
+                                       style="text-align:center">
+                                <pou:commandLink title="ver en mapa" style="margin-left: 5px"
+                                                 disabled="#{sessionController.isEditing}"
+                                                 action="#{sessionController.prepareViewOnMap}"
+                                                 update=":poi_map1" oncomplete="poiMap1.show();">
+                                    <pou:graphicImage value="resources/img/globe.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="ver fotos" style="margin-left: 5px"
+                                                 disabled="#{sessionController.isEditing}"
+                                                 action="#{sessionController.prepareViewImages}"
+                                                 update=":gallery1" oncomplete="galleryPoi1.show();">
+                                    <pou:graphicImage value="resources/img/picture.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="editar" style="margin-left: 5px"
+                                                 disabled="#{sessionController.isEditing}"
+                                                 action="#{sessionController.prepareEdit}"
+                                                 update=":currentUI:edit, :currentUI:pois"
+                                                 oncomplete="lay.toggle('west');" >
+                                    <pou:graphicImage value="resources/img/pencil.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="Información" style="margin-left: 5px"
+                                                 disabled="#{sessionController.isEditing}"
+                                                 action="#{sessionController.prepareView}"
+                                                 update=":poi_info1"
+                                                 oncomplete="poiInfo1.show()" >
+                                    <pou:graphicImage value="resources/img/info.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="borrar" style="margin-left: 5px"
+                                                 disabled="#{sessionController.isEditing}"
+                                                 action="#{sessionController.prepareView}"
+                                                 update=":confirm_delete_poi1"
+                                                 oncomplete="confirmDeletePoi1.show()">
+                                    <pou:graphicImage value="resources/img/trash.png" />
+                                </pou:commandLink>
+                            </pou:panel>  
+                        </pou:column>  
+                    </pou:dataGrid>  
+                </pou:fieldset>
+            </pou:layoutUnit>
+        </pou:layout>
     </ui:component>
 </html>

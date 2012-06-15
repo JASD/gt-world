@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:component>
+        <h:form id="gallery1">
+            <pou:dialog widgetVar="galleryPoi1" header="Galería" showEffect="fade"
+                        hideEffect="fade" modal="true" resizable="false" 
+                        onHide="#{sessionController.prepareList()}">
+                <pou:galleria value="#{sessionController.viewSelected}"  
+                              var="image" effect="slide" effectSpeed="1000"  
+                              panelWidth="500" panelHeight="250" frameWidth="160" frameHeight="70"  
+                              filmstripPosition="top" showCaptions="true" showOverlays="true">  
+
+                    <pou:graphicImage value="#{image.urlImagen}" 
+                                      title="#{image.urlImagen}"
+                                      width="400" height="300"/>  
+                    <pou:galleriaOverlay title="#{image.tituloImagen}">  
+                        #{image.descripcionImagen}          
+                    </pou:galleriaOverlay>  
+
+                </pou:galleria>  
+
+            </pou:dialog>
+        </h:form>
+    </ui:component>
+</html>

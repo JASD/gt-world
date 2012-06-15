@@ -1,18 +1,12 @@
 package com.gtworld.session;
 
 import com.gtworld.controller.util.JsfUtil;
-import com.gtworld.entity.Notificacion;
-import com.gtworld.entity.Usuario;
-import com.gtworld.entity.VisitaPoi;
-import com.gtworld.facade.NotificacionFacade;
-import com.gtworld.facade.UsuarioFacade;
-import com.gtworld.facade.VisitaPoiFacade;
+import com.gtworld.controller.util.PaginationHelper;
+import com.gtworld.entity.*;
+import com.gtworld.facade.*;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -20,9 +14,16 @@ import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
+import javax.servlet.ServletContext;
 import org.primefaces.event.CloseEvent;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.ToggleEvent;
 import org.primefaces.event.map.OverlaySelectEvent;
+import org.primefaces.model.UploadedFile;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -42,12 +43,25 @@ public class SessionController implements Serializable {
     private List<Notificacion> unreadNotificaciones;
     private Notificacion selectedNotificacion;
     private String centerMap;
+    private Poi current;
+    private DataModel items = null;
+    @EJB
+    private com.gtworld.facade.PoiFacade poiFacade;
+    @EJB
+    private com.gtworld.facade.ImagenFacade imagenFacade;
     @EJB
     private com.gtworld.facade.UsuarioFacade usuarioFacade;
     @EJB
     private com.gtworld.facade.NotificacionFacade notificacionFacade;
     @EJB
     private com.gtworld.facade.VisitaPoiFacade visitaFacade;
+    private List<Imagen> uploaded = new ArrayList<Imagen>();
+    private List<Imagen> viewSelected;
+    private PaginationHelper pagination;
+    private int selectedItemIndex;
+    private MapModel poiModel;
+    private boolean isEditing;
+    private String descripcionFotos;
 
     public SessionController() {
     }
@@ -374,5 +388,278 @@ public class SessionController implements Serializable {
 
     public void setNewUser(Usuario newUser) {
         this.newUser = newUser;
+    }
+
+    /**
+     * Todo lo relacionado con los POIs del usuario
+     */
+    public Poi getSelected() {
+        if (current == null) {
+            current = new Poi();
+            selectedItemIndex = -1;
+        }
+        return current;
+    }
+
+    public PaginationHelper getPagination() {
+        if (pagination == null) {
+            pagination = new PaginationHelper(9) {
+
+                Object[] parameters = {"idUsuario", getUser()};
+
+                @Override
+                public int getItemsCount() {
+                    return getPoiFacade().count();
+                }
+
+                @Override
+                public DataModel createPageDataModel() {
+
+                    return new ListDataModel(getPoiFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, "Poi.findByUser", parameters));
+                }
+            };
+        }
+        return pagination;
+    }
+
+    public void prepareList() {
+        recreateModel();
+    }
+
+    public void prepareView() {
+        current = (Poi) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+    }
+
+    public void prepareViewOnMap() {
+        current = (Poi) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        setPoiModel(new DefaultMapModel());
+        LatLng coord = new LatLng(current.getIdUbicacion().getLatitudUbicacion(),
+                current.getIdUbicacion().getLongitudUbicacion());
+        poiModel.addOverlay(new Marker(coord,
+                current.getNombrePoi(), current,
+                current.getIdTipoPoi().getUrlIconoPoi()));
+    }
+
+    public void prepareViewImages() {
+        current = (Poi) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        Object[] parameters = {"idPoi", current};
+        try {
+            viewSelected = getImagenFacade().find("Imagen.findByIdPoi", parameters);
+            if (viewSelected.isEmpty()) {
+                Imagen img = new Imagen();
+                img.setTituloImagen("Imagen no Encontrada");
+                img.setDescripcionImagen("Imagen no Encontrada");
+                img.setUrlImagen("Images/POIs/image_not_found.jpg");
+                viewSelected.add(img);
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+
+    }
+
+    public void prepareEdit() {
+        current = (Poi) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        setIsEditing(true);
+    }
+
+    public void closeEdit(ToggleEvent event) {
+        String status = event.getVisibility().name();
+        if (status.equals("VISIBLE") && !isEditing) {
+            setIsEditing(true); //forzar cierre de panel
+        }
+
+        if (status.equals("HIDDEN") && isEditing) {
+            setIsEditing(false);
+            current = null;
+        }
+    }
+
+    public void poiImageUpload(FileUploadEvent event) {
+
+        UploadedFile imageUpload = event.getFile();
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String path = servletContext.getRealPath("/Images/POIs/").concat("\\");
+        if (JsfUtil.saveImage(imageUpload.getContents(),
+                path + imageUpload.getFileName())) {
+            Imagen imagen = new Imagen();
+            imagen.setIdPoi(current);
+            imagen.setTituloImagen(current.getNombrePoi());
+            imagen.setDescripcionImagen("");
+            imagen.setUrlImagen("Images/POIs/" + imageUpload.getFileName());
+            try {
+                getImagenFacade().create(imagen);
+                getUploaded().add(imagen);
+                JsfUtil.addSuccessMessage(imageUpload.getFileName() + " Guardado");
+            } catch (Exception e) {
+                JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            }
+        } else {
+            JsfUtil.addErrorMessage(imageUpload.getFileName() + " no guardado");
+        }
+    }
+
+    public void update() {
+        try {
+            getPoiFacade().edit(current);
+            for (Imagen img : uploaded) {
+                img.setDescripcionImagen(descripcionFotos);
+                getImagenFacade().edit(img);
+                current.getImagenList().add(img);
+            }
+            descripcionFotos = "";
+            setUploaded(new ArrayList<Imagen>());
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PoiUpdated"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+    }
+
+    public void destroy() {
+        current = (Poi) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        try {
+            for (Imagen img : current.getImagenList()) {
+                getImagenFacade().remove(img);
+            }
+            for (VisitaPoi vp : current.getVisitaPoiList()) {
+                getVisitaFacade().remove(vp);
+            }
+            performDestroy();
+            recreatePagination();
+            recreateModel();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+    }
+
+    public void destroyAndView() {
+        try {
+            for (Imagen img : current.getImagenList()) {
+                getImagenFacade().remove(img);
+            }
+            for (VisitaPoi vp : current.getVisitaPoiList()) {
+                getVisitaFacade().remove(vp);
+            }
+            performDestroy();
+            recreatePagination();
+            recreateModel();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+    }
+
+    private void performDestroy() {
+        try {
+            getPoiFacade().remove(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PoiDeleted"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+    }
+
+    public DataModel getItems() {
+        if (items == null) {
+            items = getPagination().createPageDataModel();
+        }
+        return items;
+    }
+
+    private void recreateModel() {
+        items = null;
+    }
+
+    private void recreatePagination() {
+        pagination = null;
+    }
+
+    public void next() {
+        getPagination().nextPage();
+        recreateModel();
+    }
+
+    public void previous() {
+        getPagination().previousPage();
+        recreateModel();
+    }
+
+    public Poi getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Poi current) {
+        this.current = current;
+    }
+
+    public String getDescripcionFotos() {
+        return descripcionFotos;
+    }
+
+    public void setDescripcionFotos(String descripcionFotos) {
+        this.descripcionFotos = descripcionFotos;
+    }
+
+    public ImagenFacade getImagenFacade() {
+        return imagenFacade;
+    }
+
+    public void setImagenFacade(ImagenFacade imagenFacade) {
+        this.imagenFacade = imagenFacade;
+    }
+
+    public boolean isIsEditing() {
+        return isEditing;
+    }
+
+    public void setIsEditing(boolean isEditing) {
+        this.isEditing = isEditing;
+    }
+
+    public void setPagination(PaginationHelper pagination) {
+        this.pagination = pagination;
+    }
+
+    public PoiFacade getPoiFacade() {
+        return poiFacade;
+    }
+
+    public void setPoiFacade(PoiFacade poiFacade) {
+        this.poiFacade = poiFacade;
+    }
+
+    public MapModel getPoiModel() {
+        return poiModel;
+    }
+
+    public void setPoiModel(MapModel poiModel) {
+        this.poiModel = poiModel;
+    }
+
+    public int getSelectedItemIndex() {
+        return selectedItemIndex;
+    }
+
+    public void setSelectedItemIndex(int selectedItemIndex) {
+        this.selectedItemIndex = selectedItemIndex;
+    }
+
+    public List<Imagen> getUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(List<Imagen> uploaded) {
+        this.uploaded = uploaded;
+    }
+
+    public List<Imagen> getViewSelected() {
+        return viewSelected;
+    }
+
+    public void setViewSelected(List<Imagen> viewSelected) {
+        this.viewSelected = viewSelected;
     }
 }
