@@ -2,8 +2,86 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
-            <h:outputText value="En Desarrollo" style="margin-left: 19px"/>
+       <pou:layout style="height: 500px" widgetVar="lay" collapseTitle="cerrar" expandTitle="abrir">  
+          <pou:layoutUnit  position="west" size="310" collapsible="true" collapsed="true" header="Editar Miembros" >
+              <br/>
+              <h:outputText value="Seleccionar Red"  style="margin-left:5px" />  
+              <br/> <br/>
+              <pou:selectOneMenu value="#pprBean.city}" effect="fold" editable="false" style="margin-left:5px">  
+                  <f:selectItem itemLabel="       " itemValue="" />  
+                   <f:selectItems value="#pprBean.cities}" />  
+               </pou:selectOneMenu>  
+              <br/><br/>
+             <h:outputText value="Agregar Usuarios" style="margin-left:5px"/>  
+              <br/><br/>
+             <h:panelGrid columns="2" cellpadding="4px" style="margin-bottom:2px"> 
+                 <pou:inputText id="email"/>  
+                 <pou:commandButton value="Agregar" actionListener="#pprBean.savePerson}" /> 
+             </h:panelGrid> <br/><br/>
+             <pou:dataTable id="basic" var="car" value="#tableBean.carsSmall}">  
+               <pou:column>  
+                 <f:facet name="header">  
+                      Usuarios  
+                 </f:facet>  
+                 <h:outputText value="#usuario.aregado}" />  
+               </pou:column>  
+             </pou:dataTable>
+              <br/><br/>
+            <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:5px"> 
+                <pou:commandButton value="Aceptar" actionListener="#pprBean.savePerson}" /> 
+                <pou:commandButton value="Cancelar" actionListener="#pprBean.savePerson}" />      
+            </h:panelGrid>
+          </pou:layoutUnit>
+           
+          <pou:layoutUnit position="center" size="300">
+              <pou:fieldset legend="Miembros" id="miembros" >
+                   <pou:dataGrid id="miembrosactivos" var="miembros" value="#sessionController.items}" columns="3"  paginator="true"   paginatorTemplate="{CurrentPageReport}  {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}">
+                       <h:outputText value="Acá van los miembros de la REd" />  
+                       <pou:column>  
+                            <pou:panel id="pnl" header="#miembro.nombremiembro}" 
+                                       style="text-align:center">
+                                <pou:commandLink title="ver en mapa" style="margin-left: 5px"
+                                                 disabled="#sessionController.isEditing}"
+                                                 action="#sessionController.prepareViewOnMap}"
+                                                 update=":poi_map1" oncomplete="poiMap1.show();">
+                                             <pou:graphicImage value="resources/img/globe.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="ver fotos" style="margin-left: 5px"
+                                                 disabled="#sessionController.isEditing}"
+                                                 action="#sessionController.prepareViewImages}"
+                                                 update=":gallery1" oncomplete="galleryMiembro1.show();">
+                                    <pou:graphicImage value="resources/img/picture.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="editar" style="margin-left: 5px"
+                                                 disabled="#sessionController.isEditing}"
+                                                 action="#sessionController.prepareEdit}"
+                                                 update=":currentUI:edit, :currentUI:pois"
+                                                 oncomplete="lay.toggle('west');" >
+                                    <pou:graphicImage value="resources/img/pencil.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="Información" style="margin-left: 5px"
+                                                 disabled="#sessionController.isEditing}"
+                                                 action="#sessionController.prepareView}"
+                                                 update=":miembro1_info1"
+                                                 oncomplete="poiInfo1.show()" >
+                                    <pou:graphicImage value="resources/img/info.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="borrar" style="margin-left: 5px"
+                                                 disabled="#sessionController.isEditing}"
+                                                 action="#sessionController.prepareView}"
+                                                 update=":confirm_delete_miembro1"
+                                                 oncomplete="confirmDeletePoi1.show()">
+                                    <pou:graphicImage value="resources/img/trash.png" />
+                                </pou:commandLink>
+                            </pou:panel>  
+                        </pou:column>
+                  </pou:dataGrid>
+              </pou:fieldset>   
+          </pou:layoutUnit>
+       </pou:layout>
     </ui:component>
 </html>
