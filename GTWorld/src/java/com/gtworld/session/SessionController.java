@@ -711,6 +711,7 @@ public class SessionController implements Serializable {
                 getImagenFacade().remove(eliminar);
             }
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioUpdated"));
+            foto = null;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
