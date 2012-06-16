@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
+import org.primefaces.component.log.Log;
 import org.primefaces.event.map.OverlaySelectEvent;  
 import org.primefaces.model.map.DefaultMapModel;  
 import org.primefaces.model.map.LatLng;  
@@ -162,7 +163,7 @@ public class MiMapaController implements Serializable {
 
                 }
             } else {
-              
+              setCenterMap("12,-12");
             }
 
         } catch (Exception eex) {
