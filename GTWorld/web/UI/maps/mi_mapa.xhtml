@@ -6,13 +6,13 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
-        <h:form>
+        
         <pou:layout style="height: 500px">
            
             <pou:layoutUnit   position="center" header="Mi mapa" style="min-width: 600px" >
 
 
-                <pou:gmap id="mapo"  center="#{miMapaController.centerMap}" zoom="15" 
+                <pou:gmap id="mapui"  center="#{miMapaController.centerMap}" zoom="15" 
                           type="ROADMAP" model="#{miMapaController.mapModel}"
                           style="min-width:600px;min-height:450px">  
 
@@ -46,11 +46,12 @@
                             collapsible="true">
                 
                     <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:10px">                                            
-                        <pou:selectBooleanCheckbox value="#{miMapaController.misPOIs}" >
-                        
-                        </pou:selectBooleanCheckbox> 
+                        <pou:selectBooleanCheckbox value="#{miMapaController.misPOIs}" valueChangeListener="#{miMapaController.update}">
+                            <pou:ajax update="mapui"/>
+                        </pou:selectBooleanCheckbox>
+                       
                             <h:outputText value="Mis POIs" />
-                             
+ 
                             <pou:selectBooleanCheckbox value="#{miMapaController.misZonasFrecuentes}"/> 
                             <h:outputText value="Mis zonas frecuentes" />
                                                   
@@ -59,15 +60,9 @@
                     </h:panelGrid>         
                     <h:panelGrid columns="1" cellpadding="10px" style="margin-bottom:10px"> 
                             <pou:commandButton value="Imprimir Mapa"  id="ajax"  
-                                               actionListener="#{miMapaController.update}" update="mapo" /> 
+                                               actionListener="#{miMapaController.update}" update="mapui" /> 
                     </h:panelGrid>    
-                    <h:panelGrid columns="1" cellpadding="10px" style="margin-bottom:10px"> 
-                            <pou:menuButton value="Generar reportes">  
-                                <pou:menuitem value="De visitas" actionListener="#{buttonBean.save}" icon="ui-icon-disk"/>                                  
-                                <pou:separator />  
-                                <pou:menuitem value="De zonas frecuentes" icon="ui-icon-extlink"/>  
-                            </pou:menuButton> 
-                    </h:panelGrid> 
+              
                    
                 
 
@@ -75,6 +70,6 @@
             
             
         </pou:layout>
-        </h:form>
+       
     </ui:component>
 </html>
