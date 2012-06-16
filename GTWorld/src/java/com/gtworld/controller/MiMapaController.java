@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
 import org.primefaces.event.map.OverlaySelectEvent;  
 import org.primefaces.model.map.DefaultMapModel;  
 import org.primefaces.model.map.LatLng;  
@@ -34,6 +35,7 @@ public class MiMapaController implements Serializable {
     @EJB
     private com.gtworld.facade.PoiFacade poiFacade;
     private List<String> selectedOptions; 
+    private Usuario idUser;
     
     public MiMapaController() {
         
@@ -93,14 +95,16 @@ public class MiMapaController implements Serializable {
     public void setTodosLosPOIs(boolean todosLosPOIs) {  
         this.todosLosPOIs = todosLosPOIs;  
     }  
-    public void update(){
+    public void update(ValueChangeEvent e){
         
         Usuario user = new Usuario();
         user.setIdUsuario("admin");
         Object[] parameters = {"idUsuario", user};
+        List<Poi> poisList=null;
         try {
-
-            List<Poi> poisList = poiFacade.find("Poi.findByUser",parameters);
+            if(!isMisPOIs()){
+            poisList = poiFacade.find("Poi.findByUser",parameters);
+            }
             if (!poisList.isEmpty()) {
                 boolean isFirst = true;
 
@@ -118,11 +122,11 @@ public class MiMapaController implements Serializable {
 
                 }
             } else {
-                centerMap = "13.734,-89.29389";
+                centerMap = "13.734,-59.29389";
             }
 
-        } catch (Exception e) {
-            centerMap = "13.734,-89.29389";
+        } catch (Exception eex) {
+            centerMap = "13.734,-49.29389";
         }
     }
 }
