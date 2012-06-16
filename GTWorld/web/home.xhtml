@@ -135,7 +135,8 @@
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Redes" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
-
+                        <f:setPropertyActionListener value="#{sessionController.user}" 
+                                                     target="#{redController.actual}" />
                         <f:attribute name="uiName" value="red/gestionar_redes" />
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Miembros" update=":currentUI"
@@ -156,7 +157,8 @@
                     </pou:menuitem>
                     <pou:menuitem value="Salir" 
                                   actionListener="#{sessionController.logout}">
-
+                        <f:setPropertyActionListener value="#{null}" 
+                                                     target="#{redController.pagination}" /> 
                     </pou:menuitem>
                 </pou:submenu>
             </pou:menubar>

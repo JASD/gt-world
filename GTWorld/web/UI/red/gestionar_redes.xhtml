@@ -6,38 +6,52 @@
       xmlns:pou="http://primefaces.org/ui">
     <ui:component>
         <pou:layout style="height: 500px">
-            <pou:layoutUnit position="center" header="Mis Redes">
-                <pou:dataGrid id="redes" var="red"  
-                              value="#{redController.items}" columns="4">  
-                    <pou:column>  
-                        <pou:panel id="pnl" header="#{red.nombreRed}" 
-                                   style="text-align:center">
-                            <pou:commandLink title="Información" style="margin-left: 5px"
-                                             action="#{redController.prepareView}"
-                                             update=":red_info"
-                                             oncomplete="redInfo.show()" >
-                                <pou:graphicImage value="resources/img/info.png" />
-                            </pou:commandLink>
-                            <pou:commandLink title="Editar" style="margin-left: 5px"
-                                             action="#{redController.prepareEdit}"
-                                             update=":edit_red"
-                                             oncomplete="editarRed.show()" >
-                                <pou:graphicImage value="resources/img/pencil.png" />
-                            </pou:commandLink>
-                            <pou:commandLink title="Usuarios" style="margin-left: 5px"
-                                             action="#{redController.prepareViewUsers}"
-                                             update=":red_user"
-                                             oncomplete="redUsers.show()" >
-                                <pou:graphicImage value="resources/img/users.png" />
-                            </pou:commandLink>
-                            <pou:commandLink title="Dar de Baja" style="margin-left: 5px"
-                                             update=":confirm_baja_red"
-                                             oncomplete="confirmBaja.show()">
-                                <pou:graphicImage value="resources/img/remove.png" />
-                            </pou:commandLink>
-                        </pou:panel>  
-                    </pou:column>  
-                </pou:dataGrid>  
+            <pou:layoutUnit position="center">
+                <pou:fieldset legend="Mis Redes" id="redes" >
+                    <h:outputText value="Registros #{redController.pagination.pageFirstItem + 1} - #{redController.pagination.pageLastItem + 1} de #{redController.pagination.itemsCount}"
+                                  style="font-size: 10px; padding-left: 25px; padding-right: 5px" rendered="#{redController.items.rowCount > 0}"/>
+                    <br />
+                    <br />
+                    <pou:commandButton action="#{redController.previous}" icon="back" 
+                                       rendered="#{redController.pagination.hasPreviousPage}"
+                                       update="redes" title="Anterior"/>
+                    <pou:commandButton action="#{redController.next}" icon="next"
+                                       rendered="#{redController.pagination.hasNextPage}"
+                                       update="redes" title="Siguiente"/>
+                    <br />
+                    <br />
+                    <pou:dataGrid id="redus" var="red"  
+                                  value="#{redController.items}" columns="4">  
+                        <pou:column>  
+                            <pou:panel id="pnl" header="#{red.nombreRed}" 
+                                       style="text-align:center; max-width: 400px">
+                                <pou:commandLink title="Información" style="margin-left: 5px"
+                                                 action="#{redController.prepareView}"
+                                                 update=":red_info"
+                                                 oncomplete="redInfo.show()" >
+                                    <pou:graphicImage value="resources/img/info.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="Editar" style="margin-left: 5px"
+                                                 action="#{redController.prepareEdit}"
+                                                 update=":edit_red"
+                                                 oncomplete="editarRed.show()" >
+                                    <pou:graphicImage value="resources/img/pencil.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="Usuarios" style="margin-left: 5px"
+                                                 action="#{redController.prepareViewUsers}"
+                                                 update=":red_user"
+                                                 oncomplete="redUsers.show()" >
+                                    <pou:graphicImage value="resources/img/users.png" />
+                                </pou:commandLink>
+                                <pou:commandLink title="Dar de Baja" style="margin-left: 5px"
+                                                 update=":confirm_baja_red"
+                                                 oncomplete="confirmBaja.show()">
+                                    <pou:graphicImage value="resources/img/remove.png" />
+                                </pou:commandLink>
+                            </pou:panel>  
+                        </pou:column>  
+                    </pou:dataGrid>
+                </pou:fieldset>
             </pou:layoutUnit>
         </pou:layout>
     </ui:component>

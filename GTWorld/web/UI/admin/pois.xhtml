@@ -95,7 +95,7 @@
                                   value="#{poiController.items}" columns="3">  
                         <pou:column>  
                             <pou:panel id="pnl" header="#{poi.nombrePoi}" 
-                                       style="text-align:center">
+                                       style="text-align:center; max-width: 400px">
                                 <pou:commandLink title="ver en mapa" style="margin-left: 5px"
                                                  disabled="#{poiController.editing}"
                                                  action="#{poiController.prepareViewOnMap}"

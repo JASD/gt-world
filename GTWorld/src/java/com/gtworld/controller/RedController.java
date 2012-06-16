@@ -23,7 +23,7 @@ import javax.faces.model.SelectItem;
 @ManagedBean(name = "redController")
 @SessionScoped
 public class RedController implements Serializable {
-    
+
     private Red current;
     private DataModel items = null;
     @EJB
@@ -39,10 +39,10 @@ public class RedController implements Serializable {
     private List<Usuario> miembros;
     private String email;
     private Usuario actual;
-    
+
     public RedController() {
     }
-    
+
     public Red getSelected() {
         if (current == null) {
             current = new Red();
@@ -50,51 +50,50 @@ public class RedController implements Serializable {
         }
         return current;
     }
-    
+
     private RedFacade getFacade() {
         return ejbFacade;
     }
-    
+
     public PaginationHelper getPagination() {
         if (pagination == null) {
-            pagination = new PaginationHelper(10) {
-                
+            pagination = new PaginationHelper(16) {
+
+                Object[] parameters = {"idUsuario", getActual().getIdUsuario()};
+
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getFacade().getCont();
                 }
-                
+
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, "Red.findByUser", parameters));
                 }
             };
         }
         return pagination;
     }
-    
+
     public String prepareList() {
         recreateModel();
         return "List";
     }
-    
-    public void salirRed(){
-    
+
+    public void salirRed() {
     }
-    
-    public void prepareViewUsers(){
-    
+
+    public void prepareViewUsers() {
     }
-    
-    
+
     public String prepareView() {
         current = (Red) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-    
+
     public void addUser() {
-        
+
         Object[] parameters = {"emailUsuario", getEmail()};
         try {
             Usuario usuario = getUsuarioFacade().getSingleResult("Usuario.findByEmailUsuario", parameters);
@@ -102,17 +101,17 @@ public class RedController implements Serializable {
             email = "";
         } catch (Exception e) {
             JsfUtil.addErrorMessage("No se Encontro Usuario");
-            
+
         }
     }
-    
+
     public void prepareCreate() {
         current = new Red();
         miembros = new ArrayList<Usuario>();
         email = "";
         selectedItemIndex = -1;
     }
-    
+
     public void create() {
         current.setIdUsuario(actual);
         Calendar calendar = new GregorianCalendar();
@@ -148,13 +147,13 @@ public class RedController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
     }
-    
+
     public String prepareEdit() {
         current = (Red) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
-    
+
     public String update() {
         try {
             getFacade().edit(current);
@@ -165,7 +164,7 @@ public class RedController implements Serializable {
             return null;
         }
     }
-    
+
     public String destroy() {
         current = (Red) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -174,7 +173,7 @@ public class RedController implements Serializable {
         recreateModel();
         return "List";
     }
-    
+
     public String destroyAndView() {
         performDestroy();
         recreateModel();
@@ -187,7 +186,7 @@ public class RedController implements Serializable {
             return "List";
         }
     }
-    
+
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -196,7 +195,7 @@ public class RedController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
     }
-    
+
     private void updateCurrentItem() {
         int count = getFacade().count();
         if (selectedItemIndex >= count) {
@@ -211,81 +210,85 @@ public class RedController implements Serializable {
             current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
-    
+
     public DataModel getItems() {
         if (items == null) {
             items = getPagination().createPageDataModel();
         }
         return items;
     }
-    
+
+    public void setPagination(PaginationHelper pagination) {
+        this.pagination = pagination;
+    }
+
     private void recreateModel() {
         items = null;
     }
-    
+
     private void recreatePagination() {
         pagination = null;
     }
-    
+
     public List<Usuario> getMiembros() {
         return miembros;
     }
-    
+
     public void setMiembros(List<Usuario> miembros) {
         this.miembros = miembros;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public Usuario getActual() {
         return actual;
     }
-    
+
     public void setActual(Usuario actual) {
         this.actual = actual;
     }
-    
+
     public UsuarioFacade getUsuarioFacade() {
         return usuarioFacade;
     }
-    
+
     public MiembroFacade getMiembroFacade() {
         return miembroFacade;
     }
-    
+
     public NotificacionFacade getNotificacionFacade() {
         return notificacionFacade;
     }
-    
+
     public String next() {
         getPagination().nextPage();
         recreateModel();
         return "List";
     }
-    
+
     public String previous() {
         getPagination().previousPage();
         recreateModel();
         return "List";
     }
-    
+
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
-    
+
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-    
+
     @FacesConverter(forClass = Red.class)
     public static class RedControllerConverter implements Converter {
-        
+
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
@@ -294,19 +297,19 @@ public class RedController implements Serializable {
                     getValue(facesContext.getELContext(), null, "redController");
             return controller.ejbFacade.find(getKey(value));
         }
-        
+
         java.lang.Long getKey(String value) {
             java.lang.Long key;
             key = Long.valueOf(value);
             return key;
         }
-        
+
         String getStringKey(java.lang.Long value) {
             StringBuffer sb = new StringBuffer();
             sb.append(value);
             return sb.toString();
         }
-        
+
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
                 return null;
