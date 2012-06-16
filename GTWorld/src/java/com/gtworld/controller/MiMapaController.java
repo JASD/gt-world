@@ -6,6 +6,7 @@ package com.gtworld.controller;
 
 import com.gtworld.entity.Poi;
 import com.gtworld.entity.Usuario;
+import com.gtworld.entity.VisitaPoi;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.util.List;
@@ -26,16 +27,17 @@ import org.primefaces.model.map.Marker;
 @SessionScoped
 public class MiMapaController implements Serializable {
     
-    private boolean misPOIs;  
-    private boolean misZonasFrecuentes;
-    private boolean todosLosPOIs;
+    private boolean misPOIs=false;  
+    private boolean misPOIsVisitados=false;
+    private boolean todosLosPOIs=false;
     private MapModel mapModel; 
     private Marker marker; 
-    public String centerMap="13.734,-89.29389";
+    public String centerMap;
     @EJB
     private com.gtworld.facade.PoiFacade poiFacade;
-    private List<String> selectedOptions; 
-    private Usuario idUser;
+    @EJB
+    private com.gtworld.facade.VisitaPoiFacade visitaPoiFacade;
+    private Usuario User;
     
     public MiMapaController() {
         
@@ -45,13 +47,6 @@ public class MiMapaController implements Serializable {
     public MapModel getMapModel() {  
         return mapModel;  
     }
-    
-     public List<String> getSelectedOptions() {  
-        return selectedOptions;  
-    }  
-    public void setSelectedOptions(List<String> selectedOptions) {  
-        this.selectedOptions = selectedOptions;  
-    }  
     
     public void setCenterMap(String centerMap){
         this.centerMap = centerMap;
@@ -79,14 +74,16 @@ public class MiMapaController implements Serializable {
   
     public void setMisPOIs(boolean misPOIs) {  
         this.misPOIs = misPOIs;  
+        update();
     }  
   
-    public boolean isMisZonasFrecuentes() {  
-        return misZonasFrecuentes;  
+    public boolean isMisPOIsVisitados() {  
+        return misPOIsVisitados;  
     }  
   
-    public void setMisZonasFrecuentes(boolean misZonasFrecuentes) {  
-        this.misZonasFrecuentes = misZonasFrecuentes;  
+    public void setMisPOIsVisitados(boolean misPOIsVisitados) {  
+        this.misPOIsVisitados = misPOIsVisitados;  
+        update();
     }  
     public boolean isTodosLosPOIs() {  
         return todosLosPOIs;  
@@ -94,26 +91,56 @@ public class MiMapaController implements Serializable {
   
     public void setTodosLosPOIs(boolean todosLosPOIs) {  
         this.todosLosPOIs = todosLosPOIs;  
+        update();
     }
 
-    public Usuario getIdUser() {
-        return idUser;
+    public Usuario getUser() {
+        return User;
     }
 
-    public void setIdUser(Usuario idUser) {
-        this.idUser = idUser;
+    public void setIdUser(Usuario User) {
+        this.User = User;
     }
     
-    public void update(ValueChangeEvent e){
+    public void update(){
         
-        Usuario user = new Usuario();
-        user.setIdUsuario("admin");
-        Object[] parameters = {"idUsuario", user};
-        List<Poi> poisList=null;
+        mapModel = new DefaultMapModel();
+        List<Poi> poisList=null,auxiliarList=null;
+        
         try {
-            if(!isMisPOIs()){
-            poisList = poiFacade.find("Poi.findByUser",parameters);
+            
+            if(isMisPOIs()&&!isMisPOIsVisitados()&&!isTodosLosPOIs()){ //SOLO POIS DEL USUARIO
+               
+               Object[] parameters = {"idUsuario", getUser()};
+               poisList = poiFacade.find("Poi.findByUser",parameters); 
+               
+            }else if(isMisPOIs()&&!isMisPOIsVisitados()&&isTodosLosPOIs()){ //POIS DEL USUARIO Y LOS PUBLICOS
+               
+               Object[] parameters = {"idUsuario", getUser()};
+               Object[] parameters2 = {"privacidadPoi", true};
+               poisList = poiFacade.find("Poi.findByUser",parameters); 
+               auxiliarList = poiFacade.find("Poi.findByPrivacidadPoi", parameters2);
+               
+               for(Poi x:auxiliarList){
+                   if(!poisList.contains(x))
+                       poisList.add(x);
+               }
+              
+            }else if(isMisPOIs()&&isMisPOIsVisitados()&&!isTodosLosPOIs()){ //POIS DEL USUARIO Y LOS VISITADOS     
+            }else if(!isMisPOIs()&&!isMisPOIsVisitados()&&isTodosLosPOIs()){
+              
+               Object[] parameters = {"privacidadPoi", true};
+               poisList = poiFacade.find("Poi.findByPrivacidadPoi", parameters);
+                
+            }else if(!isMisPOIs()&&isMisPOIsVisitados()&&isTodosLosPOIs()){
+            }else if(!isMisPOIs()&&isMisPOIsVisitados()&&!isTodosLosPOIs()){   
+               
+               Object[] parameters = {"idUsuario", User.getIdUsuario()};
+               poisList = poiFacade.find("VisitaPoi.findByIdUsuario", parameters);
+                
+            }else if(isMisPOIs()&&isMisPOIsVisitados()&&isTodosLosPOIs()){ 
             }
+            
             if (!poisList.isEmpty()) {
                 boolean isFirst = true;
 
@@ -121,21 +148,21 @@ public class MiMapaController implements Serializable {
                     Double lat = pois.getIdUbicacion().getLatitudUbicacion();
                     Double lon = pois.getIdUbicacion().getLongitudUbicacion();
                     LatLng coord = new LatLng(lat, lon);
-                    mapModel.addOverlay(new Marker(coord,
+                    getMapModel().addOverlay(new Marker(coord,
                             pois.getNombrePoi(), pois,
                             pois.getIdTipoPoi().getUrlIconoPoi()));
                     if (isFirst) {
                         isFirst = false;
-                        centerMap = lat.toString() + "," + lon.toString();
+                        setCenterMap(lat.toString() + "," + lon.toString());
                     }
 
                 }
             } else {
-                centerMap = "13.734,-59.29389";
+              
             }
 
         } catch (Exception eex) {
-            centerMap = "13.734,-49.29389";
+           
         }
     }
 }
