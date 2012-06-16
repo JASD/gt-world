@@ -86,10 +86,9 @@ public class RedController implements Serializable {
     public void prepareViewUsers() {
     }
 
-    public String prepareView() {
+    public void prepareView() {
         current = (Red) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "View";
     }
 
     public void addUser() {
@@ -148,20 +147,17 @@ public class RedController implements Serializable {
         }
     }
 
-    public String prepareEdit() {
+    public void prepareEdit() {
         current = (Red) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
     }
 
-    public String update() {
+    public void update() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RedUpdated"));
-            return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
         }
     }
 

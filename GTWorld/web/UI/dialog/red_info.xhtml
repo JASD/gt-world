@@ -3,13 +3,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:pou="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
         <h:form id="red_info">
             <pou:dialog widgetVar="redInfo" header="Información de la Red" showEffect="fade"
-                        hideEffect="fade" modal="true" resizable="false" >
+                        hideEffect="fade" modal="true" resizable="false" 
+                        onHide="#{redController.prepareList()}">
+                <h:panelGrid columns="2">
 
+                    <h:outputText value="Creada por:" style="color: #000066"/>
+                    <h:outputText value=" #{redController.selected.idUsuario.nombreUsuario}
+                                  #{redController.selected.idUsuario.apellidoUsuario}" />
 
+                    <h:outputText value="Fecha:" style="color: #000066"/>
+                    <h:outputText value="#{redController.selected.fechaCreacionRed}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-06:00"/>
+                    </h:outputText>
+
+                    <h:outputText value="Descripción:" style="color: #000066"/>
+                    <h:outputText value="#{redController.selected.descripcionRed} " />
+                </h:panelGrid>
             </pou:dialog>
         </h:form>
     </ui:component>

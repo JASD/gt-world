@@ -9,8 +9,21 @@
             <pou:dialog widgetVar="editarRed" header="Editar Red" showEffect="fade"
                         hideEffect="fade" modal="true" resizable="false" 
                         onHide="#{redController.prepareList()}">
-               
 
+                <h:panelGrid columns="2" id="grid">  
+                    <h:outputLabel value="Nombre" for="txt_title" />  
+                    <pou:inputText id="txt_title"   
+                                   value="#{redController.selected.nombreRed}" required="true"/>  
+
+                    <h:outputLabel value="Descripción" for="txt_author" />  
+                    <pou:inputText id="txt_author" required="true"   
+                                   value="#{redController.selected.descripcionRed}" />
+
+                    <pou:commandButton value="Guardar" icon="save" update=":currentUI"
+                                       actionListener="#{redController.update}"
+                                       oncomplete="editarRed.hide();">
+                    </pou:commandButton>
+                </h:panelGrid>
             </pou:dialog>
         </h:form>
     </ui:component>

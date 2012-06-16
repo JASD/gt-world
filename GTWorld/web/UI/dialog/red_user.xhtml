@@ -3,12 +3,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:pou="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
         <h:form id="red_user">
             <pou:dialog widgetVar="redUsers" header="Usuarios de la Red" showEffect="fade"
-                        hideEffect="fade" modal="true" resizable="false" >
+                        hideEffect="fade" modal="true" resizable="false" 
+                        onHide="#{redController.prepareList()}">
+                <pou:dataTable id="memberTable" value="#{redController.selected.miembroList}" var="m" 
+                               paginator="true" rows="3"  
+                               paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                               emptyMessage="No se encontraron usuarios">  
 
+                    <pou:column style="text-align: center">  
+                        <f:facet name="header">  
+                            <h:outputText value="Foto" />  
+                        </f:facet>  
+                        <pou:graphicImage value="#{m.usuario.correlativoImagen.urlImagen}" 
+                                          width="80" height="80"/> 
+                    </pou:column>  
+
+                    <pou:column filterBy="#{m.usuario.nombreUsuario}">  
+                        <f:facet name="header">  
+                            <h:outputText value="Nombres" />  
+                        </f:facet>  
+                        <h:outputText value="#{m.usuario.nombreUsuario}" />  
+                    </pou:column>
+                    <pou:column filterBy="#{m.usuario.apellidoUsuario}">  
+                        <f:facet name="header">  
+                            <h:outputText value="Apellidos" />  
+                        </f:facet>  
+                        <h:outputText value="#{m.usuario.apellidoUsuario}" />  
+                    </pou:column> 
+                </pou:dataTable>  
 
             </pou:dialog>
         </h:form>
