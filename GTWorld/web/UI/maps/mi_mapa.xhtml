@@ -26,10 +26,6 @@
 
                                     <h:outputText value="#{miMapaController.marker.title}"
                                                   style="font-weight: bold"/>
-                                    <br/>
-                                    
-                                    <h:outputText value="#{miMapaController.marker.data.comentarioVisitaPoi}"/>
-
 
                                 </pou:outputPanel>  
 
@@ -43,29 +39,28 @@
             </pou:layoutUnit>
             
             <pou:layoutUnit position="west" size="200" header="Opciones" 
-                            collapsible="true">
-                
+                            collapsible="true">    
                     <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:10px">                                            
-                        <pou:selectBooleanCheckbox value="#{miMapaController.misPOIs}" valueChangeListener="#{miMapaController.update}">
-                            <pou:ajax update="mapui"/>
-                        </pou:selectBooleanCheckbox>
-                       
+                            <pou:selectBooleanCheckbox value="#{miMapaController.misPOIs}" />                 
                             <h:outputText value="Mis POIs" />
  
-                            <pou:selectBooleanCheckbox value="#{miMapaController.misZonasFrecuentes}"/> 
-                            <h:outputText value="Mis zonas frecuentes" />
+                            <pou:selectBooleanCheckbox value="#{miMapaController.misPOIsVisitados}"/> 
+                            <h:outputText value="POIs visitados" />
                                                   
                             <pou:selectBooleanCheckbox value="#{miMapaController.todosLosPOIs}"/>                                                    
-                            <h:outputText value="Todos los POIs"/>
+                            <h:outputText value="POIs publicos"/>
                     </h:panelGrid>         
                     <h:panelGrid columns="1" cellpadding="10px" style="margin-bottom:10px"> 
-                            <pou:commandButton value="Imprimir Mapa"  id="ajax"  
-                                               actionListener="#{miMapaController.update}" update="mapui" /> 
+                            <pou:commandButton value="Actualizar"  id="ajax" update="mapui" /> 
+                            <pou:ajaxStatus id="loading">
+                                <f:facet name="start">
+                                    <h:graphicImage value="resources/img/loading_circle.gif" />  
+                                </f:facet>
+                                <f:facet name="complete">  
+                                    <h:outputText value="" />  
+                                </f:facet>  
+                            </pou:ajaxStatus>
                     </h:panelGrid>    
-              
-                   
-                
-
             </pou:layoutUnit>
             
             
