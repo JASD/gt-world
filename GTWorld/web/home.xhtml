@@ -123,6 +123,7 @@
                 </pou:submenu>
                 <pou:submenu label="  Mi Red" icon="red">
                     <pou:menuitem value="Crear Red" update=":currentUI"
+                                  action="#{redController.prepareCreate}"
                                   actionListener="#{sessionController.updateUI}">
                         <f:attribute name="uiName" value="red/crear_red" />
                     </pou:menuitem>

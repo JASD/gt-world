@@ -36,3 +36,7 @@
 .findme{
     background-image: url(../icon/map.png) !important;
 }
+
+.remove{
+    background-image: url(../icon/remove.png) !important;
+}

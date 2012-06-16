@@ -3,9 +3,14 @@ package com.gtworld.controller;
 import com.gtworld.entity.Red;
 import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.controller.util.PaginationHelper;
+import com.gtworld.entity.Usuario;
 import com.gtworld.facade.RedFacade;
+import com.gtworld.facade.UsuarioFacade;
 
 import java.io.Serializable;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -26,8 +31,13 @@ public class RedController implements Serializable {
     private DataModel items = null;
     @EJB
     private com.gtworld.facade.RedFacade ejbFacade;
+    @EJB
+    private com.gtworld.facade.UsuarioFacade usuarioFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private List<Usuario> miembros = new ArrayList<Usuario>();
+    private Usuario miembro;
+    private String email;
 
     public RedController() {
     }
@@ -72,21 +82,33 @@ public class RedController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
+    
+    public void addUser() {
 
-    public String prepareCreate() {
-        current = new Red();
-        selectedItemIndex = -1;
-        return "Create";
+        Object[] parameters = {"emailUsuario", getEmail()};
+        try {
+            Usuario usuario = getUsuarioFacade().getSingleResult("Usuario.findByEmailUsuario", parameters);
+            //setMiembro(usuario);
+            getMiembros().add(usuario);
+
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("No se Encontro Usuario");
+
+        }
     }
 
-    public String create() {
+    public void prepareCreate() {
+        current = new Red();
+        selectedItemIndex = -1;
+    }
+
+    public void create() {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RedCreated"));
-            return prepareCreate();
+            prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
         }
     }
 
@@ -166,6 +188,34 @@ public class RedController implements Serializable {
 
     private void recreatePagination() {
         pagination = null;
+    }
+
+    public Usuario getMiembro() {
+        return miembro;
+    }
+
+    public void setMiembro(Usuario miembro) {
+        this.miembro = miembro;
+    }
+
+    public List<Usuario> getMiembros() {
+        return miembros;
+    }
+
+    public void setMiembros(List<Usuario> miembros) {
+        this.miembros = miembros;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public UsuarioFacade getUsuarioFacade() {
+        return usuarioFacade;
     }
 
     public String next() {

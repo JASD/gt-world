@@ -2,8 +2,83 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pou="http://primefaces.org/ui">
     <ui:component>
-            <h:outputText value="En Desarrollo" style="margin-left: 19px"/>
+        <pou:layout style="min-height: 500px">
+            <pou:layoutUnit position="center" >
+                <pou:panel header="Crear Red">  
+                    <h:panelGrid columns="2" id="grid">  
+                        <h:outputLabel value="Nombre" for="txt_title" />  
+                        <pou:inputText id="txt_title"   
+                                       value="#{redController.selected.nombreRed}" required="true"/>  
+
+                        <h:outputLabel value="Descripción" for="txt_author" />  
+                        <pou:inputText id="txt_author" required="true"   
+                                       value="#{redController.selected.descripcionRed}" />
+                        <pou:separator />
+                        <br />
+
+                        <h:outputLabel value="Agregar usuarios" style="font-weight: bold"/>
+                        <br />
+
+                        <h:outputLabel value="Email" />
+                        <pou:inputText value="#{redController.email}"/>
+
+                        <br />
+                        <pou:commandButton id="btn_add" value="Añadir" icon="add"
+                                           update="members messages @parent"  
+                                           action="#{redController.addUser}" >  
+                          
+                        </pou:commandButton>
+
+                        <pou:separator />
+                        <br />
+
+                        <pou:commandButton value="Guardar" icon="save"/>
+                    </h:panelGrid>  
+                </pou:panel>  
+
+                <pou:outputPanel id="members">  
+                    <pou:dataTable id="memberTable" value="#{redController.miembros}" var="m" 
+                                   emptyMessage="No se encontraron usuarios">  
+
+                        <pou:column style="text-align: center">  
+                            <f:facet name="header">  
+                                <h:outputText value="Foto" />  
+                            </f:facet>  
+                            <pou:graphicImage value="#{m.correlativoImagen.urlImagen}" 
+                                              width="40" height="40"/> 
+                        </pou:column>  
+
+                        <pou:column>  
+                            <f:facet name="header">  
+                                <h:outputText value="Nombres" />  
+                            </f:facet>  
+                            <h:outputText value="#{m.nombreUsuario}" />  
+                        </pou:column>
+                        <pou:column>  
+                            <f:facet name="header">  
+                                <h:outputText value="Apellidos" />  
+                            </f:facet>  
+                            <h:outputText value="#{m.apellidoUsuario}" />  
+                        </pou:column> 
+
+                        <pou:column style="text-align: center">  
+                            <f:facet name="header">  
+                                <h:outputText value="Operaciones" />  
+                            </f:facet>  
+                            <pou:commandLink update=":currentUI:members" process=":currentUI:members">  
+                                <pou:graphicImage value="resources/img/remove.png" /> 
+                                <pou:collector value="#{m}"  
+                                               removeFrom="#{redController.miembros}" />  
+                            </pou:commandLink>  
+                        </pou:column>  
+
+                    </pou:dataTable>  
+                </pou:outputPanel>
+            </pou:layoutUnit>
+        </pou:layout>
     </ui:component>
 </html>
