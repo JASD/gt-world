@@ -30,7 +30,7 @@ public class MiMapaController implements Serializable {
     private boolean todosLosPOIs;
     private MapModel mapModel; 
     private Marker marker; 
-    private String centerMap;
+    public String centerMap="13.734,-89.29389";
     @EJB
     private com.gtworld.facade.PoiFacade poiFacade;
     private List<String> selectedOptions; 
@@ -93,7 +93,7 @@ public class MiMapaController implements Serializable {
     public void setTodosLosPOIs(boolean todosLosPOIs) {  
         this.todosLosPOIs = todosLosPOIs;  
     }  
-    public void update(ActionEvent actionEvent){
+    public void update(){
         
         Usuario user = new Usuario();
         user.setIdUsuario("admin");
