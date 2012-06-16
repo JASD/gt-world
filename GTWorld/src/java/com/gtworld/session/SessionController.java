@@ -203,6 +203,8 @@ public class SessionController implements Serializable {
             nueva.setContenidoNotificacion("Tu cuenta de GTWorld ha sido creada"
                     + " con éxito, empieza a descubrir y explorar tus Puntos"
                     + " de Interés!");
+            getNewUser().setCorrelativoImagen(
+                    getImagenFacade().find(new Imagen(new Long(19))));
             try {
                 getUsuarioFacade().create(newUser);
                 nueva.setIdUsuario(newUser);
@@ -668,22 +670,51 @@ public class SessionController implements Serializable {
     public void setViewSelected(List<Imagen> viewSelected) {
         this.viewSelected = viewSelected;
     }
-    
-     /**
+
+    /**
      * Todo lo relacionado con la Configuración de cuenta del usuario
      */
-    
-    public void loadProfilePicture(){
-        
-        if(getUser().getCorrelativoImagen() != null){
-            setPicture(getUser().getCorrelativoImagen().getUrlImagen());
-        }else{
-            setPicture("Images/Users/user.png");
-        }
+    public void loadProfilePicture() {
+        setPicture(getUser().getCorrelativoImagen().getUrlImagen());
+
     }
-    
-    public void updateProfile(){
-        
+
+    public void updateProfile() {
+
+        Imagen eliminar = user.getCorrelativoImagen();
+
+        if (foto != null && foto.getContentType().equals("image/jpeg")) {
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String path = servletContext.getRealPath("/Images/Users/").concat("\\");
+            if (JsfUtil.saveImage(foto.getContents(),
+                    path + foto.getFileName())) {
+                boolean borra = JsfUtil.deleteImage(path
+                        + user.getCorrelativoImagen().getUrlImagen().substring(13));
+                if (!borra) {
+                    //Logger :no se pudo borrar foto anterior
+                }
+                Imagen nueva = new Imagen();
+                nueva.setTituloImagen(user.getIdUsuario());
+                nueva.setDescripcionImagen(user.getIdUsuario());
+                nueva.setUrlImagen("/Images/Users/" + foto.getFileName());
+                getImagenFacade().create(nueva);
+                user.setCorrelativoImagen(nueva);
+                loadProfilePicture();
+
+            } else {
+                JsfUtil.addErrorMessage("Ocurrio un Error al Guardar Foto");
+            }
+        }
+        try {
+            getUsuarioFacade().edit(user);
+            if (eliminar.getCorrelativoImagen().compareTo(new Long(19)) != 0) {
+                getImagenFacade().remove(eliminar);
+            }
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UsuarioUpdated"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+
     }
 
     public String getPicture() {
@@ -701,5 +732,4 @@ public class SessionController implements Serializable {
     public void setFoto(UploadedFile foto) {
         this.foto = foto;
     }
-    
 }
