@@ -44,6 +44,7 @@
                                     <pou:graphicImage value="resources/img/users.png" />
                                 </pou:commandLink>
                                 <pou:commandLink title="Dar de Baja" style="margin-left: 5px"
+                                                 action="#{redController.prepareView}"
                                                  update=":confirm_baja_red"
                                                  oncomplete="confirmBaja.show()">
                                     <pou:graphicImage value="resources/img/remove.png" />

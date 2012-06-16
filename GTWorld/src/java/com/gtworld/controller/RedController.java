@@ -75,12 +75,21 @@ public class RedController implements Serializable {
         return pagination;
     }
 
-    public String prepareList() {
+    public void prepareList() {
         recreateModel();
-        return "List";
     }
 
     public void salirRed() {
+        Object[] parameters = {"idUsuario", getActual().getIdUsuario(), "idRed", current.getIdRed()};
+        try {
+            Miembro m = getMiembroFacade().getSingleResult("Miembro.findByUserRed", parameters);
+            getMiembroFacade().remove(m);
+            recreatePagination();
+            recreateModel();
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MiembroDeleted"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
     }
 
     public void prepareViewUsers() {
@@ -154,8 +163,13 @@ public class RedController implements Serializable {
 
     public void update() {
         try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RedUpdated"));
+            if (current.getIdUsuario().getIdUsuario().equals(getActual().getIdUsuario())) {
+                getFacade().edit(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RedUpdated"));
+            } else {
+                JsfUtil.addErrorMessage("No puedes Editar esta Red");
+            }
+
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
