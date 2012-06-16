@@ -204,7 +204,7 @@ public class SessionController implements Serializable {
                     + " con éxito, empieza a descubrir y explorar tus Puntos"
                     + " de Interés!");
             getNewUser().setCorrelativoImagen(
-                    getImagenFacade().find(new Imagen(new Long(19))));
+                    getImagenFacade().find(new Long(19)));
             try {
                 getUsuarioFacade().create(newUser);
                 nueva.setIdUsuario(newUser);
