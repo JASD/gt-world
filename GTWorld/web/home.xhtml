@@ -114,7 +114,9 @@
                     <pou:menuitem value="Mi Mapa" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
                          <f:setPropertyActionListener value="#{sessionController.user}" 
-                                                      target="#{miMapaController.idUser}" /> 
+                                                      target="#{miMapaController.idUser}" />
+                         <f:setPropertyActionListener value="#{sessionController.centerMap}" 
+                                                      target="#{miMapaController.centerMap}" />
                         <f:attribute name="uiName" value="maps/mi_mapa" />
                     </pou:menuitem>
                     <pou:menuitem value="Mi Red" update=":currentUI"
