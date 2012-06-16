@@ -1,9 +1,74 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:pou="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
-            <h:outputText value="En Desarrollo" style="margin-left: 19px"/>
+
+        <pou:layout style="height: 500px">
+
+            <pou:layoutUnit position="west" size="200" header="Opciones" 
+                            collapsible="true">
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:10px">                                            
+                        <pou:selectBooleanCheckbox value="#{miMapaController.misPOIs}"/> 
+                            <h:outputText value="Mis POIs" />
+                             
+                            <pou:selectBooleanCheckbox value="#{miMapaController.misZonasFrecuentes}"/> 
+                            <h:outputText value="Mis zonas frecuentes" />
+                                                  
+                            <pou:selectBooleanCheckbox value="#{miMapaController.todosLosPOIs}"/>                                                    
+                            <h:outputText value="Todos los POIs"/>
+                    </h:panelGrid>         
+                    <h:panelGrid columns="1" cellpadding="10px" style="margin-bottom:10px"> 
+                            <pou:commandButton value="Imprimir Mapa"  id="ajax"  
+                            actionListener="#{miMapaController.imprimirMapa}" /> 
+                    </h:panelGrid>    
+                    <h:panelGrid columns="1" cellpadding="10px" style="margin-bottom:10px"> 
+                            <pou:menuButton value="Generar reportes">  
+                                <pou:menuitem value="De visitas" actionListener="#{buttonBean.save}" icon="ui-icon-disk"/>                                  
+                                <pou:separator />  
+                                <pou:menuitem value="De zonas frecuentes" icon="ui-icon-extlink"/>  
+                            </pou:menuButton> 
+                    </h:panelGrid> 
+                </h:form>
+
+            </pou:layoutUnit>
+            
+            <pou:layoutUnit position="center" header="Mi mapa" style="min-width: 600px" >
+
+
+                <pou:gmap center="#{miMapaController.centerMap}" zoom="15" 
+                          type="ROADMAP" model="#{miMapaController.mapModel}"
+                          style="min-width:600px;min-height:450px">  
+
+                    <pou:ajax event="overlaySelect" listener="#{miMapaController.onMarkerSelect}" />  
+
+                    <pou:gmapInfoWindow>  
+                        <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+
+                            <pou:gmapInfoWindow>  
+                                <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+
+                                    <h:outputText value="#{miMapaController.marker.title}"
+                                                  style="font-weight: bold"/>
+                                    <br/>
+                                    
+                                    <h:outputText value="#{miMapaController.marker.data.comentarioVisitaPoi}"/>
+
+
+                                </pou:outputPanel>  
+
+                            </pou:gmapInfoWindow>  
+
+                        </pou:outputPanel>  
+
+                    </pou:gmapInfoWindow>  
+                </pou:gmap>
+
+            </pou:layoutUnit>
+        </pou:layout>
     </ui:component>
 </html>
