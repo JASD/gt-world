@@ -3,15 +3,14 @@ package com.gtworld.controller;
 import com.gtworld.entity.Red;
 import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.controller.util.PaginationHelper;
-import com.gtworld.entity.Usuario;
+import com.gtworld.entity.*;
+import com.gtworld.facade.MiembroFacade;
+import com.gtworld.facade.NotificacionFacade;
 import com.gtworld.facade.RedFacade;
 import com.gtworld.facade.UsuarioFacade;
 
 import java.io.Serializable;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -19,6 +18,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -33,10 +33,13 @@ public class RedController implements Serializable {
     private com.gtworld.facade.RedFacade ejbFacade;
     @EJB
     private com.gtworld.facade.UsuarioFacade usuarioFacade;
+    @EJB
+    private com.gtworld.facade.MiembroFacade miembroFacade;
+    @EJB
+    private com.gtworld.facade.NotificacionFacade notificacionFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-    private List<Usuario> miembros = new ArrayList<Usuario>();
-    private Usuario miembro;
+    private List<Usuario> miembros;
     private String email;
 
     public RedController() {
@@ -88,23 +91,50 @@ public class RedController implements Serializable {
         Object[] parameters = {"emailUsuario", getEmail()};
         try {
             Usuario usuario = getUsuarioFacade().getSingleResult("Usuario.findByEmailUsuario", parameters);
-            //setMiembro(usuario);
             getMiembros().add(usuario);
-
+            email = "";
         } catch (Exception e) {
             JsfUtil.addErrorMessage("No se Encontro Usuario");
 
         }
     }
-
+    
     public void prepareCreate() {
         current = new Red();
+        miembros = new ArrayList<Usuario>();
+        email = "";
         selectedItemIndex = -1;
     }
 
-    public void create() {
+    public void create(ActionEvent event) {
+        Usuario actual = (Usuario) event.getComponent().getAttributes().get("user");
+        current.setIdUsuario(actual);
         try {
             getFacade().create(current);
+            Calendar calendar = new GregorianCalendar();
+            MiembroPK pka = new MiembroPK(actual.getIdUsuario(), current.getIdRed());
+            Miembro mba = new Miembro(pka);
+            mba.setRed(current);
+            mba.setUsuario(actual);
+            mba.setFechaMiembro(calendar.getTime());
+            getMiembroFacade().create(mba);
+            for (Usuario user : getMiembros()) {
+                MiembroPK pk = new MiembroPK(user.getIdUsuario(), current.getIdRed());
+                Miembro mb = new Miembro(pk);
+                mb.setRed(current);
+                mb.setUsuario(user);
+                mb.setFechaMiembro(calendar.getTime());
+                Notificacion nueva = new Notificacion();
+                nueva.setEstadoNotificacion(true);
+                nueva.setTituloNotificacion("Te Agregaron a una RED!");
+                nueva.setFechaNotificacion(calendar.getTime());
+                nueva.setContenidoNotificacion("Ahora Perteneces a la Red "
+                        + current.getNombreRed()
+                        + " creada por " + actual.getNombreUsuario());
+                nueva.setIdUsuario(user);
+                getMiembroFacade().create(mb);
+                getNotificacionFacade().create(nueva);
+            }
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RedCreated"));
             prepareCreate();
         } catch (Exception e) {
@@ -190,14 +220,6 @@ public class RedController implements Serializable {
         pagination = null;
     }
 
-    public Usuario getMiembro() {
-        return miembro;
-    }
-
-    public void setMiembro(Usuario miembro) {
-        this.miembro = miembro;
-    }
-
     public List<Usuario> getMiembros() {
         return miembros;
     }
@@ -218,6 +240,15 @@ public class RedController implements Serializable {
         return usuarioFacade;
     }
 
+    public MiembroFacade getMiembroFacade() {
+        return miembroFacade;
+    }
+
+    public NotificacionFacade getNotificacionFacade() {
+        return notificacionFacade;
+    }
+
+    
     public String next() {
         getPagination().nextPage();
         recreateModel();

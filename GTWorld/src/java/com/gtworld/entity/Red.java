@@ -30,9 +30,7 @@ public class Red implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ID_RED")
+    @Column(name = "ID_RED", insertable = false, nullable = false, updatable = true)
     private Long idRed;
     @Size(max = 50)
     @Column(name = "NOMBRE_RED")
