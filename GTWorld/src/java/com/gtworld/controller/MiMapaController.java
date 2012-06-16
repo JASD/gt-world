@@ -106,7 +106,7 @@ public class MiMapaController implements Serializable {
         
         mapModel = new DefaultMapModel();
         List<Poi> poisList=null,auxiliarList=null;
-        
+        List<VisitaPoi> visitas=null;
         try {
             
             if(isMisPOIs()&&!isMisPOIsVisitados()&&!isTodosLosPOIs()){ //SOLO POIS DEL USUARIO
@@ -136,8 +136,12 @@ public class MiMapaController implements Serializable {
             }else if(!isMisPOIs()&&isMisPOIsVisitados()&&!isTodosLosPOIs()){   
                
                Object[] parameters = {"idUsuario", User.getIdUsuario()};
-               poisList = poiFacade.find("VisitaPoi.findByIdUsuario", parameters);
-                
+               visitas = visitaPoiFacade.find("VisitaPoi.findByIdUsuario", parameters);
+               
+               for(VisitaPoi x:visitas){
+                   poisList.add(x.getPoi());
+               }
+               
             }else if(isMisPOIs()&&isMisPOIsVisitados()&&isTodosLosPOIs()){ 
             }
             
