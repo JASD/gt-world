@@ -40,3 +40,7 @@
 .remove{
     background-image: url(../icon/remove.png) !important;
 }
+
+.aceptar{
+    background-image: url(../icon/accept.png) !important;
+}

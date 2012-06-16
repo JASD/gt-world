@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:component>
+        <h:form id="confirm_baja_red">
+            <pou:confirmDialog widgetVar="confirmBaja" message="Salir de Red:  
+                               #{redController.selected.nombreRed} "
+                               header="¿Desea Salir?" severity="alert">
+               
+                 <pou:commandButton value="Aceptar"  oncomplete="confirmBaja.hide()"  
+                                    actionListener="#{redController.salirRed}" 
+                                 icon="aceptar" update=":currentUI"/>  
+                <pou:commandButton value="Cancelar" onclick="confirmBaja.hide()" 
+                                   icon="cancelar" />   
+                
+            </pou:confirmDialog>
+        </h:form>
+    </ui:component>
+</html>

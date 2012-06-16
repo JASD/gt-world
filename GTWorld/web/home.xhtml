@@ -113,10 +113,10 @@
                 <pou:submenu label="  Mapas" icon="maps">
                     <pou:menuitem value="Mi Mapa" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
-                         <f:setPropertyActionListener value="#{sessionController.user}" 
-                                                      target="#{miMapaController.idUser}" />
-                         <f:setPropertyActionListener value="#{sessionController.centerMap}" 
-                                                      target="#{miMapaController.centerMap}" />
+                        <f:setPropertyActionListener value="#{sessionController.user}" 
+                                                     target="#{miMapaController.idUser}" />
+                        <f:setPropertyActionListener value="#{sessionController.centerMap}" 
+                                                     target="#{miMapaController.centerMap}" />
                         <f:attribute name="uiName" value="maps/mi_mapa" />
                     </pou:menuitem>
                     <pou:menuitem value="Mi Red" update=":currentUI"
@@ -135,7 +135,7 @@
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Redes" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
-                       
+
                         <f:attribute name="uiName" value="red/gestionar_redes" />
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Miembros" update=":currentUI"
@@ -202,5 +202,10 @@
         <ui:include src="UI/dialog/poi_map_1.xhtml" />
         <ui:include src="UI/dialog/confirm_delete_poi_1.xhtml" />
         <ui:include src="UI/dialog/info_poi_1.xhtml" />
+        <ui:include src="UI/dialog/red_baja.xhtml" />
+        <ui:include src="UI/dialog/red_edit.xhtml" />
+        <ui:include src="UI/dialog/red_info.xhtml" />
+        <ui:include src="UI/dialog/red_user.xhtml" />
+
     </h:body>
 </html>

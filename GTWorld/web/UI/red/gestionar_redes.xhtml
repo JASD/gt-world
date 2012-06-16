@@ -2,8 +2,43 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui">
     <ui:component>
-            <h:outputText value="En Desarrollo" style="margin-left: 19px"/>
+        <pou:layout style="height: 500px">
+            <pou:layoutUnit position="center" header="Mis Redes">
+                <pou:dataGrid id="redes" var="red"  
+                              value="#{redController.items}" columns="4">  
+                    <pou:column>  
+                        <pou:panel id="pnl" header="#{red.nombreRed}" 
+                                   style="text-align:center">
+                            <pou:commandLink title="Información" style="margin-left: 5px"
+                                             action="#{redController.prepareView}"
+                                             update=":red_info"
+                                             oncomplete="redInfo.show()" >
+                                <pou:graphicImage value="resources/img/info.png" />
+                            </pou:commandLink>
+                            <pou:commandLink title="Editar" style="margin-left: 5px"
+                                             action="#{redController.prepareEdit}"
+                                             update=":edit_red"
+                                             oncomplete="editarRed.show()" >
+                                <pou:graphicImage value="resources/img/pencil.png" />
+                            </pou:commandLink>
+                            <pou:commandLink title="Usuarios" style="margin-left: 5px"
+                                             action="#{redController.prepareViewUsers}"
+                                             update=":red_user"
+                                             oncomplete="redUsers.show()" >
+                                <pou:graphicImage value="resources/img/users.png" />
+                            </pou:commandLink>
+                            <pou:commandLink title="Dar de Baja" style="margin-left: 5px"
+                                             update=":confirm_baja_red"
+                                             oncomplete="confirmBaja.show()">
+                                <pou:graphicImage value="resources/img/remove.png" />
+                            </pou:commandLink>
+                        </pou:panel>  
+                    </pou:column>  
+                </pou:dataGrid>  
+            </pou:layoutUnit>
+        </pou:layout>
     </ui:component>
 </html>

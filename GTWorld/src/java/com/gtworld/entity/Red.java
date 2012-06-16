@@ -25,7 +25,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Red.findByIdRed", query = "SELECT r FROM Red r WHERE r.idRed = :idRed"),
     @NamedQuery(name = "Red.findByNombreRed", query = "SELECT r FROM Red r WHERE r.nombreRed = :nombreRed"),
     @NamedQuery(name = "Red.findByDescripcionRed", query = "SELECT r FROM Red r WHERE r.descripcionRed = :descripcionRed"),
-    @NamedQuery(name = "Red.findByFechaCreacionRed", query = "SELECT r FROM Red r WHERE r.fechaCreacionRed = :fechaCreacionRed")})
+    @NamedQuery(name = "Red.findByFechaCreacionRed", query = "SELECT r FROM Red r WHERE r.fechaCreacionRed = :fechaCreacionRed"),
+    @NamedQuery(name = "Red.findByUser", query = "SELECT DISTINCT r FROM Red r WHERE r.idRed IN (SELECT m.miembroPK.idRed FROM Miembro m WHERE m.miembroPK.idUsuario = :idUsuario)")})
 public class Red implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
