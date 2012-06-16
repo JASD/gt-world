@@ -94,7 +94,16 @@ public class MiMapaController implements Serializable {
   
     public void setTodosLosPOIs(boolean todosLosPOIs) {  
         this.todosLosPOIs = todosLosPOIs;  
-    }  
+    }
+
+    public Usuario getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Usuario idUser) {
+        this.idUser = idUser;
+    }
+    
     public void update(ValueChangeEvent e){
         
         Usuario user = new Usuario();

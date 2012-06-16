@@ -113,6 +113,8 @@
                 <pou:submenu label="  Mapas" icon="maps">
                     <pou:menuitem value="Mi Mapa" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
+                         <f:setPropertyActionListener value="#{sessionController.user}" 
+                                                      target="#{miMapaController.idUser}" /> 
                         <f:attribute name="uiName" value="maps/mi_mapa" />
                     </pou:menuitem>
                     <pou:menuitem value="Mi Red" update=":currentUI"
@@ -125,10 +127,13 @@
                     <pou:menuitem value="Crear Red" update=":currentUI"
                                   action="#{redController.prepareCreate}"
                                   actionListener="#{sessionController.updateUI}">
+                        <f:setPropertyActionListener value="#{sessionController.user}" 
+                                                     target="#{redController.actual}" /> 
                         <f:attribute name="uiName" value="red/crear_red" />
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Redes" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
+                       
                         <f:attribute name="uiName" value="red/gestionar_redes" />
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Miembros" update=":currentUI"

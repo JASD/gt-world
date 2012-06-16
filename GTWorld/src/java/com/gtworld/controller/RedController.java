@@ -18,14 +18,16 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 @ManagedBean(name = "redController")
 @SessionScoped
-public class RedController implements Serializable {
+public class RedController implements Serializable{
 
     private Red current;
     private DataModel items = null;
@@ -41,6 +43,7 @@ public class RedController implements Serializable {
     private int selectedItemIndex;
     private List<Usuario> miembros;
     private String email;
+    private Usuario actual;
 
     public RedController() {
     }
@@ -85,7 +88,7 @@ public class RedController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-    
+
     public void addUser() {
 
         Object[] parameters = {"emailUsuario", getEmail()};
@@ -98,7 +101,7 @@ public class RedController implements Serializable {
 
         }
     }
-    
+
     public void prepareCreate() {
         current = new Red();
         miembros = new ArrayList<Usuario>();
@@ -106,8 +109,7 @@ public class RedController implements Serializable {
         selectedItemIndex = -1;
     }
 
-    public void create(ActionEvent event) {
-        Usuario actual = (Usuario) event.getComponent().getAttributes().get("user");
+    public void create() {
         current.setIdUsuario(actual);
         try {
             getFacade().create(current);
@@ -236,6 +238,14 @@ public class RedController implements Serializable {
         this.email = email;
     }
 
+    public Usuario getActual() {
+        return actual;
+    }
+
+    public void setActual(Usuario actual) {
+        this.actual = actual;
+    }
+
     public UsuarioFacade getUsuarioFacade() {
         return usuarioFacade;
     }
@@ -248,7 +258,6 @@ public class RedController implements Serializable {
         return notificacionFacade;
     }
 
-    
     public String next() {
         getPagination().nextPage();
         recreateModel();
