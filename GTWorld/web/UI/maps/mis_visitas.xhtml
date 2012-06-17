@@ -31,8 +31,9 @@
                                     <br />
                                     <h:commandLink value="#{misVisitasController.marker.data.poi.urlWebPoi}"/>
                                     <bt />
+                                    <h:outputText value="Fecha visita: "/>
                                     <h:outputText value="#{misVisitasController.marker.data.visitaPoiPK.fechaVisitaPoi}">
-                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-06:00"/>
+                                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-06:00"/>
                                     </h:outputText>
                                     <br />
                                     <h:outputText value="#{misVisitasController.marker.data.comentarioVisitaPoi}"/>
