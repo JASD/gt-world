@@ -10,7 +10,7 @@
             <pou:dialog widgetVar="redUsers" header="Usuarios de la Red" showEffect="fade"
                         hideEffect="fade" modal="true" resizable="false" 
                         onHide="#{redController.prepareList()}">
-                <pou:dataTable id="memberTable" value="#{redController.selected.miembroList}" var="m" 
+                <pou:dataTable id="memberTable" value="#{redController.miembro}" var="m" 
                                paginator="true" rows="3"  
                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                emptyMessage="No se encontraron usuarios">  

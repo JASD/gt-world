@@ -39,6 +39,7 @@
                                 </pou:commandLink>
                                 <pou:commandLink title="Usuarios" style="margin-left: 5px"
                                                  action="#{redController.prepareView}"
+                                                 actionListener="#{redController.viewMembersRed}"
                                                  update=":red_user"
                                                  oncomplete="redUsers.show()" >
                                     <pou:graphicImage value="resources/img/users.png" />

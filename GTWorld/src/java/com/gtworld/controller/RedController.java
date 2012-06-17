@@ -102,6 +102,13 @@ public class RedController implements Serializable {
         setRedSelected(true);
 
     }
+    
+     public void viewMembersRed() {
+        Object[] parameters = {"idRed", current.getIdRed()};
+        setMiembro(getMiembroFacade().find("Miembro.findByIdRed", parameters));
+        setRedSelected(true);
+
+    }
 
     public void reset() {
         setRedSelected(false);
