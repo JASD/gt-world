@@ -2,8 +2,110 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
-            <h:outputText value="En Desarrollo" style="margin-left: 19px"/>
+        <pou:layout style="height: 700px" widgetVar="lay" collapseTitle="cerrar"
+                    expandTitle="abrir">
+            <pou:layoutUnit id="left" position="west" size="200" collapsible="true" header="Opciones" > 
+                  <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:5px"> 
+                                 
+                           <pou:selectBooleanCheckbox value="#{miRedController.value1}"/> 
+                           <h:outputText value="Mis zonas frecuentes" /> 
+                        
+                            <pou:selectBooleanCheckbox value="#{miRedController.value2}"/> 
+                            <h:outputText value="Todos los POI's " /> 
+                           
+                           <pou:selectBooleanCheckbox value="#{miRedController.value3}"/>
+                            <h:outputText value="Mis POI's" /> 
+                                                    
+                    </h:panelGrid>         
+                    <h:panelGrid columns="1" cellpadding="10px" style="margin-bottom:5px"> 
+                            <pou:commandButton value="Imprimir Mapa"  id="ajax"  
+                            actionListener="#{miRedController.imprimirMapa}" /> 
+               
+                    </h:panelGrid>    
+                <br/><br/>
+                 <pou:menuButton id="menu" value="Generar Reportes"   style="margin-left:5px">  
+                       <pou:menuitem value="De visitas"  onclick="dlg2.show();"/>                                  
+                  </pou:menuButton>   
+    
+            </pou:layoutUnit>
+          <pou:layoutUnit id="center" position="center">
+       
+            <pou:gmap center="13.720213, -89.201475" zoom="13" type="HYBRID" model="#{mapBean.advancedModel}" style="min-width:200px;min-height:375px">  
+                <pou:ajax event="overlaySelect" listener="#{mapBean.onMarkerSelect}" />  
+                <pou:gmapInfoWindow>  
+                    <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+                            <pou:graphicImage value="/images/antalya/#{mapBean.marker.data}" height="150"/>  
+                            <br />  
+                        <h:outputText value="#{mapBean.marker.title}" />  
+                        </pou:outputPanel>  
+                        </pou:gmapInfoWindow>  
+              </pou:gmap>  
+         
+           </pou:layoutUnit>
+            
+            <pou:layoutUnit id="bottom" position="south"  size="300"  >
+                     <pou:fieldset legend="Mis Redes">
+                         <pou:dataGrid id="availableCars" var="car" value="2" columns="3" rows="1" paginator="false"  paginatorTemplate="{CurrentPageReport}  {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}">                                
+                             <pou:column>  
+                               <pou:panel id="pnl" header="" style="text-align:center">  
+                                   <h:panelGrid columns="1" style="width:0%">  
+                                       <pou:graphicImage value="/resources/img/picture.png"/>  
+                                   </h:panelGrid>  
+                               </pou:panel>  
+                              <pou:draggable for="pnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>  
+                              </pou:column>  
+                          </pou:dataGrid> 
+                      </pou:fieldset><br/> 
+                      
+                     <pou:fieldset id="mired" legend="Mi Red">  
+                        <pou:outputPanel id="dropArea">  
+                             <h:outputText value="!!!Deje aca!!!"  rendered="#{empty tableBean.droppedCars}" style="font-size:24px;" />  
+                            <pou:dataTable var="car" value="2" rendered="#{not empty tableBean.droppedCars}">  
+                                 <pou:column headerText="Model">  
+                                   <h:outputText value="123" />  
+                                  </pou:column>  
+                             </pou:dataTable>  
+                        </pou:outputPanel>  
+                      </pou:fieldset>
+                         <br/>
+                    <pou:fieldset  legend="Mis Usuarios">
+                        <pou:dataGrid id="availableCars1" var="car1" value="2" columns="3" rows="1"  paginator="false"   paginatorTemplate="{CurrentPageReport}  {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}">   
+                            <pou:column>  
+                               <pou:panel id="pnl1" header="" style="text-align:center">  
+                                  <h:panelGrid columns="1" style="width:0%">  
+                                      <pou:graphicImage value="/resources/img/pencil.png"/>  
+                                       </h:panelGrid>  
+                                     </pou:panel>  
+                                     <pou:draggable for="pnl1" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>  
+                                   </pou:column>  
+                               </pou:dataGrid>   
+                        </pou:fieldset>
+                        
+                             <br/>
+                       <pou:fieldset id="miusuario" legend="Mi Usuario">  
+                          <pou:outputPanel id="dropArea1">  
+                               <h:outputText value="!!!Drop here!!!"  rendered="#{empty tableBean.droppedCars}" style="font-size:24px;" />  
+                             <pou:dataTable var="car1" value="2" rendered="#{not empty tableBean.droppedCars1}">  
+                                 <pou:column headerText="Model">  
+                                    <h:outputText value="123" />  
+                                 </pou:column>  
+                             </pou:dataTable>  
+                            </pou:outputPanel>  
+                       </pou:fieldset> 
+                             <br/>   
+             <pou:droppable for="miusuario" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars1" onDrop="handleDrop">  
+                  <pou:ajax listener="#{tableBean.onCarDrop}" update="dropArea1 availableCars1" />  
+             </pou:droppable>  
+                      
+             <pou:droppable for="mired" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                  <pou:ajax listener="#{tableBean.onCarDrop}" update="dropArea availableCars" />  
+             </pou:droppable> 
+               </pou:layoutUnit>
+               
+           </pou:layout>
     </ui:component>
 </html>
