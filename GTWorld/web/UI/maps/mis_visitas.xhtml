@@ -1,9 +1,57 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:pou="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
-            <h:outputText value="En Desarrollo" style="margin-left: 19px"/>
+        
+        <pou:layout style="height: 500px">
+           
+            <pou:layoutUnit   position="center" header="Mi mapa" style="min-width: 600px" >
+
+
+                <pou:gmap id="mapui"  center="#{misVisitasController.centerMap}" zoom="15" 
+                          type="ROADMAP" model="#{misVisitasController.mapModel}"
+                          style="min-width:600px;min-height:450px">  
+
+                    <pou:ajax event="overlaySelect" listener="#{misVisitasController.onMarkerSelect}" />  
+
+                    <pou:gmapInfoWindow>  
+                        <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+
+                            <pou:gmapInfoWindow maxWidth="400">  
+                                <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+
+                                    <h:outputText value="#{misVisitasController.marker.title}"
+                                                  style="font-weight: bold"/>
+                                    <br />
+                                    <h:outputText value="#{misVisitasController.marker.data.poi.descripcionPoi}"/>
+                                    <br />
+                                    <h:commandLink value="#{misVisitasController.marker.data.poi.urlWebPoi}"/>
+                                    <bt />
+                                    <h:outputText value="#{misVisitasController.marker.data.visitaPoiPK.fechaVisitaPoi}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-06:00"/>
+                                    </h:outputText>
+                                    <br />
+                                    <h:outputText value="#{misVisitasController.marker.data.comentarioVisitaPoi}"/>
+                                    
+                                </pou:outputPanel>  
+                                <pou:galleria value="#{misVisitasController.marker.data.poi.imagenList}" var="images">  
+                                        <pou:graphicImage value="#{images.urlImagen}" />  
+                                </pou:galleria>
+
+                            </pou:gmapInfoWindow>  
+
+                        </pou:outputPanel>  
+
+                    </pou:gmapInfoWindow>  
+                </pou:gmap>
+
+            </pou:layoutUnit>
+         
+        </pou:layout>
+       
     </ui:component>
 </html>
