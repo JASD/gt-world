@@ -21,13 +21,16 @@
                     <pou:gmapInfoWindow>  
                         <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
 
-                            <pou:gmapInfoWindow>  
+                            <pou:gmapInfoWindow maxWidth="400">  
                                 <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
 
                                     <h:outputText value="#{miMapaController.marker.title}"
                                                   style="font-weight: bold"/>
 
                                 </pou:outputPanel>  
+                                <pou:galleria value="#{miMapaController.marker.data.imagenList}" var="images">  
+                                    <pou:graphicImage value="#{images.urlImagen}" />  
+                                </pou:galleria>
 
                             </pou:gmapInfoWindow>  
 
