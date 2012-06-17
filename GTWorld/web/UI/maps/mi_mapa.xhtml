@@ -26,10 +26,14 @@
 
                                     <h:outputText value="#{miMapaController.marker.title}"
                                                   style="font-weight: bold"/>
-
+                                    <br />
+                                    <h:outputText value="#{miMapaController.marker.data.descripcionPoi}"/>
+                                    <br />
+                                    <h:commandLink value="#{miMapaController.marker.data.urlWebPoi}"/>
+                                    
                                 </pou:outputPanel>  
                                 <pou:galleria value="#{miMapaController.marker.data.imagenList}" var="images">  
-                                    <pou:graphicImage value="#{images.urlImagen}" />  
+                                        <pou:graphicImage value="#{images.urlImagen}" />  
                                 </pou:galleria>
 
                             </pou:gmapInfoWindow>  
