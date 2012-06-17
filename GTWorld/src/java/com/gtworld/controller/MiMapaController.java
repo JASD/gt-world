@@ -5,10 +5,12 @@
 package com.gtworld.controller;
 
 import com.gtworld.entity.Poi;
+import com.gtworld.entity.Imagen;
 import com.gtworld.entity.Usuario;
 import com.gtworld.entity.VisitaPoi;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -39,6 +41,7 @@ public class MiMapaController implements Serializable {
     @EJB
     private com.gtworld.facade.VisitaPoiFacade visitaPoiFacade;
     private Usuario User;
+  
     
     public MiMapaController() {
         
@@ -103,6 +106,8 @@ public class MiMapaController implements Serializable {
         this.User = User;
     }
     
+    
+    
     public void update(){
         
         mapModel = new DefaultMapModel();
@@ -128,7 +133,7 @@ public class MiMapaController implements Serializable {
                }
               
             }else if(isMisPOIs()&&isMisPOIsVisitados()&&!isTodosLosPOIs()){ //POIS DEL USUARIO Y LOS VISITADOS     
-            }else if(!isMisPOIs()&&!isMisPOIsVisitados()&&isTodosLosPOIs()){
+            }else if(!isMisPOIs()&&!isMisPOIsVisitados()&&isTodosLosPOIs()){ // SOLO POIS PUBLICOS
               
                Object[] parameters = {"privacidadPoi", true};
                poisList = poiFacade.find("Poi.findByPrivacidadPoi", parameters);
@@ -138,12 +143,13 @@ public class MiMapaController implements Serializable {
                
                Object[] parameters = {"idUsuario", User.getIdUsuario()};
                visitas = visitaPoiFacade.find("VisitaPoi.findByIdUsuario", parameters);
-               
+               poisList=new ArrayList<Poi>();
                for(VisitaPoi x:visitas){
                    poisList.add(x.getPoi());
                }
                
-            }else if(isMisPOIs()&&isMisPOIsVisitados()&&isTodosLosPOIs()){ 
+            }else if(isMisPOIs()&&isMisPOIsVisitados()&&isTodosLosPOIs()){ //TODOS EN ABSOLUTO
+                
             }
             
             if (!poisList.isEmpty()) {
@@ -162,12 +168,10 @@ public class MiMapaController implements Serializable {
                     }
 
                 }
-            } else {
-              setCenterMap("12,-12");
             }
 
         } catch (Exception eex) {
-           
+           eex.printStackTrace();
         }
     }
 }
