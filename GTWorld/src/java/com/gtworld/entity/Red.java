@@ -126,7 +126,7 @@ public class Red implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gtworld.entity.Red[ idRed=" + idRed + " ]";
+        return nombreRed;
     }
     
 }

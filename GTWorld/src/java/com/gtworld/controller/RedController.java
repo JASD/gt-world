@@ -39,6 +39,9 @@ public class RedController implements Serializable {
     private List<Usuario> miembros;
     private String email;
     private Usuario actual;
+    private Red red;
+    private boolean redSelected;
+    private Miembro selected;
 
     public RedController() {
     }
@@ -92,7 +95,10 @@ public class RedController implements Serializable {
         }
     }
 
-    public void prepareViewUsers() {
+    public void viewMembers() {
+
+        setRedSelected(true);
+
     }
 
     public void prepareView() {
@@ -276,6 +282,30 @@ public class RedController implements Serializable {
         return notificacionFacade;
     }
 
+    public Red getRed() {
+        return red;
+    }
+
+    public void setRed(Red red) {
+        this.red = red;
+    }
+
+    public boolean isRedSelected() {
+        return redSelected;
+    }
+
+    public void setRedSelected(boolean redSelected) {
+        this.redSelected = redSelected;
+    }
+
+    public Miembro getMemberSelected() {
+        return selected;
+    }
+
+    public void setMemberSelected(Miembro selected) {
+        this.selected = selected;
+    }
+
     public String next() {
         getPagination().nextPage();
         recreateModel();
@@ -294,6 +324,11 @@ public class RedController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    }
+
+    public SelectItem[] getUserItems() {
+        Object[] parameters = {"idUsuario", getActual().getIdUsuario()};
+        return JsfUtil.getSelectItems(ejbFacade.find("Red.findByUser", parameters));
     }
 
     @FacesConverter(forClass = Red.class)

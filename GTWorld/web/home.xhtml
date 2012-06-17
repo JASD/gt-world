@@ -134,6 +134,7 @@
                         <f:attribute name="uiName" value="red/crear_red" />
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Redes" update=":currentUI"
+                                  action="#{redController.prepareCreate}"
                                   actionListener="#{sessionController.updateUI}">
                         <f:setPropertyActionListener value="#{sessionController.user}" 
                                                      target="#{redController.actual}" />
@@ -141,6 +142,8 @@
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Miembros" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
+                        <f:setPropertyActionListener value="#{sessionController.user}" 
+                                                     target="#{redController.actual}" />
                         <f:attribute name="uiName" value="red/gestionar_miembros" />
                     </pou:menuitem>
 
@@ -208,6 +211,7 @@
         <ui:include src="UI/dialog/red_edit.xhtml" />
         <ui:include src="UI/dialog/red_info.xhtml" />
         <ui:include src="UI/dialog/red_user.xhtml" />
+        <ui:include src="UI/dialog/member_detail.xhtml" />
 
     </h:body>
 </html>

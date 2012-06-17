@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:component>
+        <h:form id="member_detail">
+            <pou:dialog widgetVar="memInfo" header="Información de Miembro" showEffect="fade"
+                        hideEffect="fade" modal="true" resizable="false" >
+
+                <h:panelGrid columns="2">
+                    <h:outputText value=" #{redController.memberSelected.usuario.nombreUsuario} 
+                                  #{redController.memberSelected.usuario.apellidoUsuario}" />
+                    <br />
+                    <h:outputText value="Miembro Desde:" style="color: #000066"/>
+                    <h:outputText value="#{redController.memberSelected.fechaMiembro}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="GMT-06:00"/>
+                    </h:outputText>
+                </h:panelGrid>
+            </pou:dialog>
+        </h:form>
+    </ui:component>
+</html>

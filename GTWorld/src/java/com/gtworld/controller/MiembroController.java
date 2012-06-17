@@ -3,6 +3,7 @@ package com.gtworld.controller;
 import com.gtworld.entity.Miembro;
 import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.controller.util.PaginationHelper;
+import com.gtworld.entity.Usuario;
 import com.gtworld.facade.MiembroFacade;
 
 import java.io.Serializable;
@@ -21,17 +22,17 @@ import javax.faces.model.SelectItem;
 @ManagedBean(name = "miembroController")
 @SessionScoped
 public class MiembroController implements Serializable {
-
+    
     private Miembro current;
     private DataModel items = null;
     @EJB
     private com.gtworld.facade.MiembroFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-
+    
     public MiembroController() {
     }
-
+    
     public Miembro getSelected() {
         if (current == null) {
             current = new Miembro();
@@ -40,20 +41,20 @@ public class MiembroController implements Serializable {
         }
         return current;
     }
-
+    
     private MiembroFacade getFacade() {
         return ejbFacade;
     }
-
+    
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
-
+                
                 @Override
                 public int getItemsCount() {
                     return getFacade().count();
                 }
-
+                
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
@@ -62,25 +63,25 @@ public class MiembroController implements Serializable {
         }
         return pagination;
     }
-
+    
     public String prepareList() {
         recreateModel();
         return "List";
     }
-
+    
     public String prepareView() {
         current = (Miembro) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-
+    
     public String prepareCreate() {
         current = new Miembro();
         current.setMiembroPK(new com.gtworld.entity.MiembroPK());
         selectedItemIndex = -1;
         return "Create";
     }
-
+    
     public String create() {
         try {
             getFacade().create(current);
@@ -91,13 +92,13 @@ public class MiembroController implements Serializable {
             return null;
         }
     }
-
+    
     public String prepareEdit() {
         current = (Miembro) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
-
+    
     public String update() {
         try {
             getFacade().edit(current);
@@ -108,7 +109,7 @@ public class MiembroController implements Serializable {
             return null;
         }
     }
-
+    
     public String destroy() {
         current = (Miembro) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -117,7 +118,7 @@ public class MiembroController implements Serializable {
         recreateModel();
         return "List";
     }
-
+    
     public String destroyAndView() {
         performDestroy();
         recreateModel();
@@ -130,7 +131,7 @@ public class MiembroController implements Serializable {
             return "List";
         }
     }
-
+    
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -139,7 +140,7 @@ public class MiembroController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
     }
-
+    
     private void updateCurrentItem() {
         int count = getFacade().count();
         if (selectedItemIndex >= count) {
@@ -154,48 +155,48 @@ public class MiembroController implements Serializable {
             current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
-
+    
     public DataModel getItems() {
         if (items == null) {
             items = getPagination().createPageDataModel();
         }
         return items;
     }
-
+    
     private void recreateModel() {
         items = null;
     }
-
+    
     private void recreatePagination() {
         pagination = null;
     }
-
+    
     public String next() {
         getPagination().nextPage();
         recreateModel();
         return "List";
     }
-
+    
     public String previous() {
         getPagination().previousPage();
         recreateModel();
         return "List";
     }
-
+    
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
-
+    
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-
+    
     @FacesConverter(forClass = Miembro.class)
     public static class MiembroControllerConverter implements Converter {
-
+        
         private static final String SEPARATOR = "#";
         private static final String SEPARATOR_ESCAPED = "\\#";
-
+        
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
@@ -204,7 +205,7 @@ public class MiembroController implements Serializable {
                     getValue(facesContext.getELContext(), null, "miembroController");
             return controller.ejbFacade.find(getKey(value));
         }
-
+        
         com.gtworld.entity.MiembroPK getKey(String value) {
             com.gtworld.entity.MiembroPK key;
             String values[] = value.split(SEPARATOR_ESCAPED);
@@ -213,7 +214,7 @@ public class MiembroController implements Serializable {
             key.setIdRed(Long.parseLong(values[1]));
             return key;
         }
-
+        
         String getStringKey(com.gtworld.entity.MiembroPK value) {
             StringBuffer sb = new StringBuffer();
             sb.append(value.getIdUsuario());
@@ -221,7 +222,7 @@ public class MiembroController implements Serializable {
             sb.append(value.getIdRed());
             return sb.toString();
         }
-
+        
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
                 return null;
