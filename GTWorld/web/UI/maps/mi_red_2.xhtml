@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:component>
+        
+        <pou:layout style="height: 700px" widgetVar="lay" collapseTitle="cerrar"
+                    expandTitle="abrir">
+            <pou:layoutUnit id="left" position="west" size="200" collapsible="true" header="Opciones" > 
+                  <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:5px"> 
+   
+                      <pou:selectBooleanCheckbox value="#{miRedController.todosLosPOIs}"/> 
+                            <h:outputText value="Todos los POI's  " /> 
+                           
+                            <pou:selectBooleanCheckbox value="#{miRedController.misPOIs}"/>
+                            <h:outputText value="Mis POI's" /> 
+                                                    
+                    </h:panelGrid>         
+                <br/><br/>
+                 <pou:menuButton id="menu" value="Generar Reportes"   style="margin-left:5px">  
+                       <pou:menuitem value="De visitas"  onclick="dlg2.show();"/>                                  
+                  </pou:menuButton>   
+    
+            </pou:layoutUnit>
+          <pou:layoutUnit id="center" position="center">
+       
+            <pou:gmap center="13.720213, -89.201475" zoom="13" type="HYBRID" model="#{mapBean.advancedModel}" style="min-width:200px;min-height:375px">  
+                <pou:ajax event="overlaySelect" listener="#{mapBean.onMarkerSelect}" />  
+                <pou:gmapInfoWindow>  
+                    <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+                            <pou:graphicImage value="/images/antalya/#{mapBean.marker.data}" height="150"/>  
+                            <br />  
+                        <h:outputText value="#{mapBean.marker.title}" />  
+                        </pou:outputPanel>  
+                        </pou:gmapInfoWindow>  
+              </pou:gmap>  
+         
+           </pou:layoutUnit>
+            
+            <pou:layoutUnit id="bottom" position="south"  size="300"  >
+                <pou:fieldset legend="Mis Redes">
+                         <pou:dataGrid id="availableReds" var="red" value="#{miRedController.listaRed}" columns="3" rows="3" paginator="false"  paginatorTemplate="{CurrentPageReport}  {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}">                                
+                             <pou:column>  
+                                 <pou:panel id="pnl_red" header="#{red.nombreRed}" style="text-align:center">  
+                                   <h:panelGrid columns="1" style="width:100%">  
+                                       <pou:graphicImage value="/resources/img/users.png"/>  
+                                   </h:panelGrid>  
+                               </pou:panel>  
+                              <pou:draggable for="pnl_red" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>  
+                              </pou:column>  
+                          </pou:dataGrid> 
+                      </pou:fieldset><br/> 
+                      
+                     <pou:fieldset id="selectedred" legend="Mi Red" style="margin-top:20px">  
+                        <pou:outputPanel id="dropArea">  
+                            <h:outputText value="Coloque su red aca"  rendered="#{empty miRedController.redDrop}" style="font-size:24px;" />  
+                            <pou:dataTable var="red" value="#{miRedController.redDrop}" rendered="#{not empty miRedController.redDrop}">  
+                                 <pou:column headerText="Nombre Red">  
+                                     <h:outputText value="#{red.nombreRed}" />  
+                                  </pou:column>  
+                                 <pou:column headerText="Descripcion de Red">  
+                                     <h:outputText value="#{red.descripcionRed}" />  
+                                  </pou:column> 
+                             </pou:dataTable>  
+                        </pou:outputPanel>  
+                      </pou:fieldset>
+                         <br/>
+                      
+             <pou:droppable for="selectedred" tolerance=" touch" activeStyleClass="ui-state-highlight" datasource="availableReds" onDrop="handleDrop">  
+                 <pou:ajax   listener="#{miRedController.onRedDrop}" update="dropArea availableReds" />  
+             </pou:droppable> 
+                         
+             </pou:layoutUnit>
+               
+           </pou:layout>
+    </ui:component>
+</html>
