@@ -31,8 +31,7 @@ import org.primefaces.model.map.Marker;
 public class MiMapaController implements Serializable {
     
     private boolean misPOIs=false;  
-    private boolean misPOIsVisitados=false;
-    private boolean todosLosPOIs=false;
+    private boolean todosLosPOIs=false;    
     private MapModel mapModel; 
     private Marker marker; 
     public String centerMap;
@@ -68,10 +67,6 @@ public class MiMapaController implements Serializable {
         return marker;  
     }
     
-    public void imprimirMapa(){
-        
-    }
-    
      public boolean isMisPOIs() {  
         return misPOIs;  
     }  
@@ -80,15 +75,7 @@ public class MiMapaController implements Serializable {
         this.misPOIs = misPOIs;  
         update();
     }  
-  
-    public boolean isMisPOIsVisitados() {  
-        return misPOIsVisitados;  
-    }  
-  
-    public void setMisPOIsVisitados(boolean misPOIsVisitados) {  
-        this.misPOIsVisitados = misPOIsVisitados;  
-        update();
-    }  
+   
     public boolean isTodosLosPOIs() {  
         return todosLosPOIs;  
     }  
@@ -105,6 +92,7 @@ public class MiMapaController implements Serializable {
     public void setIdUser(Usuario User) {
         this.User = User;
     }
+
     
     
     
@@ -115,12 +103,12 @@ public class MiMapaController implements Serializable {
         List<VisitaPoi> visitas=null;
         try {
             
-            if(isMisPOIs()&&!isMisPOIsVisitados()&&!isTodosLosPOIs()){ //SOLO POIS DEL USUARIO
+            if(isMisPOIs()&&!isTodosLosPOIs()){ //SOLO POIS DEL USUARIO
                
                Object[] parameters = {"idUsuario", getUser()};
                poisList = poiFacade.find("Poi.findByUser",parameters); 
                
-            }else if(isMisPOIs()&&!isMisPOIsVisitados()&&isTodosLosPOIs()){ //POIS DEL USUARIO Y LOS PUBLICOS
+            }else if(isMisPOIs()&&isTodosLosPOIs()){ //POIS DEL USUARIO Y LOS PUBLICOS
                
                Object[] parameters = {"idUsuario", getUser()};
                Object[] parameters2 = {"privacidadPoi", true};
@@ -131,26 +119,13 @@ public class MiMapaController implements Serializable {
                    if(!poisList.contains(x))
                        poisList.add(x);
                }
-              
-            }else if(isMisPOIs()&&isMisPOIsVisitados()&&!isTodosLosPOIs()){ //POIS DEL USUARIO Y LOS VISITADOS     
-            }else if(!isMisPOIs()&&!isMisPOIsVisitados()&&isTodosLosPOIs()){ // SOLO POIS PUBLICOS
+             
+            }else if(!isMisPOIs()&&isTodosLosPOIs()){ // SOLO POIS PUBLICOS
               
                Object[] parameters = {"privacidadPoi", true};
                poisList = poiFacade.find("Poi.findByPrivacidadPoi", parameters);
                 
-            }else if(!isMisPOIs()&&isMisPOIsVisitados()&&isTodosLosPOIs()){
-            }else if(!isMisPOIs()&&isMisPOIsVisitados()&&!isTodosLosPOIs()){   
-               
-               Object[] parameters = {"idUsuario", User.getIdUsuario()};
-               visitas = visitaPoiFacade.find("VisitaPoi.findByIdUsuario", parameters);
-               poisList=new ArrayList<Poi>();
-               for(VisitaPoi x:visitas){
-                   poisList.add(x.getPoi());
-               }
-               
-            }else if(isMisPOIs()&&isMisPOIsVisitados()&&isTodosLosPOIs()){ //TODOS EN ABSOLUTO
-                
-            }
+            } 
             
             if (!poisList.isEmpty()) {
                 boolean isFirst = true;
