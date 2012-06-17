@@ -123,12 +123,16 @@
                                   actionListener="#{sessionController.updateUI}">
                         <f:setPropertyActionListener value="#{sessionController.user}" 
                                                      target="#{misVisitasController.idUser}" />
-                       <f:setPropertyActionListener value="#{sessionController.centerMap}" 
+                        <f:setPropertyActionListener value="#{sessionController.centerMap}" 
                                                      target="#{misVisitasController.centerMap}" />
                         <f:attribute name="uiName" value="maps/mis_visitas" />
                     </pou:menuitem>
                     <pou:menuitem value="Mi Red" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
+                        <f:setPropertyActionListener value="#{sessionController.user}" 
+                                                     target="#{miRedController.idUser}" />
+                        <f:setPropertyActionListener value="#{sessionController.centerMap}" 
+                                                     target="#{miRedController.centerMap}" />
                         <f:attribute name="uiName" value="maps/mi_red" />
                     </pou:menuitem>
 
