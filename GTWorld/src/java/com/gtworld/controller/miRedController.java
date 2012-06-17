@@ -24,7 +24,6 @@ public class miRedController implements Serializable {
 
     private boolean misPOIs=false; 
     private boolean todosLosPOIs=false; 
-    public String centerMap;
     private List<Red> redList; 
     private List<Red> redDrop;
     
