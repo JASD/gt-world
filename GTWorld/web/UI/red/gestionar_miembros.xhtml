@@ -12,6 +12,7 @@
                 <br />
                 <h:outputText value="Seleccionar Red"  style="margin-left:5px; vertical-align: top" />
                 <pou:selectOneMenu value="#{redController.red}" effect="fade" style="margin-left:5px; width: 200px">    
+                    <f:selectItem itemLabel="-- Seleccionar --" itemValue=""/>  
                     <f:selectItems value="#{redController.itemsRedes}" />
                     <pou:ajax update=":currentUI"  
                               listener="#{redController.viewMembers}" />

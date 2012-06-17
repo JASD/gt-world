@@ -107,7 +107,7 @@ public class RedController implements Serializable {
         setRedSelected(false);
         red = null;
         miembro = null;
-        prepareView();
+        prepareCreate();
     }
 
     public void prepareView() {
