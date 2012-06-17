@@ -23,11 +23,14 @@
                               rendered="#{redController.redSelected}">
 
                     <h:outputText value="Email"  />
-                    <pou:inputText style="margin-left: 10px"/>
+                    <pou:inputText value="#{redController.email}" 
+                                   style="margin-left: 10px"/>
 
                     <br/>
                     <br/>
-                    <pou:commandButton value="Agregar" actionListener="#pprBean.savePerson}" /> 
+                    <pou:commandButton value="Añadir" icon="add" 
+                                       update="members messages @parent" 
+                                       actionListener="#{redController.addUser}" /> 
                     <br/>
                     <br/>
                     <pou:outputPanel id="members">  
@@ -52,7 +55,8 @@
 
                         </pou:dataTable>
                         <br />
-                        <pou:commandButton value="Aceptar" actionListener="#pprBean.savePerson}" /> 
+                        <pou:commandButton value="Guardar" icon="save" update=":currentUI"
+                                           actionListener="#{redController.addMember}" />
                     </pou:outputPanel>
                 </pou:fieldset>
                 <br/><br/>

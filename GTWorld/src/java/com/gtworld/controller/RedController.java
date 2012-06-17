@@ -125,6 +125,36 @@ public class RedController implements Serializable {
         email = "";
         selectedItemIndex = -1;
     }
+    
+    public void addMember() {
+
+        Calendar calendar = new GregorianCalendar();
+        try {
+            for (Usuario user : getMiembros()) {
+                MiembroPK pk = new MiembroPK(user.getIdUsuario(), red.getIdRed());
+                Miembro mb = new Miembro(pk);
+                mb.setRed(red);
+                mb.setUsuario(user);
+                mb.setFechaMiembro(calendar.getTime());
+                Notificacion nueva = new Notificacion();
+                nueva.setEstadoNotificacion(true);
+                nueva.setTituloNotificacion("Te Agregaron a una RED!");
+                nueva.setFechaNotificacion(calendar.getTime());
+                nueva.setContenidoNotificacion("Ahora Perteneces a la Red "
+                        + red.getNombreRed()
+                        + " creada por " + red.getIdUsuario().getNombreUsuario());
+                nueva.setIdUsuario(user);
+                getMiembroFacade().create(mb);
+                getNotificacionFacade().create(nueva);
+                red.getMiembroList().add(mb);
+            }
+            JsfUtil.addSuccessMessage("Miembros Agregados");
+            prepareCreate();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+
+    }
 
     public void create() {
         current.setIdUsuario(actual);

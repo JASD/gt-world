@@ -149,6 +149,7 @@
                         <f:attribute name="uiName" value="red/gestionar_redes" />
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Miembros" update=":currentUI"
+                                  action="#{redController.prepareCreate}"
                                   actionListener="#{sessionController.updateUI}">
                         <f:setPropertyActionListener value="#{sessionController.user}" 
                                                      target="#{redController.actual}" />
