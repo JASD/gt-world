@@ -69,8 +69,8 @@
                       </pou:fieldset>
                          <br/>
                       
-             <pou:droppable for="selectedred" tolerance=" touch" activeStyleClass="ui-state-highlight" datasource="availableReds" onDrop="handleDrop">  
-                 <pou:ajax   listener="#{miRedController.onRedDrop}" update="dropArea availableReds" />  
+             <pou:droppable for="selectedred" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableReds" onDrop="handleDrop">  
+                 <pou:ajax   listener="#{miRedController.onRedDrop}" update="dropArea, availableReds" />  
              </pou:droppable> 
                          
              </pou:layoutUnit>

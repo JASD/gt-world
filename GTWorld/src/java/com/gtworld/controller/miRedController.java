@@ -6,6 +6,7 @@ package com.gtworld.controller;
 import com.gtworld.entity.Red;
 import com.gtworld.entity.Usuario;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -25,7 +26,7 @@ public class miRedController implements Serializable {
     private boolean misPOIs=false; 
     private boolean todosLosPOIs=false; 
     private List<Red> redList; 
-    private List<Red> redDrop;
+    private List<Red> redDrop = new ArrayList<Red>();
     
     
     private Date date1;  
