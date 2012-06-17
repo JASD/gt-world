@@ -122,9 +122,9 @@
                     <pou:menuitem value="Mis Visitas" update=":currentUI"
                                   actionListener="#{sessionController.updateUI}">
                         <f:setPropertyActionListener value="#{sessionController.user}" 
-                                                     target="#{miVisitaController.idUser}" />
-                        <f:setPropertyActionListener value="#{miVisitaController.centerMap}" 
-                                                     target="#{miMapaController.centerMap}" />
+                                                     target="#{misVisitasController.idUser}" />
+                       <f:setPropertyActionListener value="#{sessionController.centerMap}" 
+                                                     target="#{misVisitasController.centerMap}" />
                         <f:attribute name="uiName" value="maps/mis_visitas" />
                     </pou:menuitem>
                     <pou:menuitem value="Mi Red" update=":currentUI"
@@ -149,7 +149,7 @@
                         <f:attribute name="uiName" value="red/gestionar_redes" />
                     </pou:menuitem>
                     <pou:menuitem value="Gestionar Miembros" update=":currentUI"
-                                  action="#{redController.prepareCreate}"
+                                  action="#{redController.reset}"
                                   actionListener="#{sessionController.updateUI}">
                         <f:setPropertyActionListener value="#{sessionController.user}" 
                                                      target="#{redController.actual}" />
@@ -221,23 +221,5 @@
         <ui:include src="UI/dialog/red_info.xhtml" />
         <ui:include src="UI/dialog/red_user.xhtml" />
         <ui:include src="UI/dialog/member_detail.xhtml" />
-        
-        <pou:confirmDialog id="confirmDialog" message="Are you sure about destroying the world?" header="Generar Reporte" severity="alert" widgetVar="dlg2">  
-                  <h:panelGrid id="reportes" columns="2" cellpadding="10px" style="margin-bottom:5px">
-                        <h:outputText value="DE:" /> 
-                        <pou:calendar value="#{miRedController.date1}" id="popupButtonCal"  showOn="button" />      
-                        <h:outputText value="HASTA:" />
-                        <pou:calendar value="#{miRedController.date2}" id="popupButtonCa2"  showOn="button" /> 
-                        <h:outputText value="TIPO:" /> 
-                        <pou:selectOneMenu value="#pprBean.city}" effect="fold" editable="false" style="margin-left:5px">  
-                            <f:selectItem itemLabel="tipo de Poi" itemValue="" />  
-                            <f:selectItems value="#pprBean.cities}" />  
-                         </pou:selectOneMenu>  
-                      </h:panelGrid>
-                <pou:commandButton id="confirm" value="Generar Reporte"  onclick="dlg2.hide()"  actionListener="#{miRedController.imprimirMapa()}" type="button"/>  
-        </pou:confirmDialog>
-
-        
-
     </h:body>
 </html>

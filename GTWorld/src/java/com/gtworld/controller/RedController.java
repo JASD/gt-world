@@ -40,6 +40,7 @@ public class RedController implements Serializable {
     private String email;
     private Usuario actual;
     private Red red;
+    private List<Miembro> miembro;
     private boolean redSelected;
     private Miembro selected;
 
@@ -96,9 +97,17 @@ public class RedController implements Serializable {
     }
 
     public void viewMembers() {
-
+        Object[] parameters = {"idRed", getRed().getIdRed()};
+        setMiembro(getMiembroFacade().find("Miembro.findByIdRed", parameters));
         setRedSelected(true);
 
+    }
+
+    public void reset() {
+        setRedSelected(false);
+        red = null;
+        miembro = null;
+        prepareView();
     }
 
     public void prepareView() {
@@ -125,7 +134,8 @@ public class RedController implements Serializable {
         email = "";
         selectedItemIndex = -1;
     }
-    
+
+
     public void addMember() {
 
         Calendar calendar = new GregorianCalendar();
@@ -146,10 +156,10 @@ public class RedController implements Serializable {
                 nueva.setIdUsuario(user);
                 getMiembroFacade().create(mb);
                 getNotificacionFacade().create(nueva);
-                red.getMiembroList().add(mb);
             }
             JsfUtil.addSuccessMessage("Miembros Agregados");
             prepareCreate();
+            viewMembers();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -356,9 +366,17 @@ public class RedController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public SelectItem[] getUserItems() {
+    public SelectItem[] getItemsRedes() {
         Object[] parameters = {"idUsuario", getActual().getIdUsuario()};
         return JsfUtil.getSelectItems(ejbFacade.find("Red.findByUser", parameters));
+    }
+
+    public List<Miembro> getMiembro() {
+        return miembro;
+    }
+
+    public void setMiembro(List<Miembro> miembro) {
+        this.miembro = miembro;
     }
 
     @FacesConverter(forClass = Red.class)

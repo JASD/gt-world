@@ -11,9 +11,8 @@
 
                 <br />
                 <h:outputText value="Seleccionar Red"  style="margin-left:5px; vertical-align: top" />
-                <pou:selectOneMenu value="#{redController.red}" effect="fade" style="margin-left:5px; width: 200px">  
-                    <f:selectItem itemLabel="Seleccionar" itemValue=""/>  
-                    <f:selectItems value="#{redController.userItems}" />
+                <pou:selectOneMenu value="#{redController.red}" effect="fade" style="margin-left:5px; width: 200px">    
+                    <f:selectItems value="#{redController.itemsRedes}" />
                     <pou:ajax update=":currentUI"  
                               listener="#{redController.viewMembers}" />
                 </pou:selectOneMenu>  
@@ -65,7 +64,7 @@
             <pou:layoutUnit position="center">
                 <pou:fieldset legend="Miembros" id="miembros" rendered="#{redController.redSelected}">
                     <pou:dataGrid id="miembrosactivos" var="miembro" 
-                                  value="#{redController.red.miembroList}" columns="2" rows="4"  paginator="true"  
+                                  value="#{redController.miembro}" columns="2" rows="4"  paginator="true"  
                                   paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}">
 
                         <pou:column>  

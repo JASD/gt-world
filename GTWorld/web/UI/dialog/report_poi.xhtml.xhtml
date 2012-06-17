@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:component>
+        <h:form id="report_poi">
+            <pou:confirmDialog id="confirmDialog" message="Are you sure about destroying the world?" header="Generar Reporte" severity="alert" widgetVar="dlg2">  
+                <h:panelGrid id="reportes" columns="2" cellpadding="10px" style="margin-bottom:5px">
+                    <h:outputText value="DE:" /> 
+                    <pou:calendar value="#{miRedController.date1}" id="popupButtonCal"  showOn="button" />      
+                    <h:outputText value="HASTA:" />
+                    <pou:calendar value="#{miRedController.date2}" id="popupButtonCa2"  showOn="button" /> 
+                    <h:outputText value="TIPO:" /> 
+                    <pou:selectOneMenu value="#pprBean.city}" effect="fold" editable="false" style="margin-left:5px">  
+                        <f:selectItem itemLabel="tipo de Poi" itemValue="" />  
+                        <f:selectItems value="#pprBean.cities}" />  
+                    </pou:selectOneMenu>  
+                </h:panelGrid>
+                <pou:commandButton id="confirm" value="Generar Reporte"  onclick="dlg2.hide()"  actionListener="#{miRedController.imprimirMapa()}" type="button"/>  
+            </pou:confirmDialog>
+        </h:form>
+    </ui:component>
+</html>
