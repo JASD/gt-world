@@ -21,7 +21,8 @@
                     <br />
                     <br />
                     <pou:dataGrid id="redus" var="red"  
-                                  value="#{redController.items}" columns="4">  
+                                  value="#{redController.items}" columns="4" 
+                                  emptyMessage="No se encontraron Redes">  
                         <pou:column>  
                             <pou:panel id="pnl" header="#{red.nombreRed}" 
                                        style="text-align:center; max-width: 400px">
@@ -38,8 +39,7 @@
                                     <pou:graphicImage value="resources/img/pencil.png" />
                                 </pou:commandLink>
                                 <pou:commandLink title="Usuarios" style="margin-left: 5px"
-                                                 action="#{redController.prepareView}"
-                                                 actionListener="#{redController.viewMembersRed}"
+                                                 action="#{redController.viewMembersRed}"
                                                  update=":red_user"
                                                  oncomplete="redUsers.show()" >
                                     <pou:graphicImage value="resources/img/users.png" />

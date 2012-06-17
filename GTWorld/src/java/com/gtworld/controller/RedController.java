@@ -104,6 +104,7 @@ public class RedController implements Serializable {
     }
     
      public void viewMembersRed() {
+        prepareView();
         Object[] parameters = {"idRed", current.getIdRed()};
         setMiembro(getMiembroFacade().find("Miembro.findByIdRed", parameters));
         setRedSelected(true);
@@ -204,6 +205,7 @@ public class RedController implements Serializable {
             }
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RedCreated"));
             prepareCreate();
+            recreateModel();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
