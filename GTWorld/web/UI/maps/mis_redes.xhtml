@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:component>
+        
+        <pou:layout style="height: 700px" widgetVar="lay" collapseTitle="cerrar"
+                    expandTitle="abrir">
+            <pou:layoutUnit id="left" position="west" size="200" collapsible="true" header="Opciones" > 
+                  <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:5px"> 
+   
+                      <pou:selectBooleanCheckbox value="#{miRedController.todosLosPOIs}"/> 
+                            <h:outputText value="Todos los POI's  " /> 
+                           
+                            <pou:selectBooleanCheckbox value="#{miRedController.misPOIs}"/>
+                            <h:outputText value="Mis POI's" /> 
+                                                    
+                    </h:panelGrid>         
+                <br/><br/>
+                 <pou:menuButton id="menu" value="Generar Reportes"   style="margin-left:5px">  
+                       <pou:menuitem value="De visitas"  onclick="dlg2.show();"/>                                  
+                  </pou:menuButton>   
+    
+            </pou:layoutUnit>
+          <pou:layoutUnit id="center" position="center">
+       
+            <pou:gmap center="13.720213, -89.201475" zoom="13" type="HYBRID" model="#{mapBean.advancedModel}" style="min-width:200px;min-height:375px">  
+                <pou:ajax event="overlaySelect" listener="#{mapBean.onMarkerSelect}" />  
+                <pou:gmapInfoWindow>  
+                    <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+                            <pou:graphicImage value="/images/antalya/#{mapBean.marker.data}" height="150"/>  
+                            <br />  
+                            <h:outputText value="#{mapBean.marker.title}" />  
+                    </pou:outputPanel>  
+                </pou:gmapInfoWindow>  
+           </pou:gmap>  
+         
+           </pou:layoutUnit>
+            
+            <pou:layoutUnit id="bottom" position="south"  size="200"  >
+               <pou:commandButton value="Actualizar Usuarios" update="availableReds"/>  
+               <pou:panelGrid columns="5" id="availableReds"  style="margin-left:10px" >
+                        <h:outputText value="Redes:"  />  
+                        <pou:selectOneMenu value="#{miRedController.selectedRed}" 
+                            effect="fade" style="width:160px">  
+                            <f:selectItem itemLabel="Selecciona una red" itemValue="" />  
+                            <f:selectItems value="#{miRedController.itemsRedes}"/>     
+                            <pou:column>   
+                                <pou:graphicImage value="/resources/img/users.png"/>  
+                            </pou:column>  
+   
+                        </pou:selectOneMenu>
+                        
+                        <h:outputText value="Miembros:"  />  
+                        <pou:selectOneMenu  id="usuarios_de_red" value="#{miRedController.selectedUser}" 
+                            effect="fade" style="width:160px">  
+                            <f:selectItem itemLabel="Selecciona una red" itemValue="" />  
+                            <f:selectItems value="#{miRedController.itemsMiembros}"/>  
+  
+                            <pou:column>  
+                                <pou:graphicImage value="/resources/img/user.png"/>  
+                            </pou:column>  
+   
+                        </pou:selectOneMenu>
+                        
+                </pou:panelGrid>
+               
+      
+             </pou:layoutUnit>
+               
+           </pou:layout>
+    </ui:component>
+</html>
