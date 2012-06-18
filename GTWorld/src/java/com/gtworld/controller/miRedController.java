@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 package com.gtworld.controller;
+import com.gtworld.controller.util.JsfUtil;
+import com.gtworld.entity.Miembro;
 import com.gtworld.entity.Red;
 import com.gtworld.entity.Usuario;
 import java.io.Serializable;
@@ -12,7 +14,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import org.primefaces.event.DragDropEvent;
+import javax.faces.model.SelectItem;
 
 
 /**
@@ -25,9 +27,9 @@ public class miRedController implements Serializable {
 
     private boolean misPOIs=false; 
     private boolean todosLosPOIs=false; 
-    private List<Red> redList; 
-    private List<Red> redDrop = new ArrayList<Red>();
-    
+    private Red selectedRed=new Red();
+    private List<Usuario> usuario= new ArrayList<Usuario>();
+    private Usuario selectedUser= new Usuario();
     
     private Date date1;  
     private Date date2;
@@ -40,13 +42,30 @@ public class miRedController implements Serializable {
        
     }
     
+    public void setSelectedRed(Red selectedRed){
+        this.selectedRed=selectedRed;
+    }
+    
+    public Red getSelectedRed(){
+        return selectedRed;
+    }
+    
+     public void setSelectedUser(Usuario selectedUser){
+        this.selectedUser=selectedUser;
+    }
+    
+    public Usuario getSelectedUser(){
+        return selectedUser;
+    }
+    
+    
     public boolean isMisPOIs() {  
         return misPOIs;  
     }  
   
     public void setMisPOIs(boolean misPOIs) {  
         this.misPOIs = misPOIs;  
-        update();
+        //update();
     } 
     
      public boolean isTodosLosPOIs() {  
@@ -55,7 +74,7 @@ public class miRedController implements Serializable {
   
     public void setTodosLosPOIs(boolean todosLosPOIs) {  
         this.todosLosPOIs = todosLosPOIs;  
-        update();
+       // update();
     }
 
     public Usuario getUser() {
@@ -64,12 +83,7 @@ public class miRedController implements Serializable {
     
       public void setIdUser(Usuario User) {
         this.User = User;
-    }
-    
-      public void update(){
-          
-      }
-    
+    } 
   
     public void imprimirMapa()
     {
@@ -92,26 +106,19 @@ public class miRedController implements Serializable {
         this.date2 = date2;  
     }  
     
-    public List<Red> getListaRed(){
-         Object[] parameters = {"idUsuario", "admin"};
-          redList = RedFacade.find("Red.findByUser",parameters); 
-          return redList;
+    
+    
+    public SelectItem[] getItemsRedes() {
+        Object[] parameters = {"idUsuario", "admin"};
+        return JsfUtil.getSelectItems(RedFacade.find("Red.findByUser", parameters));
     }
-    
-    
-     
-    
-    public void onRedDrop(DragDropEvent ddEvent) {  
-        Red red = ((Red) ddEvent.getData());  
-  
-        redDrop.add(red);  
-        redList.remove(red);  
-    }  
-  
-  
-    public List<Red> getRedDrop() {  
-        return redDrop;  
+ 
+       public SelectItem[] getItemsMiembros() {
+       List<Miembro> usuarios= selectedRed.getMiembroList(); 
+       for(Miembro miembros:usuarios){
+           usuario.add(miembros.getUsuario());           
+       }
+       return JsfUtil.getSelectItems(usuario);
     }
-   
 }
 
