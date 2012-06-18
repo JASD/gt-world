@@ -29,7 +29,8 @@ public class miRedController implements Serializable {
     private boolean todosLosPOIs=false; 
     private Red selectedRed=new Red();
     private List<Usuario> usuario= new ArrayList<Usuario>();
-    private Usuario selectedUser= new Usuario();
+  
+    private String selectedUser;
     
     private Date date1;  
     private Date date2;
@@ -50,11 +51,11 @@ public class miRedController implements Serializable {
         return selectedRed;
     }
     
-     public void setSelectedUser(Usuario selectedUser){
+     public void setSelectedUser(String selectedUser){
         this.selectedUser=selectedUser;
     }
     
-    public Usuario getSelectedUser(){
+    public String getSelectedUser(){
         return selectedUser;
     }
     
@@ -118,7 +119,13 @@ public class miRedController implements Serializable {
        for(Miembro miembros:usuarios){
            usuario.add(miembros.getUsuario());           
        }
-       return JsfUtil.getSelectItems(usuario);
+       
+       List<String> IdUser= new ArrayList<String>();
+       for(Usuario x: usuario){
+           IdUser.add(x.getIdUsuario());
+       }
+       
+       return JsfUtil.getSelectItems(IdUser);
     }
 }
 
