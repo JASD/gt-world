@@ -7,8 +7,39 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:component>
         
-        <pou:layout style="height: 700px" widgetVar="lay" collapseTitle="cerrar"
+        <pou:layout style="height: 500px" widgetVar="lay" collapseTitle="cerrar"
                     expandTitle="abrir">
+            
+          <pou:layoutUnit id="center" position="center">
+       
+              <pou:gmap id="mapui" center="#{miRedController.centerMap}" zoom="13" type="HYBRID" model="#{miRedController.mapModel}" style="min-width:200px;min-height:375px">  
+                  <pou:ajax event="overlaySelect" listener="#{miRedController.mapModel}" />  
+                <pou:gmapInfoWindow>  
+                        <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+
+                            <pou:gmapInfoWindow maxWidth="400">  
+                                <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
+
+                                    <h:outputText value="#{miRedController.marker.title}"
+                                                  style="font-weight: bold"/>
+                                    <br />
+                                    <h:outputText value="#{miRedController.marker.data.descripcionPoi}"/>
+                                    <br />
+                                    <h:commandLink value="#{miRedController.marker.data.urlWebPoi}"/>
+                                    
+                                </pou:outputPanel>  
+                                <pou:galleria value="#{miRedController.marker.data.imagenList}" var="images">  
+                                        <pou:graphicImage value="#{images.urlImagen}" />  
+                                </pou:galleria>
+
+                            </pou:gmapInfoWindow>  
+
+                        </pou:outputPanel>  
+
+                    </pou:gmapInfoWindow> 
+              </pou:gmap>  
+         
+           </pou:layoutUnit>
             <pou:layoutUnit id="left" position="west" size="200" collapsible="true" header="Opciones" > 
                   <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:5px"> 
    
@@ -18,31 +49,27 @@
                             <pou:selectBooleanCheckbox value="#{miRedController.misPOIs}"/>
                             <h:outputText value="Mis POI's" /> 
                                                     
-                    </h:panelGrid>         
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" cellpadding="10px" style="margin-bottom:10px"> 
+                            <pou:commandButton value="Actualizar"  id="ajax" update="mapui" /> 
+                            <pou:ajaxStatus id="loading">
+                                <f:facet name="start">
+                                    <h:graphicImage value="resources/img/loading_circle.gif" />  
+                                </f:facet>
+                                <f:facet name="complete">  
+                                    <h:outputText value="" />  
+                                </f:facet>  
+                            </pou:ajaxStatus>
+                    </h:panelGrid> 
                 <br/><br/>
                  <pou:menuButton id="menu" value="Generar Reportes"   style="margin-left:5px">  
                        <pou:menuitem value="De visitas"  onclick="dlg2.show();"/>                                  
                   </pou:menuButton>   
     
             </pou:layoutUnit>
-          <pou:layoutUnit id="center" position="center">
-       
-            <pou:gmap center="13.720213, -89.201475" zoom="13" type="HYBRID" model="#{mapBean.advancedModel}" style="min-width:200px;min-height:375px">  
-                <pou:ajax event="overlaySelect" listener="#{mapBean.onMarkerSelect}" />  
-                <pou:gmapInfoWindow>  
-                    <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
-                            <pou:graphicImage value="/images/antalya/#{mapBean.marker.data}" height="150"/>  
-                            <br />  
-                            <h:outputText value="#{mapBean.marker.title}" />  
-                    </pou:outputPanel>  
-                </pou:gmapInfoWindow>  
-           </pou:gmap>  
-         
-           </pou:layoutUnit>
-            
-            <pou:layoutUnit id="bottom" position="south"  size="200"  >
-               <pou:commandButton value="Actualizar Usuarios" update="availableReds"/>  
-               <pou:panelGrid columns="5" id="availableReds"  style="margin-left:10px" >
+            <pou:layoutUnit id="bottom" position="south" header="Seleccion de Miembro">
+                
+               <pou:panelGrid columns="2" id="availableReds"  style="margin-left:200px" >
                         <h:outputText value="Redes:"  />  
                         <pou:selectOneMenu value="#{miRedController.selectedRed}" 
                             effect="fade" style="width:160px">  
@@ -51,19 +78,21 @@
                             <pou:column>   
                                 <pou:graphicImage value="/resources/img/users.png"/>  
                             </pou:column>  
+                            <pou:ajax update="availableUsers"/>
    
                         </pou:selectOneMenu>
-                        
+               </pou:panelGrid>
+                <pou:panelGrid columns="2" id="availableUsers"  style="margin-left:10px" >
                         <h:outputText value="Miembros:"  />  
                         <pou:selectOneMenu  id="usuarios_de_red" value="#{miRedController.selectedUser}" 
-                            effect="fade" style="width:160px">  
-                            <f:selectItem itemLabel="Selecciona una red" itemValue="" />  
+                                            effect="fade" style="width:160px" onchange="Submit();">  
+                            <f:selectItem itemLabel="Selecciona Usuario" itemValue="" />  
                             <f:selectItems value="#{miRedController.itemsMiembros}"/>  
   
                             <pou:column>  
-                                <pou:graphicImage value="/resources/img/user.png"/>  
-                            </pou:column>  
-   
+                                <pou:graphicImage value="/resources/img/user.png" width="40" height="50"/>  
+                            </pou:column>
+                            
                         </pou:selectOneMenu>
                         
                 </pou:panelGrid>
