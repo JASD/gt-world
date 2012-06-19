@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Poi.findByUrlWebPoi", query = "SELECT p FROM Poi p WHERE p.urlWebPoi = :urlWebPoi"),
     @NamedQuery(name = "Poi.findByFechaCreacionPoi", query = "SELECT p FROM Poi p WHERE p.fechaCreacionPoi = :fechaCreacionPoi"),
     @NamedQuery(name = "Poi.findByPrivacidadPoi", query = "SELECT p FROM Poi p WHERE p.privacidadPoi = :privacidadPoi"),
-    @NamedQuery(name = "Poi.findByUser", query = "SELECT p FROM Poi p WHERE p.idUsuario = :idUsuario ORDER BY p.fechaCreacionPoi DESC")})
+    @NamedQuery(name = "Poi.findByUser", query = "SELECT p FROM Poi p WHERE p.idUsuario = :idUsuario ORDER BY p.fechaCreacionPoi DESC"),
+    @NamedQuery(name = "Poi.findByRed", query = "SELECT p FROM Poi p WHERE p.idUsuario.idUsuario IN (SELECT m.miembroPK.idUsuario FROM Miembro m WHERE m.miembroPK.idRed = :idRed)")})
 public class Poi implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
