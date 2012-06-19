@@ -12,23 +12,23 @@
             
           <pou:layoutUnit id="center" position="center">
        
-              <pou:gmap id="mapui" center="#{miRedController.centerMap}" zoom="13" type="HYBRID" model="#{miRedController.mapModel}" style="min-width:200px;min-height:375px">  
-                  <pou:ajax event="overlaySelect" listener="#{miRedController.mapModel}" />  
+              <pou:gmap id="mapui" center="#{misRedesController.centerMap}" zoom="15" type="ROADMAP" model="#{misRedesController.mapModelRed}" style="min-width:600px;min-height:490px">  
+                  <pou:ajax event="overlaySelect" listener="#{misRedesController.onMarkerSelect}" />  
                 <pou:gmapInfoWindow>  
                         <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
 
                             <pou:gmapInfoWindow maxWidth="400">  
                                 <pou:outputPanel style="text-align:center;display:block;margin:auto:">  
 
-                                    <h:outputText value="#{miRedController.marker.title}"
+                                    <h:outputText value="#{misRedesController.marker.title}"
                                                   style="font-weight: bold"/>
                                     <br />
-                                    <h:outputText value="#{miRedController.marker.data.descripcionPoi}"/>
+                                    <h:outputText value="#{misRedesController.marker.data.descripcionPoi}"/>
                                     <br />
-                                    <h:commandLink value="#{miRedController.marker.data.urlWebPoi}"/>
+                                    <h:commandLink value="#{misRedesController.marker.data.urlWebPoi}"/>
                                     
                                 </pou:outputPanel>  
-                                <pou:galleria value="#{miRedController.marker.data.imagenList}" var="images">  
+                                <pou:galleria value="#{misRedesController.marker.data.imagenList}" var="images">  
                                         <pou:graphicImage value="#{images.urlImagen}" />  
                                 </pou:galleria>
 
@@ -40,66 +40,52 @@
               </pou:gmap>  
          
            </pou:layoutUnit>
-            <pou:layoutUnit id="left" position="west" size="200" collapsible="true" header="Opciones" > 
-                  <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:5px"> 
+            <pou:layoutUnit id="left" position="west" size="275" collapsible="true" header="Opciones" > 
+                    
+                    <h:panelGrid columns="2" cellpadding="8px" id="availableReds"  style="margin-left:13px" >                        
+                        <h:outputText value="Redes:" style="min-width: 9px"/>  
+                        <pou:selectOneMenu value="#{misRedesController.selectedRed}" 
+                            effect="fade" style="width:160px">  
+                            <f:selectItem itemLabel="Selecciona una red" itemValue="" />  
+                            <f:selectItems value="#{misRedesController.itemsRedes}"/>     
+                            <pou:column>   
+                                <pou:graphicImage value="/resources/img/users.png"/>  
+                            </pou:column>  
+                            <pou:ajax update="availablersUsers" listener="#{misRedesController.ponerMae}"/>
+                        </pou:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" id="availablersUsers"  style="margin-left:10px" >
+                        <h:outputText value="Miembros:"  />  
+                        <pou:selectOneMenu  value="#{misRedesController.selectedUser}" 
+                                            effect="fade" style="width:160px">  
+                            <f:selectItem itemLabel="Selecciona Usuario" itemValue="" />  
+                            <f:selectItems value="#{misRedesController.itemsMiembros}"/>  
+                            <pou:ajax event="change" listener="#{misRedesController.update}"/>
+                        </pou:selectOneMenu>
+                        
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:5px"> 
    
-                      <pou:selectBooleanCheckbox value="#{miRedController.todosLosPOIs}"/> 
+                            <pou:selectBooleanCheckbox value="#{misRedesController.todosLosPOIs}"/> 
                             <h:outputText value="Todos los POI's  " /> 
                            
-                            <pou:selectBooleanCheckbox value="#{miRedController.misPOIs}"/>
+                            <pou:selectBooleanCheckbox value="#{misRedesController.misPOIs}"/>
                             <h:outputText value="Mis POI's" /> 
                                                     
                     </h:panelGrid>
-                    <h:panelGrid columns="1" cellpadding="10px" style="margin-bottom:10px"> 
-                            <pou:commandButton value="Actualizar"  id="ajax" update="mapui" /> 
-                            <pou:ajaxStatus id="loading">
+                    <h:panelGrid columns="2">
+                        <pou:commandButton value="Actualizar" id="ajaxdax" update="growl,mapui" />
+                        <pou:ajaxStatus id="loading">
                                 <f:facet name="start">
                                     <h:graphicImage value="resources/img/loading_circle.gif" />  
                                 </f:facet>
                                 <f:facet name="complete">  
                                     <h:outputText value="" />  
                                 </f:facet>  
-                            </pou:ajaxStatus>
-                    </h:panelGrid> 
-                <br/><br/>
-                 <pou:menuButton id="menu" value="Generar Reportes"   style="margin-left:5px">  
-                       <pou:menuitem value="De visitas"  onclick="dlg2.show();"/>                                  
-                  </pou:menuButton>   
-    
-            </pou:layoutUnit>
-            <pou:layoutUnit id="bottom" position="south" header="Seleccion de Miembro">
-                
-               <pou:panelGrid columns="2" id="availableReds"  style="margin-left:200px" >
-                        <h:outputText value="Redes:"  />  
-                        <pou:selectOneMenu value="#{miRedController.selectedRed}" 
-                            effect="fade" style="width:160px">  
-                            <f:selectItem itemLabel="Selecciona una red" itemValue="" />  
-                            <f:selectItems value="#{miRedController.itemsRedes}"/>     
-                            <pou:column>   
-                                <pou:graphicImage value="/resources/img/users.png"/>  
-                            </pou:column>  
-                            <pou:ajax update="availableUsers"/>
-   
-                        </pou:selectOneMenu>
-               </pou:panelGrid>
-                <pou:panelGrid columns="2" id="availableUsers"  style="margin-left:10px" >
-                        <h:outputText value="Miembros:"  />  
-                        <pou:selectOneMenu  id="usuarios_de_red" value="#{miRedController.selectedUser}" 
-                                            effect="fade" style="width:160px" onchange="Submit();">  
-                            <f:selectItem itemLabel="Selecciona Usuario" itemValue="" />  
-                            <f:selectItems value="#{miRedController.itemsMiembros}"/>  
-  
-                            <pou:column>  
-                                <pou:graphicImage value="/resources/img/user.png" width="40" height="50"/>  
-                            </pou:column>
-                            
-                        </pou:selectOneMenu>
-                        
-                </pou:panelGrid>
-               
-      
-             </pou:layoutUnit>
-               
+                        </pou:ajaxStatus>
+                    </h:panelGrid>
+            </pou:layoutUnit>  
            </pou:layout>
+           <pou:growl id="growl" showDetail="true" sticky="true" />  
     </ui:component>
 </html>
