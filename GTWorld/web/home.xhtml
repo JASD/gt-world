@@ -66,8 +66,8 @@
                 });
             }
             function handleDrop(event, ui) {
-		ui.draggable.fadeOut('fast');		
-}
+                ui.draggable.fadeOut('fast');		
+            }
 
         </script>
     </h:head>
@@ -134,8 +134,10 @@
                                   actionListener="#{sessionController.updateUI}">
                         <f:setPropertyActionListener value="#{sessionController.user}" 
                                                      target="#{miRedController.idUser}" />
-                       
-                        <f:attribute name="uiName" value="maps/mi_red_2" />
+                        <f:setPropertyActionListener value="#{sessionController.centerMap}" 
+                                                     target="#{miRedController.centerMap}" />
+
+                        <f:attribute name="uiName" value="maps/mi_red" />
                     </pou:menuitem>
 
                 </pou:submenu>
