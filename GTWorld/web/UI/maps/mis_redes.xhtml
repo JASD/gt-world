@@ -51,7 +51,7 @@
                             <pou:column>   
                                 <pou:graphicImage value="/resources/img/users.png"/>  
                             </pou:column>  
-                            <pou:ajax update="availablersUsers" listener="#{misRedesController.ponerMae}"/>
+                            <pou:ajax update="availablersUsers" listener="#{misRedesController.clearIdUsers}"/>
                         </pou:selectOneMenu>
                     </h:panelGrid>
                     <h:panelGrid columns="2" id="availablersUsers"  style="margin-left:10px" >
@@ -67,10 +67,10 @@
                     <h:panelGrid columns="2" cellpadding="10px" style="margin-bottom:5px"> 
    
                             <pou:selectBooleanCheckbox value="#{misRedesController.todosLosPOIs}"/> 
-                            <h:outputText value="Todos los POI's  " /> 
+                            <h:outputText value="Todos los POIs de Red  " /> 
                            
                             <pou:selectBooleanCheckbox value="#{misRedesController.misPOIs}"/>
-                            <h:outputText value="Mis POI's" /> 
+                            <h:outputText value="POIs del Usuario" /> 
                                                     
                     </h:panelGrid>
                     <h:panelGrid columns="2">
