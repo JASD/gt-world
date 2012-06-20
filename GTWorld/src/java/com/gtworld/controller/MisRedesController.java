@@ -162,7 +162,7 @@ public class MisRedesController implements Serializable {
        return JsfUtil.getSelectItems(IdUser);
        }else{
            List<String> Error= new ArrayList<String>();
-           Error.add("No hya miembros");
+           Error.add("Selecciona una red");
            return JsfUtil.getSelectItems(Error);
        }
     }
