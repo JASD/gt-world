@@ -153,7 +153,7 @@ public class MisRedesController implements Serializable {
            usuario.add(miembros.getUsuario());           
        }
        
-       ponerMae();
+       clearIdUsers();
        for(Usuario x: usuario){
            if(!IdUser.contains(x))
            IdUser.add(x.getIdUsuario());
@@ -213,7 +213,7 @@ public class MisRedesController implements Serializable {
         }
     }
     
-    public void ponerMae() {  
+    public void clearIdUsers() {  
        IdUser= new ArrayList<String>();
     } 
 }
