@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gtworld.controller;
+package com.gtworld.maps;
 
 import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.entity.Miembro;
