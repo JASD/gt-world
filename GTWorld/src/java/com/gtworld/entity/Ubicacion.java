@@ -6,7 +6,7 @@ package com.gtworld.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 //import javax.xml.bind.annotation.XmlTransient;
 
@@ -22,7 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Ubicacion.findByIdUbicacion", query = "SELECT u FROM Ubicacion u WHERE u.idUbicacion = :idUbicacion"),
     @NamedQuery(name = "Ubicacion.findByLatitudUbicacion", query = "SELECT u FROM Ubicacion u WHERE u.latitudUbicacion = :latitudUbicacion"),
     @NamedQuery(name = "Ubicacion.findByLongitudUbicacion", query = "SELECT u FROM Ubicacion u WHERE u.longitudUbicacion = :longitudUbicacion"),
-    @NamedQuery(name = "Ubicacion.findByAltitudUbicacion", query = "SELECT u FROM Ubicacion u WHERE u.altitudUbicacion = :altitudUbicacion")})
+    @NamedQuery(name = "Ubicacion.findByAltitudUbicacion", query = "SELECT u FROM Ubicacion u WHERE u.altitudUbicacion = :altitudUbicacion"),
+    @NamedQuery(name = "Ubicacion.findByDireccionUbicacion", query = "SELECT u FROM Ubicacion u WHERE u.direccionUbicacion = :direccionUbicacion")})
 public class Ubicacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -36,6 +37,9 @@ public class Ubicacion implements Serializable {
     private Double longitudUbicacion;
     @Column(name = "ALTITUD_UBICACION")
     private Double altitudUbicacion;
+    @Size(max = 100)
+    @Column(name = "DIRECCION_UBICACION")
+    private String direccionUbicacion;
     
     /*Datos no relevantes para esta entidad
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUbicacion")
@@ -82,6 +86,14 @@ public class Ubicacion implements Serializable {
 
     public void setAltitudUbicacion(Double altitudUbicacion) {
         this.altitudUbicacion = altitudUbicacion;
+    }
+    
+     public String getDireccionUbicacion() {
+        return direccionUbicacion;
+    }
+
+    public void setDireccionUbicacion(String direccionUbicacion) {
+        this.direccionUbicacion = direccionUbicacion;
     }
 
     /*
