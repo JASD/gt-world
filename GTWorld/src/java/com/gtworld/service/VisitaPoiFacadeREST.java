@@ -60,11 +60,26 @@ public class VisitaPoiFacadeREST extends AbstractFacade<VisitaPoi> {
         return super.findAll();
     }
 
-    @GET
+    /*@GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})
     public List<VisitaPoi> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
+    }*/
+    
+    @GET
+    @Path("{id}/{num}")
+    @Produces("application/json")
+    public List<VisitaPoi> findLast(@PathParam("id") String id, @PathParam("num") Integer num) {
+        
+        Object[] parameters = {"idUsuario", id};
+        List<VisitaPoi> visits = super.findRange(new int[]{0, num},
+                "VisitaPoi.findByLastFechaVisitaPoi", parameters);
+        if (!visits.isEmpty()) {
+            return visits;
+        } else {
+            return null;
+        }
     }
 
     @GET

@@ -34,7 +34,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
 
     @PUT
     @Override
-    @Consumes({"application/xml", "application/json"})
+    @Consumes("application/json")
     public void edit(Usuario entity) {
         super.edit(entity);
     }
@@ -46,10 +46,19 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     }
 
     @GET
-    @Path("{id}")
-    @Produces({"application/xml", "application/json"})
-    public Usuario find(@PathParam("id") String id) {
-        return super.find(id);
+    @Path("/{id}/{pass}")
+    @Produces("application/json")
+    public Usuario find(@PathParam("id") String id,
+                        @PathParam("pass") String pass) {
+        Object[] parameters = {"idUsuario", id, "contrasenaUsuario",
+            pass};
+        try {
+            Usuario u = super.getSingleResult("Usuario.findByLogin", parameters);
+            return u;
+        } catch (Exception ex) {
+            
+            return null;
+        }
     }
 
     @GET
@@ -59,12 +68,12 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
         return super.findAll();
     }
 
-    @GET
+    /*@GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})
     public List<Usuario> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
-    }
+    }*/
 
     @GET
     @Path("count")

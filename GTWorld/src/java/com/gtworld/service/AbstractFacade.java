@@ -6,6 +6,8 @@ package com.gtworld.service;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 /**
  *
@@ -59,4 +61,23 @@ public abstract class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
     
+     public T getSingleResult(String namedQuery, Object[] parameters)
+            throws NoResultException {
+        Query q = getEntityManager().createNamedQuery(namedQuery);
+        for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
+            q.setParameter((String) parameters[i], parameters[i + 1]);
+        }
+        return (T) q.getSingleResult();
+    }
+    
+     public List<T> findRange(int[] range, String namedQuery, Object[] parameters) {
+        Query q = getEntityManager().createNamedQuery(namedQuery);
+        for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
+            q.setParameter((String) parameters[i], parameters[i + 1]);
+        }
+        //cont = q.getResultList().size();
+        q.setMaxResults(range[1] - range[0]);
+        q.setFirstResult(range[0]);
+        return q.getResultList();
+    }
 }
