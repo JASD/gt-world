@@ -56,7 +56,7 @@ public class AsistenciaEventoFacadeREST extends AbstractFacade<AsistenciaEvento>
 
     @GET
     @Override
-    @Produces({"application/xml", "application/json"})
+    @Produces("application/json")
     public List<AsistenciaEvento> findAll() {
         return super.findAll();
     }

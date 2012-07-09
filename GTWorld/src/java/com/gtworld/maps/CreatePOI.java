@@ -58,6 +58,7 @@ public class CreatePOI implements Serializable {
         Ubicacion ubc = new Ubicacion();
         ubc.setLatitudUbicacion(lat);
         ubc.setLongitudUbicacion(lng);
+        ubc.setAltitudUbicacion(Double.valueOf(-1));
         Calendar calendar = new GregorianCalendar();
         try {
             getUbicaFacade().create(ubc);

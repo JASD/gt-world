@@ -55,7 +55,7 @@ public class VisitaPoiFacadeREST extends AbstractFacade<VisitaPoi> {
 
     @GET
     @Override
-    @Produces({"application/xml", "application/json"})
+    @Produces({"application/json", "application/xml"})
     public List<VisitaPoi> findAll() {
         return super.findAll();
     }
