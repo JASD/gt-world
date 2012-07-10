@@ -147,6 +147,7 @@ public class CrearPoi extends HttpServlet {
             ubc.setLatitudUbicacion(Double.parseDouble(request.getParameter("Latitud").toString()));
             ubc.setLongitudUbicacion(Double.parseDouble(request.getParameter("Longitud").toString()));
             ubc.setAltitudUbicacion(Double.parseDouble(request.getParameter("Altitud").toString()));
+            ubc.setDireccionUbicacion(request.getParameter("DireccionPoi"));
           try {
             ubicaFacade.create(ubc);
             
@@ -158,6 +159,7 @@ public class CrearPoi extends HttpServlet {
             nuevoPoi.setUrlWebPoi(request.getParameter("URLweb"));
             nuevoPoi.setFechaCreacionPoi(calendar.getTime());
             nuevoPoi.setPrivacidadPoi(request.getParameter("Publico").toString().contains("1"));
+            
             
             poiFacade.create(nuevoPoi);
             
