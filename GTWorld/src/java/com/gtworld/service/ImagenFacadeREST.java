@@ -5,6 +5,7 @@
 package com.gtworld.service;
 
 import com.gtworld.entity.Imagen;
+import com.gtworld.entity.Poi;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -18,6 +19,7 @@ import javax.ws.rs.*;
 @Stateless
 @Path("com.gtworld.entity.imagen")
 public class ImagenFacadeREST extends AbstractFacade<Imagen> {
+
     @PersistenceContext(unitName = "GTWorldPU")
     private EntityManager em;
 
@@ -45,11 +47,23 @@ public class ImagenFacadeREST extends AbstractFacade<Imagen> {
         super.remove(super.find(id));
     }
 
+    /*
+     * @GET @Path("{id}") @Produces({"application/xml", "application/json"})
+     * public Imagen find(@PathParam("id") Long id) { return super.find(id);
+    }
+     */
     @GET
-    @Path("{id}")
-    @Produces({"application/xml", "application/json"})
-    public Imagen find(@PathParam("id") Long id) {
-        return super.find(id);
+    @Path("{idPoi}")
+    @Produces("application/json")
+    public List<Imagen> findByPoi(@PathParam("idPoi") Long id) {
+        Poi poi = new Poi(id);
+        Object[] parameters = {"idPoi", poi};
+        List<Imagen> imagenes = super.find("Imagen.findByIdPoi", parameters);
+        if (!imagenes.isEmpty()) {
+            return imagenes;
+        } else {
+            return null;
+        }
     }
 
     @GET
@@ -77,5 +91,4 @@ public class ImagenFacadeREST extends AbstractFacade<Imagen> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
 }

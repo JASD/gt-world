@@ -14,6 +14,7 @@ import javax.persistence.Query;
  * @author Antonio
  */
 public abstract class AbstractFacade<T> {
+
     private Class<T> entityClass;
 
     public AbstractFacade(Class<T> entityClass) {
@@ -60,8 +61,8 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
-     public T getSingleResult(String namedQuery, Object[] parameters)
+
+    public T getSingleResult(String namedQuery, Object[] parameters)
             throws NoResultException {
         Query q = getEntityManager().createNamedQuery(namedQuery);
         for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
@@ -69,8 +70,8 @@ public abstract class AbstractFacade<T> {
         }
         return (T) q.getSingleResult();
     }
-    
-     public List<T> findRange(int[] range, String namedQuery, Object[] parameters) {
+
+    public List<T> findRange(int[] range, String namedQuery, Object[] parameters) {
         Query q = getEntityManager().createNamedQuery(namedQuery);
         for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
             q.setParameter((String) parameters[i], parameters[i + 1]);
@@ -78,6 +79,15 @@ public abstract class AbstractFacade<T> {
         //cont = q.getResultList().size();
         q.setMaxResults(range[1] - range[0]);
         q.setFirstResult(range[0]);
+        return q.getResultList();
+    }
+
+    public List<T> find(String namedQuery, Object[] parameters) {
+        Query q = getEntityManager().createNamedQuery(namedQuery);
+        for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
+            q.setParameter((String) parameters[i], parameters[i + 1]);
+        }
+        //cont = q.getResultList().size();
         return q.getResultList();
     }
 }
