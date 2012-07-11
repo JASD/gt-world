@@ -23,8 +23,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AsistenciaEvento.findByIdEvento", query = "SELECT a FROM AsistenciaEvento a WHERE a.asistenciaEventoPK.idEvento = :idEvento"),
     @NamedQuery(name = "AsistenciaEvento.findByIdPoi", query = "SELECT a FROM AsistenciaEvento a WHERE a.asistenciaEventoPK.idPoi = :idPoi"),
     @NamedQuery(name = "AsistenciaEvento.findByFechaAsistenciaEvento", query = "SELECT a FROM AsistenciaEvento a WHERE a.fechaAsistenciaEvento = :fechaAsistenciaEvento"),
-    @NamedQuery(name = "AsistenciaEvento.findByComentarioAsistenciaEvento", query = "SELECT a FROM AsistenciaEvento a WHERE a.comentarioAsistenciaEvento = :comentarioAsistenciaEvento")})
+    @NamedQuery(name = "AsistenciaEvento.findByComentarioAsistenciaEvento", query = "SELECT a FROM AsistenciaEvento a WHERE a.comentarioAsistenciaEvento = :comentarioAsistenciaEvento"),
+    @NamedQuery(name = "AsistenciaEvento.findByLastFechaEvento", query = "SELECT a FROM AsistenciaEvento a WHERE a.asistenciaEventoPK.idUsuario = :idUsuario ORDER BY a.fechaAsistenciaEvento DESC")})
 public class AsistenciaEvento implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected AsistenciaEventoPK asistenciaEventoPK;
@@ -118,5 +120,4 @@ public class AsistenciaEvento implements Serializable {
     public String toString() {
         return "com.gtworld.entity.AsistenciaEvento[ asistenciaEventoPK=" + asistenciaEventoPK + " ]";
     }
-    
 }
