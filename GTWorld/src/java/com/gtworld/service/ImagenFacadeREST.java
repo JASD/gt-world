@@ -23,8 +23,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.entity.mime.content.StringBody;
 
 /**
  *
@@ -85,16 +83,15 @@ public class ImagenFacadeREST extends AbstractFacade<Imagen> {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response postImage(MultiPart multiPart) {
         try {
+            BodyPartEntity id = (BodyPartEntity) multiPart.getBodyParts().get(1).getEntity();
+            String idImg = IOUtils.toString(id.getInputStream());
+            id = (BodyPartEntity) multiPart.getBodyParts().get(2).getEntity();
+            String idUser = IOUtils.toString(id.getInputStream());
+            id = (BodyPartEntity) multiPart.getBodyParts().get(0).getEntity();
+            String fileName = idUser.concat(".jpg");
             String path = context.getRealPath("/Images/Users/").concat("\\");
-            ByteArrayBody byteArray = (ByteArrayBody) multiPart.getBodyParts().get(0).getEntity();
-            String fileName = byteArray.getFilename();
-            StringBody strBody = (StringBody) multiPart.getBodyParts().get(1).getEntity();
-            String idImg = strBody.getFilename();
-            strBody = (StringBody) multiPart.getBodyParts().get(2).getEntity();
-            String idUser = strBody.getFilename();
-            byteArray = null;
-            BodyPartEntity bpe = (BodyPartEntity) multiPart.getBodyParts().get(1).getEntity();
-            if (JsfUtil.saveImage(IOUtils.toByteArray(bpe.getInputStream()), path + fileName)) {
+            JsfUtil.deleteImage(path + fileName);
+            if (JsfUtil.saveImage(IOUtils.toByteArray(id.getInputStream()), path + fileName)) {
 
                 Long l = Long.valueOf(idImg);
                 if (l.equals(new Long(1))) {
@@ -105,15 +102,11 @@ public class ImagenFacadeREST extends AbstractFacade<Imagen> {
                     super.create(nueva);
                     return Response.created(URI.create(nueva.getCorrelativoImagen().toString())).entity(nueva.getCorrelativoImagen().toString()).build();
                 } else {
-                    Imagen actual = new Imagen(l);
-                    actual = super.find(actual);
+                    Imagen actual = super.find(l);
                     actual.setUrlImagen("/Images/Users/".concat(fileName));
                     super.edit(actual);
                     return Response.created(URI.create(actual.getCorrelativoImagen().toString())).entity(actual.getCorrelativoImagen().toString()).build();
-
                 }
-
-
             } else {
                 return null;
             }
@@ -121,6 +114,7 @@ public class ImagenFacadeREST extends AbstractFacade<Imagen> {
             Logger.getLogger(ImagenFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+
     }
 
     @GET
