@@ -47,14 +47,15 @@ public class PoiFacadeREST extends AbstractFacade<Poi> {
 
     @GET
     @Path("{id}")
-    @Produces({"application/xml", "application/json"})
+    @Produces("application/json")
     public Poi find(@PathParam("id") Long id) {
         return super.find(id);
     }
 
+    
     @GET
     @Override
-    @Produces({"application/json"})
+    @Produces({"application/xml","application/json"})
     public List<Poi> findAll() {
         return super.findAll();
     }
