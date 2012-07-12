@@ -5,6 +5,7 @@
 package com.gtworld.service;
 
 import com.gtworld.entity.AsistenciaEvento;
+import com.gtworld.entity.AsistenciaEventoPK;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,14 +28,14 @@ public class AsistenciaEventoFacadeREST extends AbstractFacade<AsistenciaEvento>
 
     @POST
     @Override
-    @Consumes({"application/xml", "application/json"})
+    @Consumes("application/json")
     public void create(AsistenciaEvento entity) {
         super.create(entity);
     }
 
     @PUT
     @Override
-    @Consumes({"application/xml", "application/json"})
+    @Consumes("application/json")
     public void edit(AsistenciaEvento entity) {
         super.edit(entity);
     }
@@ -45,13 +46,24 @@ public class AsistenciaEventoFacadeREST extends AbstractFacade<AsistenciaEvento>
     public void remove(@PathParam("id") AsistenciaEventoPK id) {
         super.remove(super.find(id));
     }
-
+*/
     @GET
-    @Path("{id}")
-    @Produces({"application/xml", "application/json"})
-    public AsistenciaEvento find(@PathParam("id") AsistenciaEventoPK id) {
-        return super.find(id);
-    }*/
+    @Path("{idPoi}/{idUser}/{idEvent}")
+    @Produces("application/json")
+    public List<AsistenciaEvento> findByIds(@PathParam("idPoi") Long idPoi, @PathParam("idEvent") Long idEvento, @PathParam("idUser") String idUser){
+        AsistenciaEventoPK As = new AsistenciaEventoPK();
+        As.setIdEvento(idEvento);
+        As.setIdPoi(idPoi);
+        As.setIdUsuario(idUser);
+        Object[] parameters = {"idPoi", As.getIdPoi(),"idUsuario",As.getIdUsuario(),"idEvento",As.getIdEvento()};
+        
+        List<AsistenciaEvento> asist = super.find("AsistenciaEvento.findByIds", parameters);
+        if (!asist.isEmpty()) {
+            return asist;
+        } else {
+            return null;
+        }
+    }
 
     @GET
     @Override

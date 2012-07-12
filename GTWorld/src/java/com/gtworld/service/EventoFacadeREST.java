@@ -44,7 +44,7 @@ public class EventoFacadeREST extends AbstractFacade<Evento> {
     public void remove(@PathParam("id") Long id) {
         super.remove(super.find(id));
     }
-
+/*
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
@@ -54,11 +54,20 @@ public class EventoFacadeREST extends AbstractFacade<Evento> {
 
     @GET
     @Override
-    @Produces({"application/xml", "application/json"})
+    @Produces("application/json")
     public List<Evento> findAll() {
         return super.findAll();
     }
-
+  */  
+    @GET
+    @Path("{idPoi}")
+    @Produces("application/json")
+    public List<Evento> findByPoi(@PathParam("idPoi") Long idPoi) {
+        Object[] parameters = {"idPoi", idPoi};
+        return super.findByPoi("Evento.findByPoi",parameters);
+        
+    }
+    
     @GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})

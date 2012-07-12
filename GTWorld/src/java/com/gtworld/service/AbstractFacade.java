@@ -90,4 +90,13 @@ public abstract class AbstractFacade<T> {
         //cont = q.getResultList().size();
         return q.getResultList();
     }
+    
+    public List<T> findByPoi(String namedQuery, Object[] parameters) {
+        Query q = getEntityManager().createNamedQuery(namedQuery);
+        for (int i = 0; i <= (parameters.length - 2); i = i + 2) {
+            q.setParameter((String) parameters[i], parameters[i + 1]);
+        }
+        //cont = q.getResultList().size();
+        return q.getResultList();
+    }
 }
