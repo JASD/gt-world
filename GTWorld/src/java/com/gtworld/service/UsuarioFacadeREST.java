@@ -5,11 +5,13 @@
 package com.gtworld.service;
 
 import com.gtworld.entity.Usuario;
+import java.net.URI;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -33,10 +35,10 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
     }
 
     @PUT
-    @Override
     @Consumes("application/json")
-    public void edit(Usuario entity) {
+    public Response editUser(Usuario entity) {
         super.edit(entity);
+        return Response.created(URI.create("com.gtworld.entity.usuario")).build();
     }
 
     @DELETE

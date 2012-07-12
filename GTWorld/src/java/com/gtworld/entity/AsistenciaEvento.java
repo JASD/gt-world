@@ -24,7 +24,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AsistenciaEvento.findByIdPoi", query = "SELECT a FROM AsistenciaEvento a WHERE a.asistenciaEventoPK.idPoi = :idPoi"),
     @NamedQuery(name = "AsistenciaEvento.findByFechaAsistenciaEvento", query = "SELECT a FROM AsistenciaEvento a WHERE a.fechaAsistenciaEvento = :fechaAsistenciaEvento"),
     @NamedQuery(name = "AsistenciaEvento.findByComentarioAsistenciaEvento", query = "SELECT a FROM AsistenciaEvento a WHERE a.comentarioAsistenciaEvento = :comentarioAsistenciaEvento"),
-    @NamedQuery(name = "AsistenciaEvento.findByLastFechaEvento", query = "SELECT a FROM AsistenciaEvento a WHERE a.asistenciaEventoPK.idUsuario = :idUsuario ORDER BY a.fechaAsistenciaEvento DESC")})
+    @NamedQuery(name = "AsistenciaEvento.findByLastFechaEvento", query = "SELECT a FROM AsistenciaEvento a WHERE a.asistenciaEventoPK.idUsuario = :idUsuario ORDER BY a.fechaAsistenciaEvento DESC"),
+    @NamedQuery(name = "AsistenciaEvento.findByIds", query = "SELECT a FROM AsistenciaEvento a WHERE a.asistenciaEventoPK.idUsuario = :idUsuario AND a.asistenciaEventoPK.idEvento = :idEvento AND a.asistenciaEventoPK.idPoi = :idPoi")
+})
 public class AsistenciaEvento implements Serializable {
 
     private static final long serialVersionUID = 1L;
