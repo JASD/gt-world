@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -29,8 +28,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Poi.findByFechaCreacionPoi", query = "SELECT p FROM Poi p WHERE p.fechaCreacionPoi = :fechaCreacionPoi"),
     @NamedQuery(name = "Poi.findByPrivacidadPoi", query = "SELECT p FROM Poi p WHERE p.privacidadPoi = :privacidadPoi"),
     @NamedQuery(name = "Poi.findByUser", query = "SELECT p FROM Poi p WHERE p.idUsuario = :idUsuario ORDER BY p.fechaCreacionPoi DESC"),
-    @NamedQuery(name = "Poi.findByRed", query = "SELECT p FROM Poi p WHERE p.idUsuario.idUsuario IN (SELECT m.miembroPK.idUsuario FROM Miembro m WHERE m.miembroPK.idRed = :idRed)")})
+    @NamedQuery(name = "Poi.findByRed", query = "SELECT p FROM Poi p WHERE p.idUsuario.idUsuario IN (SELECT m.miembroPK.idUsuario FROM Miembro m WHERE m.miembroPK.idRed = :idRed)"),
+    @NamedQuery(name = "Poi.findByCoord", query = "SELECT p FROM Poi p WHERE p.idUsuario.idUsuario = :idUsuario OR p.privacidadPoi = true")})
 public class Poi implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,6 +64,7 @@ public class Poi implements Serializable {
     private List<Imagen> imagenList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "poi")
     private List<VisitaPoi> visitaPoiList;
+
     public Poi() {
     }
 
@@ -184,5 +186,4 @@ public class Poi implements Serializable {
     public String toString() {
         return "com.gtworld.entity.Poi[ idPoi=" + idPoi + " ]";
     }
-    
 }

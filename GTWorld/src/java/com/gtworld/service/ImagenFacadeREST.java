@@ -102,10 +102,10 @@ public class ImagenFacadeREST extends AbstractFacade<Imagen> {
                     super.create(nueva);
                     return Response.created(URI.create(nueva.getCorrelativoImagen().toString())).entity(nueva.getCorrelativoImagen().toString()).build();
                 } else {
-                    Imagen actual = super.find(l);
-                    actual.setUrlImagen("/Images/Users/".concat(fileName));
-                    super.edit(actual);
-                    return Response.created(URI.create(actual.getCorrelativoImagen().toString())).entity(actual.getCorrelativoImagen().toString()).build();
+                    //Imagen actual = super.find(l);
+                    //actual.setUrlImagen("/Images/Users/".concat(fileName));
+                    //super.edit(actual);
+                    return Response.created(URI.create("SAME")).entity("SAME").build();
                 }
             } else {
                 return null;
