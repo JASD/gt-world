@@ -61,17 +61,18 @@ public class PoiFacadeREST extends AbstractFacade<Poi> {
 
     @GET
     @Produces("application/json")
-    public String mxPois(@QueryParam("lat") Double lat,
-            @QueryParam("lng") Double lon,
+    public String mxPois(
+            @QueryParam("user") String id,
+            @QueryParam("lon") Double lon,
+            @QueryParam("lat") Double lat,
             @QueryParam("alt") Double alt,
-            @QueryParam("rad") Double rad,
-            @QueryParam("idUser") String id) {
+            @QueryParam("rad") Double rad) {
 
         Object[] parameters = {"idUsuario", id};
         List<Poi> pois = super.find("Poi.findByCoord", parameters);
-        if (!pois.isEmpty()) {
-            try {
-                JSONArray array = new JSONArray();
+        JSONArray array = new JSONArray();;
+        try {
+            if (!pois.isEmpty()) {
                 for (Poi p : pois) {
                     CalculoDistancias dc = new CalculoDistancias(lat, p.getIdUbicacion().getLatitudUbicacion(), lon, p.getIdUbicacion().getLongitudUbicacion());
                     Double dist = dc.calcularDistanciaKm();
@@ -83,35 +84,35 @@ public class PoiFacadeREST extends AbstractFacade<Poi> {
                         jObj.put("elevation", p.getIdUbicacion().getAltitudUbicacion().toString());
                         jObj.put("title", p.getNombrePoi());
                         jObj.put("distance", dist.toString());
-                        if (p.getUrlWebPoi() != null) {
-                            jObj.put("webpage", p.getUrlWebPoi());
+                        String web = p.getUrlWebPoi();
+                        if (web != null && !web.equals("")) {
+                            jObj.put("webpage", web);
                             jObj.put("has_detail_page", "1");
+                        } else {
+                            jObj.put("has_detail_page", "0");
                         }
-                        jObj.put("has_detail_page", "0");
-                        jObj.put("type", p.getIdTipoPoi().getNombreTipoPoi());
+                        jObj.put("type", p.getIdTipoPoi().getUrlIconoPoi());
                         array.put(jObj);
                     }
                 }
-                JSONObject jObj = new JSONObject();
-                jObj.put("status", "OK");
-                jObj.put("num_results", pois.size());
-                jObj.put("results", array);
-                return jObj.toString();
-            } catch (JSONException ex) {
-                Logger.getLogger(PoiFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-                return null;
             }
-        } else {
+            JSONObject jObj = new JSONObject();
+            jObj.put("status", "OK");
+            jObj.put("num_results", array.length());
+            jObj.put("results", array);
+            return jObj.toString();
+        } catch (JSONException ex) {
+            Logger.getLogger(PoiFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
 
-    @GET
+    /*@GET
     @Override
     @Produces({"application/xml", "application/json"})
     public List<Poi> findAll() {
         return super.findAll();
-    }
+    }*/
 
     @GET
     @Path("{from}/{to}")
