@@ -70,7 +70,7 @@ public class PoiFacadeREST extends AbstractFacade<Poi> {
 
         Object[] parameters = {"idUsuario", id};
         List<Poi> pois = super.find("Poi.findByCoord", parameters);
-        JSONArray array = new JSONArray();;
+        JSONArray array = new JSONArray();
         try {
             if (!pois.isEmpty()) {
                 for (Poi p : pois) {
