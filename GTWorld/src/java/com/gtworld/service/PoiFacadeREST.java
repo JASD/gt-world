@@ -67,32 +67,33 @@ public class PoiFacadeREST extends AbstractFacade<Poi> {
             @QueryParam("lat") Double lat,
             @QueryParam("alt") Double alt,
             @QueryParam("rad") Double rad) {
-
-        Object[] parameters = {"idUsuario", id};
-        List<Poi> pois = super.find("Poi.findByCoord", parameters);
         JSONArray array = new JSONArray();
         try {
-            if (!pois.isEmpty()) {
-                for (Poi p : pois) {
-                    CalculoDistancias dc = new CalculoDistancias(lat, p.getIdUbicacion().getLatitudUbicacion(), lon, p.getIdUbicacion().getLongitudUbicacion());
-                    Double dist = dc.calcularDistanciaKm();
-                    if (dist.compareTo(rad) < 0) {
-                        JSONObject jObj = new JSONObject();
-                        jObj.put("id", p.getIdPoi());
-                        jObj.put("lat", p.getIdUbicacion().getLatitudUbicacion().toString());
-                        jObj.put("lng", p.getIdUbicacion().getLongitudUbicacion().toString());
-                        jObj.put("elevation", p.getIdUbicacion().getAltitudUbicacion().toString());
-                        jObj.put("title", p.getNombrePoi());
-                        jObj.put("distance", dist.toString());
-                        String web = p.getUrlWebPoi();
-                        if (web != null && !web.equals("")) {
-                            jObj.put("webpage", web);
-                            jObj.put("has_detail_page", "1");
-                        } else {
-                            jObj.put("has_detail_page", "0");
+            if (id != null) {
+                Object[] parameters = {"idUsuario", id};
+                List<Poi> pois = super.find("Poi.findByCoord", parameters);
+                if (!pois.isEmpty()) {
+                    for (Poi p : pois) {
+                        CalculoDistancias dc = new CalculoDistancias(lat, p.getIdUbicacion().getLatitudUbicacion(), lon, p.getIdUbicacion().getLongitudUbicacion());
+                        Double dist = dc.calcularDistanciaKm();
+                        if (dist.compareTo(rad) < 0) {
+                            JSONObject jObj = new JSONObject();
+                            jObj.put("id", p.getIdPoi());
+                            jObj.put("lat", p.getIdUbicacion().getLatitudUbicacion().toString());
+                            jObj.put("lng", p.getIdUbicacion().getLongitudUbicacion().toString());
+                            jObj.put("elevation", p.getIdUbicacion().getAltitudUbicacion().toString());
+                            jObj.put("title", p.getNombrePoi());
+                            jObj.put("distance", dist.toString());
+                            String web = p.getUrlWebPoi();
+                            if (web != null && !web.equals("")) {
+                                jObj.put("webpage", web);
+                                jObj.put("has_detail_page", "1");
+                            } else {
+                                jObj.put("has_detail_page", "0");
+                            }
+                            jObj.put("type", p.getIdTipoPoi().getUrlIconoPoi());
+                            array.put(jObj);
                         }
-                        jObj.put("type", p.getIdTipoPoi().getUrlIconoPoi());
-                        array.put(jObj);
                     }
                 }
             }
