@@ -68,6 +68,11 @@ public class PoiFacadeREST extends AbstractFacade<Poi> {
             @QueryParam("alt") Double alt,
             @QueryParam("rad") Double rad) {
         JSONArray array = new JSONArray();
+         System.out.println(id);
+        System.out.print(lon);
+        System.out.print(lat);
+        System.out.print(alt);        
+        System.out.print(rad);
         try {
             if (id != null) {
                 Object[] parameters = {"idUsuario", id};
