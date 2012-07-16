@@ -28,7 +28,7 @@ public class VisitaPoiFacadeREST extends AbstractFacade<VisitaPoi> {
 
     @POST
     @Override
-    @Consumes({"application/xml", "application/json"})
+    @Consumes("application/json")
     public void create(VisitaPoi entity) {
         super.create(entity);
     }
@@ -55,7 +55,7 @@ public class VisitaPoiFacadeREST extends AbstractFacade<VisitaPoi> {
 
     @GET
     @Override
-    @Produces({"application/json", "application/xml"})
+    @Produces("application/json")
     public List<VisitaPoi> findAll() {
         return super.findAll();
     }
