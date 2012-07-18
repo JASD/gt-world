@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:pou="http://primefaces.org/ui">
+    <h:head>
+        <title>GTWorld</title>
+        <link href='resources/icon/map_blue.png' rel='shortcut icon' type='image/png'/>
+    </h:head>
+    <h:body onload="#{sessionController.resetTest()}">
+        <pou:layout fullPage="true">  
+
+            <pou:layoutUnit position="north" size="120">  
+                <h:panelGrid columns="2" >
+                    <pou:graphicImage value="resources/img/slogan_x200.png" width="100" height="100"/>
+                    <h:outputText value="GTWorld Services" style="font-size: 32px; margin-left: 25px; font-family: verdana"/>
+                </h:panelGrid>
+            </pou:layoutUnit>  
+
+            <pou:layoutUnit position="south" size="50">  
+                <h:outputLabel value="GTWorld® All Rights Reserved 2012" 
+                               style="font-size: 10px; margin-left: 40%; font-family: verdana" />
+            </pou:layoutUnit>  
+
+
+            <pou:layoutUnit position="center">  
+                <h:form id="test">  
+                    <h:outputText value="IP " style="font-size: 12px; margin-left: 25px; font-family: verdana"/>
+                    <pou:inputText title="IP"  style="margin-left: 10px" value="#{sessionController.ip}"/>
+                    <h:outputText value="ID" style="font-size: 12px; margin-left: 25px; font-family: verdana"/>
+                    <pou:inputText title="ID Usuario"  value="#{sessionController.idUser}" style="margin-left: 10px; width: 50px"/>
+                     <h:outputText value="Pass" style="font-size: 12px; margin-left: 25px; font-family: verdana"/>
+                     <pou:password title="Password" value="#{sessionController.passUser}" style="margin-left: 10px; width: 50px"/>
+                     <pou:commandButton title="TEST" value="TEST"  style="margin-left: 10px" action="#{sessionController.testServices()}" update="test"/>
+                    <h:outputText value="OK" rendered="#{sessionController.isOK}" style="font-size: 18px; margin-left: 25px; font-family: verdana; color: green"/>
+                    <h:outputText value="FAIL" rendered="#{sessionController.isFAIL}" style="font-size: 18px; margin-left: 25px; font-family: verdana; color: red"/>
+                </h:form>  
+            </pou:layoutUnit>  
+
+        </pou:layout>  
+    </h:body>
+
+</html>

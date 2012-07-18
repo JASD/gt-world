@@ -4,6 +4,11 @@ import com.gtworld.controller.util.JsfUtil;
 import com.gtworld.controller.util.PaginationHelper;
 import com.gtworld.entity.*;
 import com.gtworld.facade.*;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
@@ -64,6 +69,9 @@ public class SessionController implements Serializable {
     private String descripcionFotos;
     private String picture;
     private UploadedFile foto;
+    private String ip;
+    private boolean isOK;
+    private boolean isFAIL;
 
     public SessionController() {
     }
@@ -733,4 +741,65 @@ public class SessionController implements Serializable {
     public void setFoto(UploadedFile foto) {
         this.foto = foto;
     }
+    
+    public void testServices() {
+
+        setIsFAIL(false);
+        setIsOK(false);
+        String url = "http://" + ip + ":8080/GTWorld/services/com.gtworld.entity.usuario/";
+        url = url.concat(idUser).concat("/").concat(passUser);
+
+        try {
+            ClientConfig config = new DefaultClientConfig();
+            config.getProperties().put(ClientConfig.PROPERTY_FOLLOW_REDIRECTS, true);
+            config.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, Integer.valueOf(1000));
+            Client client = Client.create(config);
+            WebResource service = client.resource(url);
+            ClientResponse response = service.accept("application/json").get(ClientResponse.class);
+            int status = response.getStatus();
+            //String textEntity = response.getEntity(String.class);
+            if (status == 200) {
+                setIsOK(true);
+            } else {
+                setIsFAIL(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            setIsFAIL(true);
+        }
+        
+    }
+    
+    public void resetTest(){
+        setIsFAIL(false);
+        setIsOK(false);
+        setIdUser("");
+        setPassUser("");
+        setIp("");
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public boolean isIsFAIL() {
+        return isFAIL;
+    }
+
+    public void setIsFAIL(boolean isFAIL) {
+        this.isFAIL = isFAIL;
+    }
+
+    public boolean isIsOK() {
+        return isOK;
+    }
+
+    public void setIsOK(boolean isOK) {
+        this.isOK = isOK;
+    }
+   
 }
